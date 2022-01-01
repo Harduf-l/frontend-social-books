@@ -1,23 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import ResigterHomePage from "./components/ResigterHomePage";
+import { useTranslation } from "react-i18next";
+import RegisterProcess from "./components/RegisterProcess";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LanguageSwitcher from "./components/LanguageSwitcher";
+
+import "./i18n/i18n";
 
 function App() {
+  const { i18n } = useTranslation();
+  document.body.dir = i18n.dir();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <LanguageSwitcher />
+      <Routes>
+        <Route path="/" element={<ResigterHomePage />} />
+        <Route path="/register" element={<RegisterProcess />} />
+      </Routes>
     </div>
   );
 }

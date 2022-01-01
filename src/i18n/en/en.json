@@ -1,0 +1,11 @@
+{
+  "English": "English",
+  "Hebrew": "Hebrew",
+  "welcome": "Register today and start talk to others about the books you love.",
+  "form": {
+    "email": "Email",
+    "password": "Password",
+    "login": "Login",
+    "register": "Create new account"
+  }
+}
