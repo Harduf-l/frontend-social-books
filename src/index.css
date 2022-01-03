@@ -8,3 +8,17 @@ body {
   -moz-osx-font-smoothing: grayscale;
   box-sizing: border-box;
 }
+
+.menuIcon {
+  font-size: 25px;
+  padding-inline-start: 10px;
+  padding-top: 5px;
+  color: #d3c6b4;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 990px) {
+  .mobile-space {
+    margin-top: 30px;
+  }
+}

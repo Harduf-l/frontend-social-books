@@ -1,11 +1,63 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import bookImage from "../images/bookHome.jpg";
 import { Link } from "react-router-dom";
+import { checkIfInputIsHebrew } from "../components/utlis/utils";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { storeContext } from "../context/store";
 
 function ResigterHomePage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  let navigate = useNavigate();
 
+  const currentDir = i18n.dir();
+  const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState(null);
+  const [email, setEmail] = useState("");
+  const { dispatch } = useContext(storeContext);
+
+  const passWordSetAndCheck = (event) => {
+    if (event.target.value[0]) {
+      if (checkIfInputIsHebrew(event.target.value[0])) {
+        setPasswordError(true);
+      } else {
+        setPasswordError(null);
+      }
+    }
+
+    setPassword(event.target.value);
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    console.log(password);
+    console.log(email);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5005/login",
+        { password, email },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.data.status === "error") {
+        console.log(response.data.error);
+      } else if (response.data.status === "ok") {
+        console.log("got the token!", response.data);
+        dispatch({ type: "login" });
+        navigate(`/`);
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  //// if user is not logged in, show this
+  // if logged in, redirect to his personal page
   return (
     <div>
       <div className="container">
@@ -22,21 +74,51 @@ function ResigterHomePage() {
             </p>
 
             <div className="pt-4 text-center">
-              <input
-                className="m-1 col-11"
-                type="text"
-                placeholder={t("form.email")}
-              ></input>
-              <input
-                className="m-1 col-11"
-                type="password"
-                placeholder={t("form.password")}
-              ></input>
-              <input
-                className="btn btn-light btn-sm mt-2 col-11 p-2"
-                type="submit"
-                value={t("form.login")}
-              />
+              <form>
+                <input
+                  dir="ltr"
+                  style={{
+                    textAlign: currentDir === "rtl" ? "end" : "start",
+                    padding: "4px",
+                  }}
+                  className="m-1 col-11"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder={t("form.email")}
+                ></input>
+                <input
+                  dir="ltr"
+                  style={{
+                    textAlign: currentDir === "rtl" ? "end" : "start",
+                    padding: "4px",
+                  }}
+                  className="m-1 col-11"
+                  type="password"
+                  placeholder={t("form.password")}
+                  onChange={passWordSetAndCheck}
+                  value={password}
+                  autoComplete="on"
+                ></input>
+                <small
+                  style={{
+                    display: "block",
+                    marginTop: "10px",
+                    color: "red",
+                    fontSize: "12px",
+                    textAlign: "start",
+                    paddingInlineStart: "24px",
+                  }}
+                >
+                  {passwordError && t("form.password hebrew error")}
+                </small>
+                <input
+                  className="btn btn-light btn-sm mt-2 col-11 p-2"
+                  type="submit"
+                  onClick={handleLogin}
+                  value={t("form.login")}
+                />
+              </form>
               <Link to="/register">
                 <input
                   className="btn btn-dark btn-sm mt-2 col-11 p-2"

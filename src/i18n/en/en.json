@@ -6,6 +6,13 @@
     "email": "Email",
     "password": "Password",
     "login": "Login",
-    "register": "Create new account"
+    "register": "Create new account",
+    "name": "Name",
+    "send": "Send",
+    "imageError": "Upload an image that doesn't exceed 300kb",
+    "password hebrew error": "Password shall contain english letters only",
+    "uploadImage": "Upload an image",
+    "favorite writer": "Favorite author",
+    "favorite genre": "Favorite genre"
   }
 }

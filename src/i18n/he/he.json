@@ -6,6 +6,13 @@
     "email": "אימייל",
     "password": "סיסמא",
     "login": "התחבר",
-    "register": "צור חשבון חדש"
+    "register": "צור חשבון חדש",
+    "name": "שם",
+    "send": "שלח",
+    "imageError": "אנא העלה קובץ מסוג תמונה עד כ-300 קילו בייט",
+    "password hebrew error": "אנא הקלד סיסמא באותיות אנגליות בלבד",
+    "uploadImage": "בחר תמונה",
+    "favorite writer": "סופר אהוב",
+    "favorite genre": "ז'אנר מועדף"
   }
 }
