@@ -13,6 +13,34 @@
     "password hebrew error": "אנא הקלד סיסמא באותיות אנגליות בלבד",
     "uploadImage": "בחר תמונה",
     "favorite writer": "סופר אהוב",
-    "favorite genre": "ז'אנר מועדף"
+    "favorite genre": "ז'אנר מועדף",
+    "login error": "אימייל או סיסמא שגויים",
+    "duplicate email": "מייל זה בשימוש. האם שכחת סיסמא?",
+    "logout": "התנתק"
+  },
+  "genres": {
+    "favorite": "ז'אנרים מועדפים",
+    "thriller": "מתח",
+    "novel": "פרוזה",
+    "romantic": "רומן רומנטי",
+    "biographic": "ביוגרפיה",
+    "poetry": "שירה",
+    "fantasy": "פנטזיה",
+    "madab": "מד\"ב",
+    "children": "ילדים",
+    "comics": "קומיקס",
+    "plays": "מחזות",
+    "nonfiction": "עיון",
+    "self help": "עזרה עצמית",
+    "psychology": "פסיכולוגיה",
+    "phlipsophy": "פילוסופיה",
+    "history": "היסטוריה",
+    "teenagers": "נוער",
+    "management": "ניהול ועסקים"
+  },
+  "profile": {
+    "book lovers": "חובבי קריאה בעלי טעם דומה לשלך",
+    "share thought": "שתף במחשבה ספרותית שעלתה בך...",
+    "search": "חפש"
   }
 }

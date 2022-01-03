@@ -15,9 +15,11 @@ function ResigterHomePage() {
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState(null);
   const [email, setEmail] = useState("");
+  const [loginError, setLoginError] = useState("");
   const { dispatch } = useContext(storeContext);
 
   const passWordSetAndCheck = (event) => {
+    setLoginError("");
     if (event.target.value[0]) {
       if (checkIfInputIsHebrew(event.target.value[0])) {
         setPasswordError(true);
@@ -31,8 +33,6 @@ function ResigterHomePage() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    console.log(password);
-    console.log(email);
 
     try {
       const response = await axios.post(
@@ -46,9 +46,16 @@ function ResigterHomePage() {
       );
       if (response.data.status === "error") {
         console.log(response.data.error);
+        setLoginError("login error");
       } else if (response.data.status === "ok") {
-        console.log("got the token!", response.data);
-        dispatch({ type: "login" });
+        localStorage.setItem("token", response.data.token);
+        dispatch({
+          type: "login",
+          payload: {
+            userDeatils: response.data.userDetails,
+            friends: response.data.suggestedUsers,
+          },
+        });
         navigate(`/`);
       }
     } catch (err) {
@@ -84,7 +91,10 @@ function ResigterHomePage() {
                   className="m-1 col-11"
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setLoginError("");
+                  }}
                   placeholder={t("form.email")}
                 ></input>
                 <input
@@ -103,7 +113,7 @@ function ResigterHomePage() {
                 <small
                   style={{
                     display: "block",
-                    marginTop: "10px",
+                    marginTop: "5px",
                     color: "red",
                     fontSize: "12px",
                     textAlign: "start",
@@ -111,6 +121,7 @@ function ResigterHomePage() {
                   }}
                 >
                   {passwordError && t("form.password hebrew error")}
+                  {loginError && t(`form.${loginError}`)}
                 </small>
                 <input
                   className="btn btn-light btn-sm mt-2 col-11 p-2"

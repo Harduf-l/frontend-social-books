@@ -13,6 +13,34 @@
     "password hebrew error": "Password shall contain english letters only",
     "uploadImage": "Upload an image",
     "favorite writer": "Favorite author",
-    "favorite genre": "Favorite genre"
+    "favorite genre": "Favorite genre",
+    "login error": "Password/email not correct",
+    "duplicate email": "Email is already in use, did you forgot your password?",
+    "logout": "Logout"
+  },
+  "genres": {
+    "favorite": "Favorite genres",
+    "thriller": "Thrillers",
+    "novel": "Noval",
+    "romantic": "Romantic",
+    "biographic": "Biography",
+    "poetry": "Poetry",
+    "fantasy": "Fantasy",
+    "madab": "Science Fiction",
+    "children": "Children",
+    "comics": "Comics",
+    "plays": "Plays",
+    "nonfiction": "Non fiction",
+    "self help": "Self help",
+    "psychology": "Psychology",
+    "phlipsophy": "Philosophy",
+    "history": "History",
+    "teenagers": "Teens",
+    "management": "Management"
+  },
+  "profile": {
+    "book lovers": "Other book lovers you may like",
+    "share thought": "Share a literature thought you had recently...",
+    "search": "Search"
   }
 }

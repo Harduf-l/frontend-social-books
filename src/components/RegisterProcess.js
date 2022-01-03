@@ -22,16 +22,27 @@ function RegisterProcess() {
   const [chosenPictureName, setChosenPictureName] = useState("");
   const [favoriteWriter, setFavoriteWriter] = useState("");
   const [email, setEmail] = useState("");
+  const [registerError, setRegisterError] = useState("");
+  const [userGenres, setGenres] = useState({});
 
   const registerNewUser = async (e) => {
+    const userGenresArray = Object.keys(userGenres);
     e.preventDefault();
-    if (name && password && favoriteWriter && email && selectedImage) {
+    if (
+      name &&
+      password &&
+      favoriteWriter &&
+      email &&
+      selectedImage &&
+      userGenresArray.length > 0
+    ) {
       const formData = new FormData();
       formData.append("username", name);
       formData.append("password", password);
       formData.append("favoriteWriter", favoriteWriter);
       formData.append("email", email);
       formData.append("photo", selectedImage.imageFile);
+      formData.append("genres", userGenresArray);
 
       try {
         const response = await axios.post(
@@ -45,8 +56,18 @@ function RegisterProcess() {
         );
         if (response.data.status === "error") {
           console.log(response.data.error);
+          if (response.data.error === "Duplicated email") {
+            setRegisterError("duplicate email");
+          }
         } else {
-          dispatch({ type: "login" });
+          dispatch({
+            type: "login",
+            payload: {
+              userDeatils: response.data.userDetails,
+              friends: response.data.suggestedUsers,
+            },
+          });
+
           navigate(`/`);
         }
       } catch (err) {
@@ -61,7 +82,7 @@ function RegisterProcess() {
       const fileType = event.target.files[0].type.split("/")[0];
 
       if (fileType === "image") {
-        if (img.size > 30000) {
+        if (img.size > 600000) {
           setImageError(true);
           setChosenPictureName(null);
           setSelectedImage(null);
@@ -95,6 +116,39 @@ function RegisterProcess() {
     }
 
     setPassword(event.target.value);
+  };
+
+  ////////////////////////
+  const getGenres = (e) => {
+    let newObgGenres = { ...userGenres };
+    if (e.target.checked) {
+      newObgGenres[e.target.value] = true;
+    } else {
+      delete newObgGenres[e.target.value];
+    }
+    setGenres(newObgGenres);
+  };
+  ///////////////////////////////
+  const CheckBok = ({ name }) => {
+    return (
+      <div>
+        <input
+          className="form-check-input"
+          type="checkbox"
+          value={name}
+          id={name}
+          checked={userGenres[name]}
+          onChange={(e) => getGenres(e)}
+        />
+        <label
+          className="form-check-label"
+          style={{ paddingInlineStart: "5px" }}
+          htmlFor={name}
+        >
+          {t(`genres.${name}`)}
+        </label>
+      </div>
+    );
   };
 
   return (
@@ -169,7 +223,49 @@ function RegisterProcess() {
                 </small> */}
             </div>
           </div>
+          <small
+            style={{
+              display: "block",
+              marginTop: "15px",
+              color: "red",
+              fontSize: "12px",
+              textAlign: "start",
+            }}
+          >
+            {registerError && t(`form.${registerError}`)}
+          </small>
 
+          <p>{t(`genres.favorite`)}:</p>
+
+          <div className="d-flex">
+            <div>
+              <CheckBok name={"novel"} />
+              <CheckBok name={"thriller"} />
+              <CheckBok name={"biographic"} />
+              <CheckBok name={"poetry"} />
+            </div>
+
+            <div style={{ paddingInlineStart: "20px" }}>
+              <CheckBok name={"fantasy"} />
+              <CheckBok name={"madab"} />
+              <CheckBok name={"children"} />
+              <CheckBok name={"teenagers"} />
+            </div>
+
+            <div style={{ paddingInlineStart: "20px" }}>
+              <CheckBok name={"plays"} />
+              <CheckBok name={"nonfiction"} />
+              <CheckBok name={"self help"} />
+              <CheckBok name={"psychology"} />
+            </div>
+
+            <div style={{ paddingInlineStart: "20px" }}>
+              <CheckBok name={"phlipsophy"} />
+              <CheckBok name={"history"} />
+              <CheckBok name={"comics"} />
+              <CheckBok name={"management"} />
+            </div>
+          </div>
           <button
             type="submit"
             onClick={(e) => registerNewUser(e)}
