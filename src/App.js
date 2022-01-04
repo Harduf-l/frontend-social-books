@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import RegisterProcess from "./components/RegisterProcess";
 import { Routes, Route } from "react-router-dom";
-import LanguageSwitcher from "./components/LanguageSwitcher";
 import HomePageUser from "./components/HomePageUser";
 import ResigterHomePage from "../src/components/ResigterHomePage";
 import AnotherUserPage from "../src/components/AnotherUserPage";
@@ -19,7 +18,7 @@ function App() {
   useEffect(() => {
     axios
       .post(
-        "http://localhost:5005/tokenCheck",
+        "http://localhost:5005/users/token-check",
         { token: localStorage.getItem("token") },
         {
           headers: {
@@ -50,7 +49,6 @@ function App() {
   };
   return (
     <div>
-      <LanguageSwitcher />
       <Routes>
         {!loading ? (
           <Route

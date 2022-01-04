@@ -6,6 +6,7 @@ import { checkIfInputIsHebrew } from "../components/utlis/utils";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { storeContext } from "../context/store";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 function ResigterHomePage() {
   const { t, i18n } = useTranslation();
@@ -36,7 +37,7 @@ function ResigterHomePage() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5005/login",
+        "http://localhost:5005/users/login",
         { password, email },
         {
           headers: {
@@ -67,6 +68,7 @@ function ResigterHomePage() {
   // if logged in, redirect to his personal page
   return (
     <div>
+      <LanguageSwitcher />
       <div className="container">
         <div className="row">
           <div className=" col-s-12 col-md-6 pb-3">

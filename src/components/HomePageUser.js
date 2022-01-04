@@ -8,14 +8,15 @@ function HomePageUser() {
   const { t } = useTranslation();
   const { dispatch, store } = useContext(storeContext);
   const [searchedBook, setSearchedBook] = useState("");
-  const { favoriteWriter, picture, username, genres } = store.userDetails;
+  const { favoriteWriter, picture, username, genres, userAge } =
+    store.userDetails;
   const [booksResults, setBooksResults] = useState("");
   const [loading, setLoading] = useState(false);
 
   const getBooks = () => {
     setLoading(true);
     axios
-      .get(`http://localhost:5005/get-book-list?search=${searchedBook}`)
+      .get(`http://localhost:5005/books/get-book-list?search=${searchedBook}`)
       .then((res) => {
         setLoading(false);
         setBooksResults(res.data);
@@ -65,6 +66,21 @@ function HomePageUser() {
             </span>
             <p style={{ backgroundColor: "white" }}>{favoriteWriter}</p>
           </div>
+          {userAge && (
+            <div>
+              <span
+                style={{
+                  marginInlineEnd: "5px",
+                  fontSize: "12px",
+                  fontStyle: "italic",
+                  color: "#920000",
+                }}
+              >
+                גיל:
+              </span>
+              <p style={{ backgroundColor: "white" }}>{userAge}</p>
+            </div>
+          )}
           <div>
             <span
               style={{
