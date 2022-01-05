@@ -70,8 +70,8 @@ function ResigterHomePage() {
     <div>
       <LanguageSwitcher />
       <div className="container">
-        <div className="row">
-          <div className=" col-s-12 col-md-6 pb-3">
+        <div className="row" style={{ height: "450px" }}>
+          <div className=" col-s-12 col-md-6 pb-3 align-self-center ">
             <p
               style={{
                 fontSize: "50px",
@@ -114,6 +114,7 @@ function ResigterHomePage() {
                 ></input>
                 <small
                   style={{
+                    height: "20px",
                     display: "block",
                     marginTop: "5px",
                     color: "red",
@@ -141,12 +142,8 @@ function ResigterHomePage() {
               </Link>
             </div>
           </div>
-          <div className="col-s-12 col-md-6" style={{ height: "300px" }}>
-            <img
-              style={{ objectFit: "cover", height: "450px", width: "100%" }}
-              src={bookImage}
-              alt=""
-            />
+          <div className="col-s-12 col-md-6 padding-top-homePage">
+            <img className="responsive-image" src={bookImage} alt="" />
           </div>
         </div>
       </div>

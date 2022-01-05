@@ -15,11 +15,13 @@ export const InputFunction = ({
   styleFunction,
   autoComplete,
   dir,
+  onBlurFunction,
 }) => {
   const { t } = useTranslation();
   return (
     <div>
       <input
+        maxLength="25"
         dir={dir ? dir : ""}
         className="form-control "
         type={type}
@@ -28,6 +30,7 @@ export const InputFunction = ({
         placeholder={t(`form.${fieldName}`)}
         style={styleFunction && styleFunction()}
         autoComplete={autoComplete ? "on" : "off"}
+        onBlur={onBlurFunction && onBlurFunction}
       />
     </div>
   );
@@ -38,10 +41,11 @@ export const SmallFunction = ({ stateError, translationError }) => {
   return (
     <small
       style={{
+        height: "20px",
         display: "block",
-        marginTop: "10px",
+        marginTop: "5px",
         color: "red",
-        fontSize: "12px",
+        fontSize: "11px",
       }}
     >
       {stateError && t(translationError)}

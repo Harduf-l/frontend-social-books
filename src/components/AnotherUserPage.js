@@ -9,7 +9,7 @@ const UserCard = ({ currentUserPage }) => {
   const { t } = useTranslation();
 
   return (
-    <div className="col-3 p-3" style={{ backgroundColor: "#fff9f1" }}>
+    <div className="col-lg-3 col-12 p-3" style={{ backgroundColor: "#fff9f1" }}>
       <div className="text-center">
         <img
           style={{
@@ -111,7 +111,7 @@ function UserPage() {
       {currentUserPage && (
         <div className="row">
           <UserCard currentUserPage={currentUserPage} />
-          <div className="col-9">
+          <div className="col-lg-9 col-12">
             <div style={{ backgroundColor: "#eeedec", height: "200px" }}>
               קצת עליי...
             </div>

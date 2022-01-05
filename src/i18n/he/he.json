@@ -5,18 +5,22 @@
   "form": {
     "email": "אימייל",
     "password": "סיסמא",
+    "birth date": "תאריך לידה",
     "login": "התחבר",
     "register": "צור חשבון חדש",
     "name": "שם",
     "send": "שלח",
     "imageError": "אנא העלה קובץ מסוג תמונה עד כ-300 קילו בייט",
     "password hebrew error": "אנא הקלד סיסמא באותיות אנגליות בלבד",
+    "password limit error": "על הסיסמא להכיל לפחות 6 ספרות",
     "uploadImage": "בחר תמונה",
     "favorite writer": "סופר אהוב",
     "favorite genre": "ז'אנר מועדף",
     "login error": "אימייל או סיסמא שגויים",
     "duplicate email": "מייל זה בשימוש. האם שכחת סיסמא?",
-    "logout": "התנתק"
+    "birth date error": "אנא הכנס תאריך לידה תקין",
+    "logout": "התנתק",
+    "email error": "יש להקיש כתובת מייל תקינה"
   },
   "genres": {
     "favorite": "ז'אנרים מועדפים",
@@ -41,6 +45,14 @@
   "profile": {
     "book lovers": "חובבי קריאה בעלי טעם דומה לשלך",
     "share thought": "שתף במחשבה ספרותית שעלתה בך...",
-    "search": "חפש"
+    "search": "חפש",
+    "welcome": "שלום, "
+  },
+  "navbar": {
+    "profile": "פרופיל",
+    "messages": "הודעות",
+    "events": "אירועים",
+    "books": "ספרים",
+    "search": "חפש..."
   }
 }

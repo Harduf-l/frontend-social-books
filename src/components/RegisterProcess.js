@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useTranslation } from "react-i18next";
-import bookDefault from "../images/plain.jpg";
+import profileDefault from "../images/plain.jpg";
 import { checkIfInputIsHebrew } from "../components/utlis/utils";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,7 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import { InputFunction, SmallFunction } from "../components/utlis/utils";
 
 function RegisterProcess() {
+  const PICTURESIZE = 165;
   let navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const currentDir = i18n.dir();
@@ -22,9 +23,12 @@ function RegisterProcess() {
   const [chosenPictureName, setChosenPictureName] = useState("");
   const [favoriteWriter, setFavoriteWriter] = useState("");
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState(false);
   const [registerError, setRegisterError] = useState("");
   const [userGenres, setGenres] = useState({});
   const [birthday, setBirthdate] = useState("");
+  const [birthDateError, setBirthDateError] = useState("");
+  const [passwordErrorType, setPasswordErrorType] = useState("");
 
   const registerNewUser = async (e) => {
     const userGenresArray = Object.keys(userGenres);
@@ -34,7 +38,6 @@ function RegisterProcess() {
       passwordChosen &&
       favoriteWriter &&
       email &&
-      selectedImage &&
       birthday &&
       userGenresArray.length > 0
     ) {
@@ -86,6 +89,20 @@ function RegisterProcess() {
     }
   };
 
+  const setBirthdateFunction = (event) => {
+    const dateEntered = event.target.value;
+    setBirthdate(event.target.value);
+    if (
+      dateEntered.split("-")[0] > 2020 ||
+      dateEntered.split("-")[0] < 1890 ||
+      dateEntered.split("-")[1] > 12 ||
+      dateEntered.split("-")[2] > 31
+    ) {
+      setBirthDateError(true);
+    } else {
+      setBirthDateError(false);
+    }
+  };
   const setImageFunction = (event) => {
     if (event.target.files && event.target.files[0]) {
       let img = event.target.files[0];
@@ -120,16 +137,33 @@ function RegisterProcess() {
   };
 
   const passWordSetAndCheck = (event) => {
-    console.log(event.target.value);
     if (event.target.value[0]) {
       if (checkIfInputIsHebrew(event.target.value[0])) {
+        setPasswordErrorType("form.password hebrew error");
         setPasswordError(true);
       } else {
         setPasswordError(null);
       }
     }
-
     setPassword(event.target.value);
+  };
+
+  const passwordOnBlur = () => {
+    if (passwordChosen.length < 6) {
+      setPasswordErrorType("form.password limit error");
+      setPasswordError(true);
+    } else {
+      setPasswordError(false);
+    }
+  };
+
+  const emailBlurFunction = () => {
+    let pattern = /[a-zA-Z0-9]{2,18}@[a-zA-Z]{2,}.[a-z.A-Z]{2,7}/g;
+    if (!pattern.test(email)) {
+      setEmailError(true);
+    } else {
+      setEmailError(false);
+    }
   };
 
   const setFavoriteWriterFunction = (e) => {
@@ -163,7 +197,7 @@ function RegisterProcess() {
         />
         <label
           className="form-check-label"
-          style={{ paddingInlineStart: "5px" }}
+          style={{ paddingInlineStart: "5px", fontSize: "13px" }}
           htmlFor={name}
         >
           {t(`genres.${name}`)}
@@ -177,7 +211,13 @@ function RegisterProcess() {
       <LanguageSwitcher />
       <div className="container">
         <div className="row">
-          <div className="col-lg-8 col-md-12">
+          <div
+            className="col-lg-8 col-md-12 pt-4"
+            style={{
+              backgroundColor: "rgba(211,198,180, 0.3)",
+              borderRadius: "20px",
+            }}
+          >
             <div className="d-flex ">
               <InputFunction
                 fieldName={"name"}
@@ -187,24 +227,27 @@ function RegisterProcess() {
               />
 
               <div style={{ paddingInlineStart: "20px" }}>
-                <InputFunction
-                  fieldName={"password"}
-                  stateValue={passwordChosen}
-                  functionToSetField={passWordSetAndCheck}
-                  type={"password"}
-                  styleFunction={() => {
-                    let direction;
-                    direction = currentDir === "rtl" ? "end" : "start";
-                    return {
-                      textAlign: direction,
-                    };
-                  }}
-                  dir={"ltr"}
-                  autoComplete={true}
-                />
+                <form>
+                  <InputFunction
+                    onBlurFunction={passwordOnBlur}
+                    fieldName={"password"}
+                    stateValue={passwordChosen}
+                    functionToSetField={passWordSetAndCheck}
+                    type={"password"}
+                    styleFunction={() => {
+                      let direction;
+                      direction = currentDir === "rtl" ? "end" : "start";
+                      return {
+                        textAlign: direction,
+                      };
+                    }}
+                    dir={"ltr"}
+                    autoComplete={true}
+                  />
+                </form>
                 <SmallFunction
                   stateError={passwordError}
-                  translationError={"form.password hebrew error"}
+                  translationError={passwordErrorType}
                 />
               </div>
             </div>
@@ -233,75 +276,84 @@ function RegisterProcess() {
                   functionToSetField={setEmailFunction}
                   type={"email"}
                   autoComplete={true}
+                  onBlurFunction={emailBlurFunction}
+                />
+                <SmallFunction
+                  stateError={emailError}
+                  translationError={"form.email error"}
                 />
               </div>
             </div>
-            <SmallFunction
-              stateError={registerError}
-              translationError={`form.${registerError}`}
-            />
-            <p>{t(`genres.favorite`)}:</p>
+            <p style={{ fontWeight: "500" }}>{t(`genres.favorite`)}</p>
 
-            <div className="d-flex">
-              <div>
+            <div className="row col-sm-12 col-md-10 col-lg-12 col-xl-9">
+              <div className="col-lg-3 col-6">
                 <CheckBok name={"novel"} />
                 <CheckBok name={"thriller"} />
                 <CheckBok name={"biographic"} />
                 <CheckBok name={"poetry"} />
               </div>
 
-              <div style={{ paddingInlineStart: "20px" }}>
+              <div className="col-lg-3 col-6">
                 <CheckBok name={"fantasy"} />
                 <CheckBok name={"madab"} />
                 <CheckBok name={"children"} />
                 <CheckBok name={"teenagers"} />
               </div>
 
-              <div style={{ paddingInlineStart: "20px" }}>
+              <div className="col-lg-3 col-6">
                 <CheckBok name={"plays"} />
                 <CheckBok name={"nonfiction"} />
                 <CheckBok name={"self help"} />
                 <CheckBok name={"psychology"} />
               </div>
 
-              <div style={{ paddingInlineStart: "20px" }}>
+              <div className="col-lg-3 col-6">
                 <CheckBok name={"phlipsophy"} />
                 <CheckBok name={"history"} />
                 <CheckBok name={"comics"} />
                 <CheckBok name={"management"} />
               </div>
             </div>
-            <div className="mt-4">
-              <label htmlFor="birthdate"> תאריך לידה </label>
+            <div className="mt-5">
+              <label htmlFor="birthdate">{t("form.birth date")}</label>
               <input
                 type="date"
-                style={{ marginInlineStart: "10px" }}
+                value={birthday}
+                style={{ marginInlineStart: "10px", marginBottom: "5px" }}
                 id="birthdate"
-                onChange={(e) => setBirthdate(e.target.value)}
+                onChange={setBirthdateFunction}
+              />
+              <SmallFunction
+                stateError={birthDateError}
+                translationError={"form.birth date error"}
               />
             </div>
-            <br />
             <button
               type="submit"
               onClick={(e) => registerNewUser(e)}
-              className="btn btn-secondary mt-4"
+              className="btn btn-secondary mt-3 mb-2"
             >
               {t("form.send")}
             </button>
+            <SmallFunction
+              stateError={registerError}
+              translationError={`form.${registerError}`}
+            />
           </div>
           <div
-            className="col-lg-4 col-md-12"
+            className="col-lg-4 col-md-12  pt-1"
             style={{ paddingInlineStart: "50px" }}
           >
             {!selectedImage && (
               <div className="mobile-space">
                 <img
                   style={{
-                    height: "200px",
-                    width: "200px",
+                    height: PICTURESIZE,
+                    width: PICTURESIZE,
                     objectFit: "cover",
                   }}
-                  src={bookDefault}
+                  src={profileDefault}
                   alt=""
                 />
               </div>
@@ -310,8 +362,8 @@ function RegisterProcess() {
               <div style={{ position: "relative" }} className="mobile-space">
                 <img
                   style={{
-                    height: "200px",
-                    width: "200px",
+                    height: PICTURESIZE,
+                    width: PICTURESIZE,
                     objectFit: "cover",
                   }}
                   src={selectedImage.imageObj}

@@ -1,0 +1,139 @@
+.NavBar {
+  display: flex;
+}
+
+.NavTotalBar {
+  background-color: #e6e6e6;
+  width: 100%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 40px;
+}
+
+#homeLogo {
+  color: #c6ecc0;
+}
+#homeLogo:hover {
+  color: #cf925e;
+}
+
+.LeftSide {
+  flex: 20%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.RightSide {
+  flex: 80%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.navlink {
+  text-decoration: none;
+  color: black;
+  font-size: 17px;
+  padding: 10px;
+}
+
+.navlinkStatic {
+  text-decoration: none;
+  color: black;
+  font-size: 17px;
+  padding: 10px;
+}
+
+.navlink:hover {
+  color: black;
+  border-bottom: 2px black solid;
+}
+.active {
+  font-weight: 500;
+}
+
+.searchButton {
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+}
+
+.searchButton:hover {
+  color: lightgrey;
+}
+
+.LeftSide input {
+  width: 220px;
+  height: 30px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  padding-inline-start: 5px;
+}
+
+.manubarMobile {
+  display: none;
+}
+
+.mobileSection {
+  display: none;
+}
+
+@media screen and (max-width: 850px) {
+  .navlink {
+    font-size: 18px;
+    padding: 6px;
+  }
+}
+
+@media only screen and (max-width: 822px) {
+  .manubarMobile {
+    display: flex;
+    color: white;
+    font-size: 45px;
+    margin-inline-start: 15px;
+    cursor: pointer;
+  }
+  .myRightLinks {
+    display: none;
+  }
+
+  .LeftSide {
+    display: none;
+  }
+  #mobileView {
+    display: flex;
+    height: 260px;
+    padding-bottom: 20px;
+    width: 100%;
+    background-color: #e6e6e6;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .navlink {
+    font-size: 25px;
+  }
+
+  .mobileSection {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .inputMobile {
+    border: none;
+    border-radius: 4px;
+    font-size: 18px;
+    padding-inline-start: 5px;
+    margin-inline-start: 15px;
+    margin-inline-end: 5px;
+    flex-grow: 2;
+  }
+  .searchButton {
+    font-size: 35px;
+  }
+}

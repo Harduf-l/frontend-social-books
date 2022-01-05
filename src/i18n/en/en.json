@@ -5,18 +5,22 @@
   "form": {
     "email": "Email",
     "password": "Password",
+    "birth date": "Birth of date",
     "login": "Login",
     "register": "Create new account",
     "name": "Name",
     "send": "Send",
     "imageError": "Upload an image that doesn't exceed 300kb",
     "password hebrew error": "Password shall contain english letters only",
+    "password limit error": "Password shall contain at least 6 characters",
     "uploadImage": "Upload an image",
     "favorite writer": "Favorite author",
     "favorite genre": "Favorite genre",
     "login error": "Password/email not correct",
     "duplicate email": "Email is already in use, did you forgot your password?",
-    "logout": "Logout"
+    "birth date error": "Date should be valid",
+    "logout": "Logout",
+    "email error": "Please provide a valid Email address"
   },
   "genres": {
     "favorite": "Favorite genres",
@@ -41,6 +45,14 @@
   "profile": {
     "book lovers": "Other book lovers you may like",
     "share thought": "Share a literature thought you had recently...",
-    "search": "Search"
+    "search": "Search",
+    "welcome": "Welcome,"
+  },
+  "navbar": {
+    "profile": "Profile",
+    "messages": "Messages",
+    "events": "Events",
+    "books": "Books",
+    "search": "Search..."
   }
 }

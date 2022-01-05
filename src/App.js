@@ -5,6 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import HomePageUser from "./components/HomePageUser";
 import ResigterHomePage from "../src/components/ResigterHomePage";
 import AnotherUserPage from "../src/components/AnotherUserPage";
+import NavBar from "../src/components/NavBar";
 import "./i18n/i18n";
 import { storeContext } from "./context/store";
 import axios from "axios";
@@ -49,6 +50,7 @@ function App() {
   };
   return (
     <div>
+      {!loading && store.isAuth && <NavBar />}
       <Routes>
         {!loading ? (
           <Route

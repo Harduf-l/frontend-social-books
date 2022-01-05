@@ -3,6 +3,7 @@ import { storeContext } from "../context/store";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import profileDefault from "../images/plain.jpg";
 
 function HomePageUser() {
   const { t } = useTranslation();
@@ -26,83 +27,14 @@ function HomePageUser() {
   return (
     <div className="container">
       <div className="row">
-        <div className="col-3 p-3" style={{ backgroundColor: "#fff9f1" }}>
-          <div className="text-center">
-            <img
-              style={{
-                borderRadius: "30px",
-                marginBottom: "15px",
-                height: "170px",
-                width: "170px",
-                objectFit: "cover",
-              }}
-              src={`http://localhost:5005/${picture}`}
-              alt=""
-            />
-          </div>
-          <div>
-            <span
-              style={{
-                marginInlineEnd: "5px",
-                fontSize: "12px",
-                fontStyle: "italic",
-                color: "#920000",
-              }}
-            >
-              {t("form.name")}
-            </span>
-            <p style={{ backgroundColor: "white" }}>{username}</p>
-          </div>
-          <div>
-            <span
-              style={{
-                marginInlineEnd: "5px",
-                fontSize: "12px",
-                fontStyle: "italic",
-                color: "#920000",
-              }}
-            >
-              {t("form.favorite writer")}
-            </span>
-            <p style={{ backgroundColor: "white" }}>{favoriteWriter}</p>
-          </div>
-          {userAge && (
-            <div>
-              <span
-                style={{
-                  marginInlineEnd: "5px",
-                  fontSize: "12px",
-                  fontStyle: "italic",
-                  color: "#920000",
-                }}
-              >
-                גיל:
-              </span>
-              <p style={{ backgroundColor: "white" }}>{userAge}</p>
-            </div>
-          )}
-          <div>
-            <span
-              style={{
-                marginInlineEnd: "5px",
-                fontSize: "12px",
-                fontStyle: "italic",
-                color: "#920000",
-              }}
-            >
-              {t("genres.favorite")}
-            </span>
-            <br />
-            <p style={{ backgroundColor: "white" }}>
-              {genres.map((el, index) => {
-                if (index === genres.length - 1) {
-                  return <span key={el}> {t(`genres.${el}`)}. </span>;
-                } else {
-                  return <span key={el}> {t(`genres.${el}`)}, </span>;
-                }
-              })}
-            </p>
-          </div>
+        <div
+          className="col-12 col-lg-3 col-md-6"
+          style={{ backgroundColor: "#fff9f1" }}
+        >
+          <p>
+            {t("profile.welcome")}
+            {username}
+          </p>
           <button
             onClick={() => dispatch({ type: "logout" })}
             className="btn btn-light mt-5"
@@ -112,7 +44,7 @@ function HomePageUser() {
           </button>
         </div>
 
-        <div className="col-7">
+        <div className="col-12 col-lg-7 col-md-6">
           <input
             type="text"
             id="bookSearch"
@@ -150,14 +82,15 @@ function HomePageUser() {
           <p className="mt-4">{t("profile.share thought")}</p>
           <textarea
             style={{
-              border: "2px brown solid",
+              border: "1.5px #d3c6b4 solid",
               width: "95%",
-              height: "100px",
+              height: "200px",
+              resize: "none",
             }}
           ></textarea>
         </div>
 
-        <div className="col-2">
+        <div className="col-12 col-lg-2 col-md-6">
           <p
             style={{
               fontSize: "10px",
