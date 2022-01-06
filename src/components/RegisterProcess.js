@@ -7,9 +7,12 @@ import { useNavigate } from "react-router-dom";
 import { storeContext } from "../context/store";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { InputFunction, SmallFunction } from "../components/utlis/utils";
+import BookShelves from "../images/bookshelves.jpg";
 
 function RegisterProcess() {
   const PICTURESIZE = 165;
+  const FIXEDPADDING = "30px";
+  const BACKCOLOR = "#f3f3f3";
   let navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const currentDir = i18n.dir();
@@ -207,120 +210,86 @@ function RegisterProcess() {
   };
 
   return (
-    <div>
-      <LanguageSwitcher />
-      <div className="container">
-        <div className="row">
-          <div
-            className="col-lg-8 col-md-12 pt-4"
-            style={{
-              backgroundColor: "rgba(211,198,180, 0.3)",
-              borderRadius: "20px",
-            }}
-          >
-            <div className="d-flex ">
+    <div className="d-flex">
+      <div className="col-md-11 col-12">
+        <LanguageSwitcher />
+
+        <div className="d-flex flex-wrap justify-content-around m-3">
+          <div className="col-12 col-md-8" style={{}}>
+            <div
+              style={{
+                borderRadius: "10px",
+                backgroundColor: BACKCOLOR,
+                paddingTop: "20px",
+                paddingInlineEnd: "5px",
+                paddingInlineStart: "5px",
+              }}
+            >
               <InputFunction
                 fieldName={"name"}
                 stateValue={nameChosen}
                 functionToSetField={setNameFunction}
                 type={"text"}
               />
+              <div style={{ height: "20px" }}></div>
 
-              <div style={{ paddingInlineStart: "20px" }}>
-                <form>
-                  <InputFunction
-                    onBlurFunction={passwordOnBlur}
-                    fieldName={"password"}
-                    stateValue={passwordChosen}
-                    functionToSetField={passWordSetAndCheck}
-                    type={"password"}
-                    styleFunction={() => {
-                      let direction;
-                      direction = currentDir === "rtl" ? "end" : "start";
-                      return {
-                        textAlign: direction,
-                      };
-                    }}
-                    dir={"ltr"}
-                    autoComplete={true}
-                  />
-                </form>
-                <SmallFunction
-                  stateError={passwordError}
-                  translationError={passwordErrorType}
-                />
-              </div>
-            </div>
+              <InputFunction
+                onBlurFunction={passwordOnBlur}
+                fieldName={"password"}
+                stateValue={passwordChosen}
+                functionToSetField={passWordSetAndCheck}
+                type={"password"}
+                styleFunction={() => {
+                  let direction;
+                  direction = currentDir === "rtl" ? "end" : "start";
+                  return {
+                    textAlign: direction,
+                  };
+                }}
+                dir={"ltr"}
+                autoComplete={true}
+              />
 
-            <div className="d-flex ">
-              <div>
-                <InputFunction
-                  fieldName={"favorite writer"}
-                  stateValue={favoriteWriter}
-                  functionToSetField={setFavoriteWriterFunction}
-                  type={"text"}
-                />
-              </div>
-              <div style={{ paddingInlineStart: "20px" }}>
-                <InputFunction
-                  dir="ltr"
-                  styleFunction={() => {
-                    let direction;
-                    direction = currentDir === "rtl" ? "end" : "start";
-                    return {
-                      textAlign: direction,
-                    };
-                  }}
-                  fieldName={"email"}
-                  stateValue={email}
-                  functionToSetField={setEmailFunction}
-                  type={"email"}
-                  autoComplete={true}
-                  onBlurFunction={emailBlurFunction}
-                />
-                <SmallFunction
-                  stateError={emailError}
-                  translationError={"form.email error"}
-                />
-              </div>
-            </div>
-            <p style={{ fontWeight: "500" }}>{t(`genres.favorite`)}</p>
+              <SmallFunction
+                stateError={passwordError}
+                translationError={passwordErrorType}
+              />
 
-            <div className="row col-sm-12 col-md-10 col-lg-12 col-xl-9">
-              <div className="col-lg-3 col-6">
-                <CheckBok name={"novel"} />
-                <CheckBok name={"thriller"} />
-                <CheckBok name={"biographic"} />
-                <CheckBok name={"poetry"} />
-              </div>
+              <InputFunction
+                fieldName={"favorite writer"}
+                stateValue={favoriteWriter}
+                functionToSetField={setFavoriteWriterFunction}
+                type={"text"}
+              />
+              <div style={{ height: "20px" }}></div>
+              <InputFunction
+                dir="ltr"
+                styleFunction={() => {
+                  let direction;
+                  direction = currentDir === "rtl" ? "end" : "start";
+                  return {
+                    textAlign: direction,
+                  };
+                }}
+                fieldName={"email"}
+                stateValue={email}
+                functionToSetField={setEmailFunction}
+                type={"email"}
+                autoComplete={true}
+                onBlurFunction={emailBlurFunction}
+              />
+              <SmallFunction
+                stateError={emailError}
+                translationError={"form.email error"}
+              />
 
-              <div className="col-lg-3 col-6">
-                <CheckBok name={"fantasy"} />
-                <CheckBok name={"madab"} />
-                <CheckBok name={"children"} />
-                <CheckBok name={"teenagers"} />
-              </div>
-
-              <div className="col-lg-3 col-6">
-                <CheckBok name={"plays"} />
-                <CheckBok name={"nonfiction"} />
-                <CheckBok name={"self help"} />
-                <CheckBok name={"psychology"} />
-              </div>
-
-              <div className="col-lg-3 col-6">
-                <CheckBok name={"phlipsophy"} />
-                <CheckBok name={"history"} />
-                <CheckBok name={"comics"} />
-                <CheckBok name={"management"} />
-              </div>
-            </div>
-            <div className="mt-5">
-              <label htmlFor="birthdate">{t("form.birth date")}</label>
+              <label style={{ marginInlineEnd: "10px" }} htmlFor="birthdate">
+                {t("form.birth date")}
+              </label>
               <input
                 type="date"
                 value={birthday}
-                style={{ marginInlineStart: "10px", marginBottom: "5px" }}
+                style={{ marginBottom: "5px" }}
                 id="birthdate"
                 onChange={setBirthdateFunction}
               />
@@ -329,85 +298,148 @@ function RegisterProcess() {
                 translationError={"form.birth date error"}
               />
             </div>
-            <button
-              type="submit"
-              onClick={(e) => registerNewUser(e)}
-              className="btn btn-secondary mt-3 mb-2"
-            >
-              {t("form.send")}
-            </button>
-            <SmallFunction
-              stateError={registerError}
-              translationError={`form.${registerError}`}
-            />
           </div>
+
           <div
-            className="col-lg-4 col-md-12  pt-1"
-            style={{ paddingInlineStart: "50px" }}
+            className="pt-5 pt-lg-1"
+            style={{
+              paddingInlineEnd: FIXEDPADDING,
+              paddingInlineStart: FIXEDPADDING,
+            }}
           >
-            {!selectedImage && (
-              <div className="mobile-space">
-                <img
-                  style={{
-                    height: PICTURESIZE,
-                    width: PICTURESIZE,
-                    objectFit: "cover",
-                  }}
-                  src={profileDefault}
-                  alt=""
-                />
-              </div>
-            )}
-            {selectedImage && (
-              <div style={{ position: "relative" }} className="mobile-space">
-                <img
-                  style={{
-                    height: PICTURESIZE,
-                    width: PICTURESIZE,
-                    objectFit: "cover",
-                  }}
-                  src={selectedImage.imageObj}
-                  alt=""
-                />
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    color: "red",
-                    fontWeight: "bold",
-                    paddingInlineStart: "4px",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => {
-                    setSelectedImage(null);
-                    setChosenPictureName(null);
-                  }}
-                >
-                  X
+            <div>
+              {!selectedImage && (
+                <div className="mobile-space">
+                  <img
+                    style={{
+                      height: PICTURESIZE,
+                      width: PICTURESIZE,
+                      objectFit: "cover",
+                    }}
+                    src={profileDefault}
+                    alt=""
+                  />
                 </div>
-              </div>
-            )}
-            <br />
-            <label htmlFor="formFile" className="btn btn-light btn-sm">
-              {t("form.uploadImage")}
-            </label>
-            <input
-              className="d-none"
-              type="file"
-              onChange={setImageFunction}
-              onClick={onInputClick}
-              name="photo"
-              id="formFile"
-            />
-            <span style={{ marginInlineStart: "10px", fontSize: "12px" }}>
-              {chosenPictureName}
-            </span>
-            <SmallFunction
-              stateError={imageError}
-              translationError={"form.imageError"}
-            />
+              )}
+              {selectedImage && (
+                <div style={{ position: "relative" }} className="mobile-space">
+                  <img
+                    style={{
+                      height: PICTURESIZE,
+                      width: PICTURESIZE,
+                      objectFit: "cover",
+                    }}
+                    src={selectedImage.imageObj}
+                    alt=""
+                  />
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      color: "red",
+                      fontWeight: "bold",
+                      paddingInlineStart: "4px",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => {
+                      setSelectedImage(null);
+                      setChosenPictureName(null);
+                    }}
+                  >
+                    X
+                  </div>
+                </div>
+              )}
+              <br />
+              <label htmlFor="formFile" className="btn btn-light btn-sm">
+                {t("form.uploadImage")}
+              </label>
+              <input
+                className="d-none"
+                type="file"
+                onChange={setImageFunction}
+                onClick={onInputClick}
+                name="photo"
+                id="formFile"
+              />
+              <span style={{ marginInlineStart: "10px", fontSize: "12px" }}>
+                {chosenPictureName}
+              </span>
+              <SmallFunction
+                stateError={imageError}
+                translationError={"form.imageError"}
+              />
+            </div>
           </div>
         </div>
+
+        <div className="d-flex flex-wrap justify-content-around m-3">
+          <div
+            className="col-12 col-md-8 p-1"
+            style={{ backgroundColor: BACKCOLOR, borderRadius: "10px" }}
+          >
+            <p style={{ fontWeight: "500" }}>{t(`genres.favorite`)}</p>
+
+            <div className="d-flex flex-wrap">
+              <div className="col-12 col-sm-6 col-xl-3">
+                <CheckBok name={"novel"} />
+                <CheckBok name={"thriller"} />
+                <CheckBok name={"biographic"} />
+                <CheckBok name={"poetry"} />
+              </div>
+              <div className="col-12 col-sm-6 col-xl-3">
+                <CheckBok name={"fantasy"} />
+                <CheckBok name={"madab"} />
+                <CheckBok name={"children"} />
+                <CheckBok name={"teenagers"} />
+              </div>
+              <div className="col-12 col-sm-6 col-xl-3">
+                <CheckBok name={"plays"} />
+                <CheckBok name={"nonfiction"} />
+                <CheckBok name={"self help"} />
+                <CheckBok name={"psychology"} />
+              </div>
+              <div className="col-12 col-sm-6 col-xl-3">
+                <CheckBok name={"phlipsophy"} />
+                <CheckBok name={"history"} />
+                <CheckBok name={"comics"} />
+                <CheckBok name={"management"} />
+              </div>
+            </div>
+          </div>
+
+          <div
+            style={{
+              paddingInlineEnd: FIXEDPADDING,
+              paddingInlineStart: FIXEDPADDING,
+            }}
+          >
+            <div style={{ width: "165px", height: "100%" }}>
+              <div style={{ height: "70px" }}></div>
+              <div style={{ textAlign: "end" }}>
+                <button
+                  type="submit"
+                  onClick={(e) => registerNewUser(e)}
+                  className="btn btn-mg btn-secondary text-start"
+                >
+                  {t("form.send")}
+                </button>
+                <SmallFunction
+                  stateError={registerError}
+                  translationError={`form.${registerError}`}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="col-md-1 d-none d-md-block">
+        <img
+          src={BookShelves}
+          style={{ objectFit: "cover", width: "100%", height: "100vh" }}
+          alt=""
+        />
       </div>
     </div>
   );

@@ -41,6 +41,7 @@ export const SmallFunction = ({ stateError, translationError }) => {
   return (
     <small
       style={{
+        paddingInlineStart: "5px",
         height: "20px",
         display: "block",
         marginTop: "5px",
