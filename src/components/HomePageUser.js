@@ -3,7 +3,6 @@ import { storeContext } from "../context/store";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import profileDefault from "../images/plain.jpg";
 
 function HomePageUser() {
   const profileBackground = "#e07a5f";
@@ -81,14 +80,7 @@ function HomePageUser() {
         )}
 
         <p className="mt-4">{t("profile.share thought")}</p>
-        <textarea
-          style={{
-            border: "3px #81b29a solid",
-            width: "95%",
-            height: "200px",
-            resize: "none",
-          }}
-        ></textarea>
+        <textarea className="text-area-style"></textarea>
       </div>
 
       <div

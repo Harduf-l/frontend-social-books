@@ -51,7 +51,7 @@ function NavBar() {
                 setShowMobileLinks(false);
               }}
               className="navlink"
-              to="/vision"
+              to="/profile"
             >
               {t("navbar.profile")}
             </NavLink>
@@ -60,7 +60,7 @@ function NavBar() {
                 setShowMobileLinks(false);
               }}
               className="navlink"
-              to="/groups"
+              to="/messages"
             >
               {t("navbar.messages")}
             </NavLink>
@@ -69,7 +69,7 @@ function NavBar() {
                 setShowMobileLinks(false);
               }}
               className="navlink"
-              to="/contact"
+              to="/events"
             >
               {t("navbar.events")}
             </NavLink>
@@ -78,7 +78,7 @@ function NavBar() {
                 setShowMobileLinks(false);
               }}
               className="navlink"
-              to="/login"
+              to="/books"
             >
               {t("navbar.books")}
             </NavLink>

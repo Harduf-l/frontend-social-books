@@ -6,6 +6,7 @@ import HomePageUser from "./components/HomePageUser";
 import ResigterHomePage from "../src/components/ResigterHomePage";
 import AnotherUserPage from "../src/components/AnotherUserPage";
 import NavBar from "../src/components/NavBar";
+import Messages from "../src/components/Messages";
 import "./i18n/i18n";
 import { storeContext } from "./context/store";
 import axios from "axios";
@@ -60,7 +61,14 @@ function App() {
         ) : (
           <Route path="/" element={<Blank />} />
         )}
-
+        {!loading ? (
+          <Route
+            path="/messages"
+            element={store.isAuth ? <Messages /> : <ResigterHomePage />}
+          />
+        ) : (
+          <Route path="/" element={<Blank />} />
+        )}
         <Route path="/user/:id" element={<AnotherUserPage />} />
         <Route path="/register" element={<RegisterProcess />} />
       </Routes>
