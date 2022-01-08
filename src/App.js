@@ -10,6 +10,7 @@ import Messages from "../src/components/Messages";
 import "./i18n/i18n";
 import { storeContext } from "./context/store";
 import axios from "axios";
+import RouteWrapper from "./components/RouteWrapper";
 
 function App() {
   const { i18n } = useTranslation();
@@ -46,29 +47,19 @@ function App() {
       });
   }, [dispatch]);
 
-  const Blank = () => {
-    return <div></div>;
-  };
   return (
     <div>
       {!loading && store.isAuth && <NavBar />}
       <Routes>
-        {!loading ? (
-          <Route
-            path="/"
-            element={store.isAuth ? <HomePageUser /> : <ResigterHomePage />}
-          />
-        ) : (
-          <Route path="/" element={<Blank />} />
-        )}
-        {!loading ? (
-          <Route
-            path="/messages"
-            element={store.isAuth ? <Messages /> : <ResigterHomePage />}
-          />
-        ) : (
-          <Route path="/" element={<Blank />} />
-        )}
+        <Route path="/" element={<RouteWrapper component={HomePageUser} />} />
+        <Route
+          path="/messages"
+          element={<RouteWrapper component={Messages} />}
+        />
+        <Route
+          path="/messages/:conversationId"
+          element={<RouteWrapper component={Messages} />}
+        />
         <Route path="/user/:id" element={<AnotherUserPage />} />
         <Route path="/register" element={<RegisterProcess />} />
       </Routes>
