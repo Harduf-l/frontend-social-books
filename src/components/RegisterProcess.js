@@ -62,7 +62,7 @@ function RegisterProcess() {
 
       try {
         const response = await axios.post(
-          "http://localhost:5005/users/add-user",
+          `${process.env.REACT_APP_SERVER_URL}users/add-user`,
           formData,
           {
             headers: {

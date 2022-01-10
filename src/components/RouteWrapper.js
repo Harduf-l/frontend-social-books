@@ -14,7 +14,7 @@ function RouteWrapper({ component: Component }) {
   useEffect(() => {
     axios
       .post(
-        "http://localhost:5005/users/token-check",
+        `${process.env.REACT_APP_SERVER_URL}users/token-check`,
         { token: localStorage.getItem("token") },
         {
           headers: {

@@ -3,10 +3,9 @@ import { useTranslation } from "react-i18next";
 import RegisterProcess from "./components/RegisterProcess";
 import { Routes, Route } from "react-router-dom";
 import HomePageUser from "./components/HomePageUser";
-import ResigterHomePage from "../src/components/ResigterHomePage";
 import AnotherUserPage from "../src/components/AnotherUserPage";
 import NavBar from "../src/components/NavBar";
-import Messages from "../src/components/Messages";
+import Chat from "../src/components/Chat";
 import "./i18n/i18n";
 import { storeContext } from "./context/store";
 import axios from "axios";
@@ -21,7 +20,7 @@ function App() {
   useEffect(() => {
     axios
       .post(
-        "http://localhost:5005/users/token-check",
+        `${process.env.REACT_APP_SERVER_URL}users/token-check`,
         { token: localStorage.getItem("token") },
         {
           headers: {
@@ -52,13 +51,10 @@ function App() {
       {!loading && store.isAuth && <NavBar />}
       <Routes>
         <Route path="/" element={<RouteWrapper component={HomePageUser} />} />
+        <Route path="/messages" element={<RouteWrapper component={Chat} />} />
         <Route
-          path="/messages"
-          element={<RouteWrapper component={Messages} />}
-        />
-        <Route
-          path="/messages/:conversationId"
-          element={<RouteWrapper component={Messages} />}
+          path="/messages/:conversationId/:friendId"
+          element={<RouteWrapper component={Chat} />}
         />
         <Route path="/user/:id" element={<AnotherUserPage />} />
         <Route path="/register" element={<RegisterProcess />} />

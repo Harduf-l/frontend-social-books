@@ -18,7 +18,9 @@ function HomePageUser() {
   const getBooks = () => {
     setLoading(true);
     axios
-      .get(`http://localhost:5005/books/get-book-list?search=${searchedBook}`)
+      .get(
+        `${process.env.REACT_APP_SERVER_URL}books/get-book-list?search=${searchedBook}`
+      )
       .then((res) => {
         setLoading(false);
         setBooksResults(res.data);
@@ -112,7 +114,7 @@ function HomePageUser() {
                           width: "100px",
                           objectFit: "cover",
                         }}
-                        src={`http://localhost:5005/${el.picture}`}
+                        src={`${process.env.REACT_APP_SERVER_URL}${el.picture}`}
                         alt=""
                       />
                     </Link>

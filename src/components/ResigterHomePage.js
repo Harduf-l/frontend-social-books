@@ -37,7 +37,7 @@ function ResigterHomePage() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5005/users/login",
+        `${process.env.REACT_APP_SERVER_URL}users/login`,
         { password, email },
         {
           headers: {

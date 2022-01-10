@@ -5,7 +5,10 @@ export const storeContext = createContext();
 // with useReducer
 
 const StoreContextProvider = ({ children }) => {
-  const initalState = { isAuth: false, userDetails: [] };
+  const initalState = {
+    isAuth: false,
+    userDetails: [],
+  };
   const [store, dispatch] = useReducer(storeReducer, initalState);
 
   return (

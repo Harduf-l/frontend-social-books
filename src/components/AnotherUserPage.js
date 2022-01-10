@@ -19,7 +19,7 @@ const UserCard = ({ currentUserPage }) => {
             width: "170px",
             objectFit: "cover",
           }}
-          src={`http://localhost:5005/${currentUserPage.picture}`}
+          src={`${process.env.REACT_APP_SERVER_URL}${currentUserPage.picture}`}
           alt=""
         />
       </div>
@@ -93,7 +93,9 @@ function UserPage() {
         setCurrentUser(currentUserPage);
       } else {
         axios
-          .get(`http://localhost:5005/users/get-by-id/${params.id}`)
+          .get(
+            `${process.env.REACT_APP_SERVER_URL}users/get-by-id/${params.id}`
+          )
           .then((res) => {
             setCurrentUser(res.data.user);
           })
