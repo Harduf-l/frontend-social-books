@@ -1,13 +1,13 @@
 import React, { useState, useContext } from "react";
 import { useTranslation } from "react-i18next";
-import profileDefault from "../images/plain.jpg";
-import { checkIfInputIsHebrew } from "../components/utlis/utils";
+import profileDefault from "../../images/plain.jpg";
+import { checkIfInputIsHebrew } from "../../components/utlis/utils";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { storeContext } from "../context/store";
-import LanguageSwitcher from "./LanguageSwitcher";
-import { InputFunction, SmallFunction } from "../components/utlis/utils";
-import BookShelves from "../images/bookshelves.jpg";
+import { storeContext } from "../../context/store";
+import LanguageSwitcher from "../layout/LanguageSwitcher";
+import { InputFunction, SmallFunction } from "../../components/utlis/utils";
+import BookShelves from "../../images/bookshelves.jpg";
 
 function RegisterProcess() {
   const PICTURESIZE = 165;

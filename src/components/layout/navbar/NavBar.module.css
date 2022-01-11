@@ -2,6 +2,10 @@
   display: flex;
 }
 
+.red {
+  color: red;
+}
+
 .NavTotalBar {
   background-color: #e6e6e6;
   width: 100%;

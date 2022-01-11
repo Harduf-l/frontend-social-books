@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import RegisterProcess from "./components/RegisterProcess";
+import RegisterProcess from "./components/register/RegisterProcess";
 import { Routes, Route } from "react-router-dom";
-import HomePageUser from "./components/HomePageUser";
-import AnotherUserPage from "../src/components/AnotherUserPage";
-import NavBar from "../src/components/NavBar";
-import Chat from "../src/components/Chat";
+import HomePageUser from "./components/homePageUser/HomePageUser";
+import AnotherUserPage from "../src/components/friendPage/AnotherUserPage";
+import NavBar from "../src/components/layout/navbar/NavBar";
+import Chat from "../src/components/chat/Chat";
 import "./i18n/i18n";
 import { storeContext } from "./context/store";
 import axios from "axios";
-import RouteWrapper from "./components/RouteWrapper";
+import RouteWrapper from "./components/utlis/RouteWrapper";
 
 function App() {
   const { i18n } = useTranslation();
@@ -17,6 +17,7 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   const { store, dispatch } = useContext(storeContext);
+
   useEffect(() => {
     axios
       .post(

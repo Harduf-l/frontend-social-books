@@ -1,0 +1,83 @@
+.profilePicInChatOn {
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+  border: 2px solid #bfffa2;
+}
+
+.profilePicInChatOff {
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+  border: 2px solid #ff7e92;
+}
+
+.borderBottomProfile {
+  border-bottom: 2px #fcfcfc solid;
+}
+.contactsChatContainer {
+  overflow-y: scroll;
+  background-color: #f3f3f3;
+  margin-bottom: 30px;
+  height: 400px;
+}
+
+.userMessage {
+  display: flex;
+  justify-content: start;
+  color: #002f5e;
+  margin: 8px;
+  height: 70px;
+}
+
+.chatContentNoPic {
+  padding-top: 10px;
+}
+.partnerMessage {
+  display: flex;
+  justify-content: end;
+  margin: 8px;
+  height: 70px;
+}
+
+.userMiniMessage {
+  background-color: #f3f3f3;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 13px;
+}
+
+.partnerMiniMessage {
+  background-color: #002850;
+  color: #f3f3f3;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 13px;
+}
+
+@media screen and (max-width: 990px) {
+  .contactsChatContainer {
+    height: 200px;
+  }
+}
+.timeAgo {
+  font-size: 10.5px;
+  color: #f3f3f3;
+  margin-top: 4px;
+  margin-inline-start: 5px;
+  margin-inline-end: 5px;
+}
+
+.inputChat {
+  border: none;
+  border-radius: 5px;
+  margin-inline-end: 10px;
+  padding-inline-start: 5px;
+}
+
+.profileChatPic {
+  height: 55px;
+  width: 55px;
+  object-fit: cover;
+  border-radius: 50%;
+}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./NavBar.css";
+import styles from "./NavBar.module.css";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -14,35 +14,42 @@ function NavBar() {
 
   const [showMobileLink, setShowMobileLinks] = useState(false);
   return (
-    <div className="NavTotalBar">
-      <div className="mobileSection">
+    <div className={styles.NavTotalBar}>
+      <div className={styles.mobileSection}>
         <div
           onClick={() => {
             setShowMobileLinks(!showMobileLink);
           }}
-          className="manubarMobile mt-1"
+          className={`${styles.manubarMobile} mt-1`}
         >
           <i className="fas fa-bars"></i>
         </div>
-        <input className="inputMobile" type="text" placeholder="אני מחפש..." />
-        <span className="searchButton me-3 ms-3">
+        <input
+          className={styles.inputMobile}
+          type="text"
+          placeholder="אני מחפש..."
+        />
+        <span className={`${styles.searchButton} me-3 ms-3`}>
           <i className="fas fa-search"></i>
         </span>
       </div>
-      <div className="NavBar">
-        <div className="RightSide">
-          <div className="myRightLinks" id={showMobileLink ? "mobileView" : ""}>
+      <div className={styles.NavBar}>
+        <div className={styles.RightSide}>
+          <div
+            className={styles.myRightLinks}
+            id={showMobileLink ? styles.mobileView : ""}
+          >
             <NavLink
               onClick={() => {
                 setShowMobileLinks(false);
               }}
               id="homeLogo"
-              className="navlinkStatic"
+              className={styles.navlinkStatic}
               style={{ marginInlineEnd: "20px" }}
               to="/"
             >
-              <span className="menuIcon">
-                <i className="far fa-circle menuIcon"></i>
+              <span className={styles.menuIcon}>
+                <i className={`far fa-circle ${styles.menuIcon}`}></i>
                 <i className="fas fa-circle"></i>
               </span>
             </NavLink>
@@ -50,7 +57,7 @@ function NavBar() {
               onClick={() => {
                 setShowMobileLinks(false);
               }}
-              className="navlink"
+              className={styles.navlink}
               to="/profile"
             >
               {t("navbar.profile")}
@@ -59,7 +66,7 @@ function NavBar() {
               onClick={() => {
                 setShowMobileLinks(false);
               }}
-              className="navlink"
+              className={styles.navlink}
               to="/messages"
             >
               {t("navbar.messages")}
@@ -68,7 +75,7 @@ function NavBar() {
               onClick={() => {
                 setShowMobileLinks(false);
               }}
-              className="navlink"
+              className={styles.navlink}
               to="/events"
             >
               {t("navbar.events")}
@@ -77,21 +84,21 @@ function NavBar() {
               onClick={() => {
                 setShowMobileLinks(false);
               }}
-              className="navlink"
+              className={styles.navlink}
               to="/books"
             >
               {t("navbar.books")}
             </NavLink>
           </div>
         </div>
-        <div className="LeftSide">
+        <div className={styles.LeftSide}>
           <input type="text" placeholder={t("navbar.search")} />
-          <span className="searchButton me-3 ms-3">
+          <span className={`${styles.searchButton} me-3 ms-3`}>
             <i className="fas fa-search"></i>
           </span>
           {Object.keys(lngs).map((lng) => (
             <span
-              className="navlinkStatic"
+              className={styles.navlinkStatic}
               key={lng}
               style={{
                 fontWeight: i18n.resolvedLanguage === lng ? "bold" : "normal",

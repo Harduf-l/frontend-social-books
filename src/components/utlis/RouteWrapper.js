@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { storeContext } from "../context/store";
-import ResigterHomePage from "./ResigterHomePage";
+import { storeContext } from "../../context/store";
+import ResigterHomePage from "../register/ResigterHomePage";
 
 const Blank = () => {
   return <div></div>;

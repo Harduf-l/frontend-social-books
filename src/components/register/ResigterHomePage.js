@@ -1,12 +1,12 @@
 import React, { useState, useContext } from "react";
 import { useTranslation } from "react-i18next";
-import bookImage from "../images/bookHome.jpg";
+import bookImage from "../../images/bookHome.jpg";
 import { Link } from "react-router-dom";
-import { checkIfInputIsHebrew } from "../components/utlis/utils";
+import { checkIfInputIsHebrew } from "../utlis/utils";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { storeContext } from "../context/store";
-import LanguageSwitcher from "./LanguageSwitcher";
+import { storeContext } from "../../context/store";
+import LanguageSwitcher from "../layout/LanguageSwitcher";
 
 function ResigterHomePage() {
   const { t, i18n } = useTranslation();

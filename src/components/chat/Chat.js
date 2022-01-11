@@ -1,38 +1,59 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
-import { storeContext } from "../context/store";
+import { storeContext } from "../../context/store";
 import axios from "axios";
 import Conversation from "./Conversation";
 import { useParams } from "react-router-dom";
 import { format } from "timeago.js";
 import { useTranslation } from "react-i18next";
-import defaultPicture from "../images/plain.jpg";
+import defaultPicture from "../../images/plain.jpg";
 import { io } from "socket.io-client";
+import styles from "./chat.module.css";
 
 function Chat() {
-  const { store, dispatch } = useContext(storeContext);
+  const { store } = useContext(storeContext);
   const [messagesThread, setMessagesThread] = useState([]);
   const [chosenConversationId, setChosenConversationId] = useState("");
-  const [chosenPersonPicture, setChosenPersonPicture] = useState(null);
+  const [chosenPersonPicture, setChosenPersonPicture] = useState([]);
   const [userConversation, setUserConversations] = useState([]);
   const [usersOnlineArray, setUsersOnlineArray] = useState([]);
+  const [arrivedMessages, setArrivedMessages] = useState([]);
+
   const socket = useRef();
   const { i18n, t } = useTranslation();
   const currentDir = i18n.dir();
   let typedMessage = useRef();
-  let chatDiv = useRef();
   let lastMessage = useRef();
   let params = useParams();
 
   useEffect(() => {
-    socket.current = io("ws://localhost:5005");
+    socket.current = io(process.env.REACT_APP_SOCKET_URL);
+
+    socket.current.on("getMessage", (data) => {
+      setArrivedMessages({
+        sender: data.sender,
+        text: data.text,
+        createdAt: Date.now(),
+      });
+    });
+
+    socket.current.on("getUsers", (usersOnline) => {
+      console.log("user online array ", usersOnline);
+      setUsersOnlineArray(usersOnline);
+    });
+
+    return () => {
+      socket.current = null;
+    };
   }, []);
 
   useEffect(() => {
+    arrivedMessages &&
+      params.friendId === arrivedMessages.sender &&
+      setMessagesThread((prev) => [...prev, arrivedMessages]);
+  }, [arrivedMessages, params.friendId]);
+
+  useEffect(() => {
     socket.current.emit("addUser", store.userDetails._id);
-    socket.current.on("getUsers", (usersOnline) => {
-      setUsersOnlineArray(usersOnline);
-      console.log(usersOnline);
-    });
   }, [store.userDetails._id]);
 
   const sendMessage = async () => {
@@ -51,12 +72,18 @@ function Chat() {
         _id: Math.random(),
       },
     ]);
+
+    socket.current.emit("sendMessage", {
+      senderId: store.userDetails._id,
+      receiverId: params.friendId,
+      text: textToSend,
+    });
+
     try {
-      const response = await axios.post(
+      await axios.post(
         `${process.env.REACT_APP_SERVER_URL}messages/add-message`,
         newMessage
       );
-      console.log(response);
     } catch (err) {
       console.log(err);
     }
@@ -130,7 +157,7 @@ function Chat() {
   return (
     <div className="container mt-4 p-3">
       <div className="d-flex  flex-wrap" style={{ height: "400px" }}>
-        <div className="col-12 col-lg-3 pt-3 contactsChatContainer">
+        <div className={`col-12 col-lg-3 pt-3 ${styles.contactsChatContainer}`}>
           {userConversation.length > 0 &&
             userConversation.map((c) => {
               return (
@@ -139,6 +166,7 @@ function Chat() {
                   conversation={c}
                   currentUserId={store.userDetails._id}
                   chosen={chosenConversationId === c._id}
+                  usersOnlineArray={usersOnlineArray}
                 />
               );
             })}
@@ -148,79 +176,83 @@ function Chat() {
           style={{ backgroundColor: "#b8c4cf", height: "400px" }}
         >
           <div
-            ref={chatDiv}
             style={{
               height: "350px",
               overflowY: "scroll",
             }}
           >
             {messagesThread.length > 0 ? (
-              messagesThread.map((el, index) => {
-                return (
-                  <div key={el._id}>
-                    <div
-                      ref={
-                        index === messagesThread.length - 1 ? lastMessage : null
-                      }
-                      className={
-                        el.sender === store.userDetails._id
-                          ? "userMessage"
-                          : "partnerMessage"
-                      }
-                    >
-                      {el.sender === store.userDetails._id && (
-                        <img
-                          src={
-                            store.userDetails.picture
-                              ? `${process.env.REACT_APP_SERVER_URL}${store.userDetails.picture}`
-                              : defaultPicture
-                          }
-                          style={{ marginInlineEnd: "10px" }}
-                          className="profileChatPic"
-                          alt=""
-                        />
-                      )}
-                      <div className="chatContentNoPic">
-                        <div
-                          className={
-                            el.sender === store.userDetails._id
-                              ? "userMiniMessage"
-                              : "partnerMiniMessage"
-                          }
-                        >
-                          <div> {el.text}</div>
+              messagesThread
+                .filter((el) => el.text)
+                .map((el, index) => {
+                  return (
+                    <div key={index}>
+                      <div
+                        ref={
+                          index === messagesThread.length - 1
+                            ? lastMessage
+                            : null
+                        }
+                        className={
+                          el.sender === store.userDetails._id
+                            ? styles.userMessage
+                            : styles.partnerMessage
+                        }
+                      >
+                        {el.sender === store.userDetails._id && (
+                          <img
+                            src={
+                              store.userDetails.picture
+                                ? `${process.env.REACT_APP_SERVER_URL}${store.userDetails.picture}`
+                                : defaultPicture
+                            }
+                            style={{ marginInlineEnd: "10px" }}
+                            className={styles.profileChatPic}
+                            alt=""
+                          />
+                        )}
+                        <div className={styles.chatContentNoPic}>
+                          <div
+                            className={
+                              el.sender === store.userDetails._id
+                                ? styles.userMiniMessage
+                                : styles.partnerMiniMessage
+                            }
+                          >
+                            <div> {el.text}</div>
+                          </div>
+                          <div
+                            dir="ltr"
+                            className={styles.timeAgo}
+                            style={calculateStyle(
+                              el.sender,
+                              store.userDetails._id
+                            )}
+                          >
+                            {el.createdAt ? format(el.createdAt) : "just now"}
+                          </div>
                         </div>
-                        <div
-                          dir="ltr"
-                          className="timeAgo"
-                          style={calculateStyle(
-                            el.sender,
-                            store.userDetails._id
-                          )}
-                        >
-                          {el.createdAt ? format(el.createdAt) : "just now"}
-                        </div>
-                      </div>
 
-                      {el.sender !== store.userDetails._id && (
-                        <img
-                          src={
-                            chosenPersonPicture
-                              ? `${process.env.REACT_APP_SERVER_URL}${chosenPersonPicture}`
-                              : defaultPicture
-                          }
-                          style={{ marginInlineStart: "10px" }}
-                          className="profileChatPic"
-                          alt=""
-                        />
-                      )}
+                        {el.sender !== store.userDetails._id && (
+                          <img
+                            src={
+                              chosenPersonPicture
+                                ? `${process.env.REACT_APP_SERVER_URL}${chosenPersonPicture}`
+                                : defaultPicture
+                            }
+                            style={{ marginInlineStart: "10px" }}
+                            className={styles.profileChatPic}
+                            alt=""
+                          />
+                        )}
+                      </div>
                     </div>
-                  </div>
-                );
-              })
+                  );
+                })
             ) : (
               <p className="p-3">התחל שיחה...</p>
             )}
+            {!chosenConversationId && <p className="p-3">בחר שיחה...</p>}
           </div>
           <div style={{ height: "50px", paddingTop: "10px" }}>
             {chosenConversationId && (

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { storeContext } from "../context/store";
+import { storeContext } from "../../context/store";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { Link } from "react-router-dom";
