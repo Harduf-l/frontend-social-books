@@ -8,6 +8,8 @@ import { useTranslation } from "react-i18next";
 import defaultPicture from "../../images/plain.jpg";
 import { io } from "socket.io-client";
 import styles from "./chat.module.css";
+import "emoji-mart/css/emoji-mart.css";
+import { Picker } from "emoji-mart";
 
 function Chat() {
   const { store } = useContext(storeContext);
@@ -16,28 +18,34 @@ function Chat() {
   const [chosenPersonPicture, setChosenPersonPicture] = useState([]);
   const [userConversation, setUserConversations] = useState([]);
   const [usersOnlineArray, setUsersOnlineArray] = useState([]);
-  const [arrivedMessages, setArrivedMessages] = useState([]);
-
+  const [chosenPersonName, setChosenPersonName] = useState("");
+  const [typedMessage, setTypedMessage] = useState("");
+  const [showEmoji, setShowEmoji] = useState(false);
   const socket = useRef();
   const { i18n, t } = useTranslation();
   const currentDir = i18n.dir();
-  let typedMessage = useRef();
   let lastMessage = useRef();
+  let userContent = useRef();
+  let cloneContent = useRef();
   let params = useParams();
 
   useEffect(() => {
+    setChosenConversationId("");
     socket.current = io(process.env.REACT_APP_SOCKET_URL);
 
     socket.current.on("getMessage", (data) => {
-      setArrivedMessages({
-        sender: data.sender,
-        text: data.text,
-        createdAt: Date.now(),
-      });
+      setMessagesThread((prev) => [
+        ...prev,
+        {
+          sender: data.sender,
+          text: data.text,
+          createdAt: Date.now(),
+          _id: Math.random(),
+        },
+      ]);
     });
 
     socket.current.on("getUsers", (usersOnline) => {
-      console.log("user online array ", usersOnline);
       setUsersOnlineArray(usersOnline);
     });
 
@@ -47,18 +55,13 @@ function Chat() {
   }, []);
 
   useEffect(() => {
-    arrivedMessages &&
-      params.friendId === arrivedMessages.sender &&
-      setMessagesThread((prev) => [...prev, arrivedMessages]);
-  }, [arrivedMessages, params.friendId]);
-
-  useEffect(() => {
     socket.current.emit("addUser", store.userDetails._id);
   }, [store.userDetails._id]);
 
   const sendMessage = async () => {
-    let textToSend = typedMessage.current.value;
-    typedMessage.current.value = "";
+    let textToSend = typedMessage;
+    setShowEmoji(false);
+    setTypedMessage("");
     const newMessage = {
       conversationId: chosenConversationId,
       sender: store.userDetails._id,
@@ -104,6 +107,12 @@ function Chat() {
   }, [store.userDetails._id]);
 
   useEffect(() => {
+    if (!params.conversationId) {
+      setMessagesThread([]);
+      setChosenConversationId("");
+      setChosenPersonName("");
+    }
+
     if (params.conversationId) {
       setChosenConversationId(params.conversationId);
 
@@ -122,6 +131,7 @@ function Chat() {
             );
             if (friend.data.picture) {
               setChosenPersonPicture(friend.data.picture);
+              setChosenPersonName(friend.data.username);
             }
           } catch (err) {
             console.log(err);
@@ -154,10 +164,20 @@ function Chat() {
     }
   };
 
+  const onEmojiClick = (emojiObject) => {
+    setTypedMessage((prev) => prev + emojiObject.native);
+  };
+
   return (
-    <div className="container mt-4 p-3">
-      <div className="d-flex  flex-wrap" style={{ height: "400px" }}>
+    <div className="container mt-1 p-3">
+      <div className="d-flex  flex-wrap" style={{ height: "500px" }}>
         <div className={`col-12 col-lg-3 pt-3 ${styles.contactsChatContainer}`}>
+          <div className="d-flex justify-content-around pb-3">
+            <label style={{ fontSize: "17px" }} htmlFor="startConv">
+              {t("profile.search")}
+            </label>
+            <input type="text" id="startConv" />
+          </div>
           {userConversation.length > 0 &&
             userConversation.map((c) => {
               return (
@@ -172,16 +192,36 @@ function Chat() {
             })}
         </div>
         <div
-          className="col-12 col-lg-9 pt-3 pb-2 d-flex flex-column justify-content-between"
-          style={{ backgroundColor: "#b8c4cf", height: "400px" }}
+          className="col-12 col-lg-9 pt-3 pb-4 d-flex flex-column justify-content-between"
+          style={{
+            backgroundColor: "#f3f3f3",
+            height: "480px",
+            position: "relative",
+          }}
         >
+          <Picker
+            style={{
+              position: "absolute",
+              bottom: "120px",
+              marginInlineStart: "5px",
+              zIndex: "999",
+              width: "75%",
+              display: showEmoji ? "block" : "none",
+            }}
+            showSkinTones={false}
+            showPreview={false}
+            onClick={onEmojiClick}
+            exclude={["flags"]}
+            native={true}
+          />
           <div
             style={{
-              height: "350px",
+              height: "480px",
               overflowY: "scroll",
+              position: "relative",
             }}
           >
-            {messagesThread.length > 0 ? (
+            {messagesThread.length > 0 &&
               messagesThread
                 .filter((el) => el.text)
                 .map((el, index) => {
@@ -248,21 +288,40 @@ function Chat() {
                       </div>
                     </div>
                   );
-                })
-            ) : (
-              <p className="p-3">התחל שיחה...</p>
+                })}
+            {chosenConversationId && messagesThread.length === 0 && (
+              <p className="p-3">
+                {t("chat.starConversationWith")} {chosenPersonName}
+              </p>
             )}
-            {!chosenConversationId && <p className="p-3">בחר שיחה...</p>}
+            {!chosenConversationId && (
+              <p className="p-3">{t("chat.chooseConversation")}</p>
+            )}
           </div>
-          <div style={{ height: "50px", paddingTop: "10px" }}>
+
+          <div style={{ height: "100px", paddingTop: "10px" }}>
+            {chosenConversationId && (
+              <div className={styles.emojiRow}>
+                <i
+                  onClick={() => setShowEmoji((prev) => !prev)}
+                  role="button"
+                  className={`far fa-grin ${styles.emojiButton}`}
+                ></i>
+              </div>
+            )}
             {chosenConversationId && (
               <div className="d-flex justify-content-between flex-row">
-                <input
+                <textarea
                   type="text"
-                  className="flex-grow-1 inputChat"
-                  ref={typedMessage}
+                  className={`flex-grow-1 ${styles.inputChat}`}
+                  value={typedMessage}
+                  onChange={(e) => setTypedMessage(e.target.value)}
                 />
-                <button className="btn btn-secondary" onClick={sendMessage}>
+
+                <button
+                  className="flex-grow-2 btn btn-secondary"
+                  onClick={sendMessage}
+                >
                   {t("form.send")}
                 </button>
               </div>

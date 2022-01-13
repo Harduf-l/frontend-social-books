@@ -54,17 +54,24 @@ function Conversation({
       style={chosen ? { backgroundColor: "white" } : {}}
     >
       <p>{friend.username}</p>
-      <img
-        className={
-          online ? styles.profilePicInChatOn : styles.profilePicInChatOff
-        }
-        src={
-          friend.picture
-            ? `${process.env.REACT_APP_SERVER_URL}${friend.picture}`
-            : defaultPicture
-        }
-        alt=""
-      />
+      <div style={{ position: "relative" }}>
+        <img
+          className={styles.profilePicInChat}
+          src={
+            friend.picture
+              ? `${process.env.REACT_APP_SERVER_URL}${friend.picture}`
+              : defaultPicture
+          }
+          alt=""
+        />
+        <div
+          className={
+            online
+              ? `${styles.onlineSign} ${styles.onlineSignOn}`
+              : `${styles.onlineSign} ${styles.onlineSignOff}`
+          }
+        ></div>
+      </div>
     </div>
   );
 }

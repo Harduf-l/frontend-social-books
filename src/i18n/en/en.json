@@ -20,7 +20,11 @@
     "duplicate email": "Email is already in use, did you forgot your password?",
     "birth date error": "Date should be valid",
     "logout": "Logout",
-    "email error": "Please provide a valid Email address"
+    "email error": "Please provide a valid Email address",
+    "choose categories": "Choose genres",
+    "cancel": "Cancel",
+    "save": "Save",
+    "save all": "Save all"
   },
   "genres": {
     "favorite": "Favorite genres",
@@ -54,5 +58,9 @@
     "events": "Events",
     "books": "Books",
     "search": "Search..."
+  },
+  "chat": {
+    "starConversationWith": "Start a conversation with",
+    "chooseConversation": "Choose a conversation..."
   }
 }

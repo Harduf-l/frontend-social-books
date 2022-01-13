@@ -20,7 +20,11 @@
     "duplicate email": "מייל זה בשימוש. האם שכחת סיסמא?",
     "birth date error": "אנא הכנס תאריך לידה תקין",
     "logout": "התנתק",
-    "email error": "יש להקיש כתובת מייל תקינה"
+    "email error": "יש להקיש כתובת מייל תקינה",
+    "choose categories": "בחר ז'אנרים",
+    "cancel": "בטל",
+    "save": "שמור",
+    "save all": "שמור שינויים"
   },
   "genres": {
     "favorite": "ז'אנרים מועדפים",
@@ -54,5 +58,9 @@
     "events": "אירועים",
     "books": "ספרים",
     "search": "חפש..."
+  },
+  "chat": {
+    "starConversationWith": "התחל שיחה עם",
+    "chooseConversation": "בחר שיחה..."
   }
 }

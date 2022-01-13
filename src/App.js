@@ -3,7 +3,8 @@ import { useTranslation } from "react-i18next";
 import RegisterProcess from "./components/register/RegisterProcess";
 import { Routes, Route } from "react-router-dom";
 import HomePageUser from "./components/homePageUser/HomePageUser";
-import AnotherUserPage from "../src/components/friendPage/AnotherUserPage";
+import FriendUserPage from "../src/components/profilePage/FriendUserPage";
+import UserProfilePage from "../src/components/profilePage/UserPage";
 import NavBar from "../src/components/layout/navbar/NavBar";
 import Chat from "../src/components/chat/Chat";
 import "./i18n/i18n";
@@ -57,7 +58,11 @@ function App() {
           path="/messages/:conversationId/:friendId"
           element={<RouteWrapper component={Chat} />}
         />
-        <Route path="/user/:id" element={<AnotherUserPage />} />
+        <Route
+          path="/profile"
+          element={<RouteWrapper component={UserProfilePage} />}
+        />
+        <Route path="/user/:id" element={<FriendUserPage />} />
         <Route path="/register" element={<RegisterProcess />} />
       </Routes>
     </div>
