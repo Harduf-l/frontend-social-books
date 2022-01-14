@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styles from "./NavBar.module.css";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const lngs = {
   en: { nativeName: "English" },
@@ -9,10 +10,19 @@ const lngs = {
 };
 
 function NavBar() {
+  let navigate = useNavigate();
   const { i18n } = useTranslation();
   const { t } = useTranslation();
 
   const [showMobileLink, setShowMobileLinks] = useState(false);
+  const searchWord = useRef();
+
+  const moveToSearchPage = () => {
+    const searchForWord = searchWord.current.value;
+    searchWord.current.value = "";
+    navigate(`/bookSearch?search=${searchForWord}`);
+  };
+
   return (
     <div className={styles.NavTotalBar}>
       <div className={styles.mobileSection}>
@@ -29,7 +39,10 @@ function NavBar() {
           type="text"
           placeholder="אני מחפש..."
         />
-        <span className={`${styles.searchButton} me-3 ms-3`}>
+        <span
+          onClick={() => moveToSearchPage()}
+          className={`${styles.searchButton} me-3 ms-3`}
+        >
           <i className="fas fa-search"></i>
         </span>
       </div>
@@ -92,8 +105,15 @@ function NavBar() {
           </div>
         </div>
         <div className={styles.LeftSide}>
-          <input type="text" placeholder={t("navbar.search")} />
-          <span className={`${styles.searchButton} me-3 ms-3`}>
+          <input
+            ref={searchWord}
+            type="text"
+            placeholder={t("navbar.search")}
+          />
+          <span
+            onClick={() => moveToSearchPage()}
+            className={`${styles.searchButton} me-3 ms-3`}
+          >
             <i className="fas fa-search"></i>
           </span>
           {Object.keys(lngs).map((lng) => (

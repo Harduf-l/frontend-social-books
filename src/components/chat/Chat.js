@@ -25,8 +25,6 @@ function Chat() {
   const { i18n, t } = useTranslation();
   const currentDir = i18n.dir();
   let lastMessage = useRef();
-  let userContent = useRef();
-  let cloneContent = useRef();
   let params = useParams();
 
   useEffect(() => {
@@ -34,15 +32,20 @@ function Chat() {
     socket.current = io(process.env.REACT_APP_SOCKET_URL);
 
     socket.current.on("getMessage", (data) => {
-      setMessagesThread((prev) => [
-        ...prev,
+      console.log(data);
+
+      const newArray = [
+        ...messagesThread,
         {
+          conversationId: chosenConversationId,
           sender: data.sender,
           text: data.text,
           createdAt: Date.now(),
           _id: Math.random(),
         },
-      ]);
+      ];
+
+      setMessagesThread(newArray);
     });
 
     socket.current.on("getUsers", (usersOnline) => {
@@ -58,6 +61,9 @@ function Chat() {
     socket.current.emit("addUser", store.userDetails._id);
   }, [store.userDetails._id]);
 
+  useEffect(() => {
+    console.log("לךחךגשד");
+  }, [messagesThread]);
   const sendMessage = async () => {
     let textToSend = typedMessage;
     setShowEmoji(false);
@@ -144,12 +150,6 @@ function Chat() {
     }
   }, [params.conversationId, params.friendId]);
 
-  useEffect(() => {
-    if (lastMessage.current) {
-      lastMessage.current?.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [messagesThread]);
-
   const calculateStyle = (senderId, userId) => {
     if (currentDir === "rtl") {
       if (senderId === userId) {
@@ -167,6 +167,10 @@ function Chat() {
   const onEmojiClick = (emojiObject) => {
     setTypedMessage((prev) => prev + emojiObject.native);
   };
+
+  // const hereAtLast = () => {
+  //   lastMessage.current?.scrollIntoView({ behavior: "smooth" });
+  // };
 
   return (
     <div className="container mt-1 p-3">
@@ -214,7 +218,18 @@ function Chat() {
             exclude={["flags"]}
             native={true}
           />
+          <div className="">
+            {chosenConversationId && messagesThread.length === 0 && (
+              <p className="p-3">
+                {t("chat.starConversationWith")} {chosenPersonName}
+              </p>
+            )}
+            {!chosenConversationId && (
+              <p className="p-3">{t("chat.chooseConversation")}</p>
+            )}
+          </div>
           <div
+            className="d-flex flex-column-reverse"
             style={{
               height: "480px",
               overflowY: "scroll",
@@ -223,16 +238,14 @@ function Chat() {
           >
             {messagesThread.length > 0 &&
               messagesThread
-                .filter((el) => el.text)
+                .slice(0)
+                .reverse()
                 .map((el, index) => {
                   return (
                     <div key={index}>
                       <div
-                        ref={
-                          index === messagesThread.length - 1
-                            ? lastMessage
-                            : null
-                        }
+                        ref={index === 0 ? lastMessage : null}
+                        // onLoad={index === 0 ? hereAtLast : undefined}
                         className={
                           el.sender === store.userDetails._id
                             ? styles.userMessage
@@ -289,14 +302,6 @@ function Chat() {
                     </div>
                   );
                 })}
-            {chosenConversationId && messagesThread.length === 0 && (
-              <p className="p-3">
-                {t("chat.starConversationWith")} {chosenPersonName}
-              </p>
-            )}
-            {!chosenConversationId && (
-              <p className="p-3">{t("chat.chooseConversation")}</p>
-            )}
           </div>
 
           <div style={{ height: "100px", paddingTop: "10px" }}>

@@ -7,6 +7,7 @@ import FriendUserPage from "../src/components/profilePage/FriendUserPage";
 import UserProfilePage from "../src/components/profilePage/UserPage";
 import NavBar from "../src/components/layout/navbar/NavBar";
 import Chat from "../src/components/chat/Chat";
+import BookSearch from "../src/components/BookSearch/BookSearch";
 import "./i18n/i18n";
 import { storeContext } from "./context/store";
 import axios from "axios";
@@ -63,6 +64,7 @@ function App() {
           element={<RouteWrapper component={UserProfilePage} />}
         />
         <Route path="/user/:id" element={<FriendUserPage />} />
+        <Route path="/bookSearch" element={<BookSearch />} />
         <Route path="/register" element={<RegisterProcess />} />
       </Routes>
     </div>

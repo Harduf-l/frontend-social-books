@@ -2,6 +2,7 @@
   "English": "English",
   "Hebrew": "Hebrew",
   "welcome": "Register today and start talk to others about the books you love.",
+  "loading": "loading...",
   "form": {
     "email": "Email",
     "password": "Password",
@@ -62,5 +63,9 @@
   "chat": {
     "starConversationWith": "Start a conversation with",
     "chooseConversation": "Choose a conversation..."
+  },
+  "bookCard": {
+    "write something": "Your insight",
+    "what other thought": "Other thoughts"
   }
 }

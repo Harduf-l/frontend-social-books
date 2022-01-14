@@ -2,6 +2,7 @@
   "English": "אנגלית",
   "Hebrew": "עברית",
   "welcome": "הירשם עוד היום והתחל לשוחח על הספרים האהובים עליך.",
+  "loading": "טוען...",
   "form": {
     "email": "אימייל",
     "password": "סיסמא",
@@ -62,5 +63,9 @@
   "chat": {
     "starConversationWith": "התחל שיחה עם",
     "chooseConversation": "בחר שיחה..."
+  },
+  "bookCard": {
+    "write something": "כתוב משהו",
+    "what other thought": "מה אחרים חשבו"
   }
 }
