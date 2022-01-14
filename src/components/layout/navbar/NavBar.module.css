@@ -60,6 +60,8 @@
   font-size: 30px;
   color: white;
   cursor: pointer;
+  border: none;
+  background-color: #e6e6e6 !important;
 }
 
 .searchButton:hover {
@@ -134,7 +136,7 @@
     padding-inline-start: 5px;
     margin-inline-start: 15px;
     margin-inline-end: 5px;
-    flex-grow: 2;
+    flex-grow: 1;
   }
   .searchButton {
     font-size: 35px;

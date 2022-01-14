@@ -16,10 +16,19 @@ function NavBar() {
 
   const [showMobileLink, setShowMobileLinks] = useState(false);
   const searchWord = useRef();
+  const searchWordMobile = useRef();
 
-  const moveToSearchPage = () => {
-    const searchForWord = searchWord.current.value;
-    searchWord.current.value = "";
+  const moveToSearchPage = (e, type) => {
+    e.preventDefault();
+    let searchForWord;
+    if (searchWord.current.value) {
+      searchForWord = searchWord.current.value;
+      searchWord.current.value = "";
+    } else if (searchWordMobile.current.value) {
+      searchForWord = searchWordMobile.current.value;
+      searchWordMobile.current.value = "";
+    }
+
     navigate(`/bookSearch?search=${searchForWord}`);
   };
 
@@ -34,17 +43,17 @@ function NavBar() {
         >
           <i className="fas fa-bars"></i>
         </div>
-        <input
-          className={styles.inputMobile}
-          type="text"
-          placeholder="אני מחפש..."
-        />
-        <span
-          onClick={() => moveToSearchPage()}
-          className={`${styles.searchButton} me-3 ms-3`}
-        >
-          <i className="fas fa-search"></i>
-        </span>
+        <form onSubmit={moveToSearchPage} className="d-flex flex-wrap">
+          <input
+            ref={searchWordMobile}
+            className={styles.inputMobile}
+            type="text"
+            placeholder="אני מחפש..."
+          />
+          <button type="submit" className={`${styles.searchButton} me-3 ms-3`}>
+            <i className="fas fa-search"></i>
+          </button>
+        </form>
       </div>
       <div className={styles.NavBar}>
         <div className={styles.RightSide}>
@@ -105,17 +114,20 @@ function NavBar() {
           </div>
         </div>
         <div className={styles.LeftSide}>
-          <input
-            ref={searchWord}
-            type="text"
-            placeholder={t("navbar.search")}
-          />
-          <span
-            onClick={() => moveToSearchPage()}
-            className={`${styles.searchButton} me-3 ms-3`}
-          >
-            <i className="fas fa-search"></i>
-          </span>
+          <form onSubmit={(e) => moveToSearchPage(e)} className="d-flex">
+            <input
+              ref={searchWord}
+              type="text"
+              placeholder={t("navbar.search")}
+              className="mt-2"
+            />
+            <button
+              type="submit"
+              className={`${styles.searchButton} me-3 ms-3`}
+            >
+              <i className="fas fa-search"></i>
+            </button>
+          </form>
           {Object.keys(lngs).map((lng) => (
             <span
               className={styles.navlinkStatic}
