@@ -25,7 +25,8 @@
     "choose categories": "Choose genres",
     "cancel": "Cancel",
     "save": "Save",
-    "save all": "Save all"
+    "save all": "Save all",
+    "close": "Close"
   },
   "genres": {
     "favorite": "Favorite genres",
@@ -65,7 +66,10 @@
     "chooseConversation": "Choose a conversation..."
   },
   "bookCard": {
-    "write something": "Your insight",
-    "what other thought": "Other thoughts"
+    "add to book list": "Add to reading list",
+    "more details": "More details",
+    "published": "Published by",
+    "year": "Year release",
+    "pages": "pages"
   }
 }

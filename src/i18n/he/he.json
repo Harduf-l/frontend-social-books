@@ -25,7 +25,8 @@
     "choose categories": "בחר ז'אנרים",
     "cancel": "בטל",
     "save": "שמור",
-    "save all": "שמור שינויים"
+    "save all": "שמור שינויים",
+    "close": "סגור"
   },
   "genres": {
     "favorite": "ז'אנרים מועדפים",
@@ -65,7 +66,10 @@
     "chooseConversation": "בחר שיחה..."
   },
   "bookCard": {
-    "write something": "כתוב משהו",
-    "what other thought": "מה אחרים חשבו"
+    "add to book list": "הוסף לרשימת קריאה",
+    "more details": "פרטים נוספים",
+    "published": "הוצאה לאור",
+    "year": "שנת הוצאה",
+    "pages": "עמודים"
   }
 }
