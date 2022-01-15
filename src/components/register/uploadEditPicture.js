@@ -29,7 +29,7 @@ export const UploadEditPicture = ({ setImageFileFunction }) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const [imageError, setImageError] = useState(false);
   var editor = "";
   const [picture, setPicture] = useState({
     img: null,
@@ -47,8 +47,8 @@ export const UploadEditPicture = ({ setImageFileFunction }) => {
 
   const handleRotate = () => {
     let newRotateDegree;
-
-    if (picture.rotate === 360) newRotateDegree = 0;
+    console.log(picture.rotate);
+    if (picture.rotate === 270) newRotateDegree = 0;
     else newRotateDegree = picture.rotate + 90;
 
     setPicture({
@@ -113,15 +113,39 @@ export const UploadEditPicture = ({ setImageFileFunction }) => {
   };
 
   const handleFileChange = (e) => {
-    setImageFileFunction(e.target.files[0]);
-    let url = URL.createObjectURL(e.target.files[0]);
+    const img = e.target.files[0];
+    const fileType = e.target.files[0].type.split("/")[0];
 
-    setPicture({
-      ...picture,
-      img: url,
-      croppedImg: url,
-    });
-    handleOpen();
+    if (fileType === "image") {
+      console.log(img.size);
+      if (img.size > 1000000) {
+        setImageFileFunction(null);
+        setPicture({
+          ...picture,
+          img: null,
+          croppedImg: defaultProfilePic,
+        });
+        setImageError(true);
+      } else {
+        let url = URL.createObjectURL(img);
+        setImageFileFunction(img);
+        setPicture({
+          ...picture,
+          img: url,
+          croppedImg: url,
+        });
+        handleOpen();
+        setImageError(false);
+      }
+    } else {
+      setImageFileFunction(null);
+      setPicture({
+        ...picture,
+        img: null,
+        croppedImg: defaultProfilePic,
+      });
+      setImageError(true);
+    }
   };
 
   return (
@@ -152,10 +176,19 @@ export const UploadEditPicture = ({ setImageFileFunction }) => {
                 max={10}
                 step={0.1}
                 onChange={handleSlider}
+                style={{ color: "#13416f" }}
               ></Slider>
               <Typography
                 onClick={handleRotate}
-                style={{ fontSize: 20, cursor: "pointer" }}
+                style={{
+                  fontSize: 20,
+                  cursor: "pointer",
+
+                  display: "inline",
+                  padding: 4,
+
+                  borderRadius: 50,
+                }}
               >
                 <i class="fas fa-sync-alt"></i>
               </Typography>
@@ -225,6 +258,13 @@ export const UploadEditPicture = ({ setImageFileFunction }) => {
                 accept="image/*"
                 onChange={handleFileChange}
               />
+              <div>
+                {imageError && (
+                  <span style={{ fontSize: 10, color: "red" }}>
+                    {t("form.imageError")}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
         </Box>

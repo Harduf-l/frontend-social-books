@@ -22,7 +22,7 @@ function RegisterProcess() {
 
   const [nameChosen, setName] = useState("");
   const [passwordChosen, setPassword] = useState("");
-
+  const [cityChosen, setCity] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [userImage, setChosenImage] = useState("");
   const [favoriteWriter, setFavoriteWriter] = useState("");
@@ -118,6 +118,21 @@ function RegisterProcess() {
     setChosenImage(imageBlob);
   };
 
+  const citySuggestions = (e) => {
+    setCity(e.target.value);
+
+    axios
+      .get(
+        `${process.env.REACT_APP_SERVER_URL}autoComplete/get-cities-list?search=${e.target.value}`
+      )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+
   const setNameFunction = (e) => {
     setName(e.target.value);
   };
@@ -170,6 +185,8 @@ function RegisterProcess() {
     setGenres(newObgGenres);
   };
   ///////////////////////////////
+
+  ///
   const CheckBok = ({ name }) => {
     return (
       <div>
@@ -208,14 +225,26 @@ function RegisterProcess() {
                 paddingInlineStart: "5px",
               }}
             >
-              <InputFunction
-                fieldName={"name"}
-                stateValue={nameChosen}
-                functionToSetField={setNameFunction}
-                type={"text"}
-              />
-              <div style={{ height: "20px" }}></div>
-
+              <div className="d-flex flex-wrap justify-content-around">
+                <div style={{ width: 350 }}>
+                  <InputFunction
+                    fieldName={"name"}
+                    stateValue={nameChosen}
+                    functionToSetField={setNameFunction}
+                    type={"text"}
+                  />
+                  <div style={{ height: "20px" }}></div>
+                </div>
+                <div style={{ width: 350 }}>
+                  <InputFunction
+                    fieldName={"city"}
+                    stateValue={cityChosen}
+                    functionToSetField={citySuggestions}
+                    type={"text"}
+                  />
+                  <div style={{ height: "20px" }}></div>
+                </div>
+              </div>
               <InputFunction
                 onBlurFunction={passwordOnBlur}
                 fieldName={"password"}

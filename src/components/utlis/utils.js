@@ -16,6 +16,7 @@ export const InputFunction = ({
   autoComplete,
   dir,
   onBlurFunction,
+  onChangeFunction,
 }) => {
   const { t } = useTranslation();
   return (
