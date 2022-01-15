@@ -14,13 +14,13 @@ function BookSearch() {
 
   const openModalWithDetails = (book) => {
     const { bookId } = book;
+    setChosenBookData({});
     setSingleBookLoading(true);
     axios
       .get(`http://localhost:5005/books/get-single-book-data?bookId=${bookId}`)
       .then((res) => {
-        console.log(res.data);
-
         setChosenBookData({ ...book, ...res.data });
+        console.log({ ...book, ...res.data });
         setSingleBookLoading(false);
       })
       .catch((err) => {
@@ -84,7 +84,7 @@ function BookSearch() {
                   {!singleBookLoading && chosenBookData && (
                     <div>
                       <div
-                        style={{ paddingInlineStart: 15, paddingBottom: 15 }}
+                        style={{ paddingInlineStart: 25, paddingBottom: 15 }}
                       >
                         <h3>{chosenBookData.title}</h3>
                         <h5>{chosenBookData.author}</h5>
@@ -102,14 +102,18 @@ function BookSearch() {
                               <span
                                 style={{ display: "inline-block", margin: 2 }}
                               >
-                                {chosenBookData.printedBy},
+                                {chosenBookData.printedBy}
+                                {(chosenBookData.pagesInBook ||
+                                  chosenBookData.yearReleased) &&
+                                  ","}
                               </span>
                             )}
                             {chosenBookData.yearReleased && (
                               <span
                                 style={{ display: "inline-block", margin: 2 }}
                               >
-                                {chosenBookData.yearReleased},
+                                {chosenBookData.yearReleased}
+                                {chosenBookData.pagesInBook && ","}
                               </span>
                             )}
                             {chosenBookData.pagesInBook && (
@@ -132,9 +136,9 @@ function BookSearch() {
                               width: 150,
                               objectFit: "cover",
                             }}
-                            className="pb-2 pt-3"
+                            className="pb-2 "
                             src={
-                              book.imgSrc
+                              chosenBookData.imgSrc
                                 ? `https://simania.co.il/${chosenBookData.imgSrc}`
                                 : bookDefault
                             }
@@ -167,7 +171,7 @@ function BookSearch() {
                 paddingBottom: 7,
               }}
             >
-              <div>
+              <div style={{ maxHeight: 200, overflowY: "scroll" }}>
                 <p style={{ fontSize: 14 }}>{book.title}</p>
                 <p style={{ fontSize: 14, fontWeight: 500 }}>{book.author}</p>
               </div>

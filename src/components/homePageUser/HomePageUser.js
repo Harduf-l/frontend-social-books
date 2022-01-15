@@ -14,6 +14,25 @@ function HomePageUser() {
     store.userDetails;
   const [booksResults, setBooksResults] = useState("");
   const [loading, setLoading] = useState(false);
+  const stringsArr = [
+    "harduf",
+    "hamutal",
+    "ronen",
+    "programming",
+    "ami",
+    "jonas",
+  ];
+
+  const coloredParagraph = (string) => {
+    let newArr = string.split("m");
+    return (
+      <p>
+        {newArr[0]}
+        <span style={{ backgroundColor: "yellow" }}>m</span>
+        {newArr[1]}
+      </p>
+    );
+  };
 
   const getBooks = () => {
     setLoading(true);
@@ -47,42 +66,16 @@ function HomePageUser() {
       </div>
 
       <div className="col-12 col-lg-7 col-md-6">
-        {/* <input
-            type="text"
-            id="bookSearch"
-            value={searchedBook}
-            onChange={(e) => setSearchedBook(e.target.value)}
-          /> */}
-        {/* <button
-            onClick={getBooks}
-            className="btn btn-secondary btn-sm mb-1 ms-1 me-1"
-          >
-            {t("profile.search")}
-          </button> */}
-        {loading && <div className="pt-4">ממתין לתוצאות...</div>}
-        {!loading && booksResults.length > 0 && (
-          <table className="mt-3">
-            <thead>
-              <tr>
-                <th style={{ backgroundColor: "#d3c6b4" }}>שם ספר</th>
-                <th style={{ backgroundColor: "#d3c6b4" }}>שם סופר/ת</th>
-              </tr>
-            </thead>
-            <tbody>
-              {booksResults.map((el, index) => {
-                return (
-                  <tr key={index}>
-                    <td>{el.title}</td>
-                    <td>{el.author}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        )}
-
         <p className="mt-4">{t("profile.share thought")}</p>
         <textarea className="text-area-style"></textarea>
+
+        {stringsArr.map((string) => {
+          if (string.indexOf("m") !== -1) {
+            return coloredParagraph(string);
+          } else {
+            return <p>{string}</p>;
+          }
+        })}
       </div>
 
       <div

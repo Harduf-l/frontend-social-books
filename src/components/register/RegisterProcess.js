@@ -1,29 +1,30 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import profileDefault from "../../images/plain.jpg";
-import { checkIfInputIsHebrew } from "../../components/utlis/utils";
+
 import axios from "axios";
+import { useContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { storeContext } from "../../context/store";
+
+import { checkIfInputIsHebrew } from "../../components/utlis/utils";
 import LanguageSwitcher from "../layout/LanguageSwitcher";
 import { InputFunction, SmallFunction } from "../../components/utlis/utils";
 import BookShelves from "../../images/bookshelves.jpg";
+import { RegisterNewUser } from "./helpersRegisterProcess";
+import { UploadEditPicture } from "./uploadEditPicture";
 
 function RegisterProcess() {
-  const PICTURESIZE = 165;
   const FIXEDPADDING = "30px";
   const BACKCOLOR = "#f3f3f3";
-  let navigate = useNavigate();
+
   const { t, i18n } = useTranslation();
   const currentDir = i18n.dir();
-  const { dispatch } = useContext(storeContext);
 
   const [nameChosen, setName] = useState("");
   const [passwordChosen, setPassword] = useState("");
-  const [selectedImage, setSelectedImage] = useState("");
-  const [imageError, setImageError] = useState("");
+
   const [passwordError, setPasswordError] = useState("");
-  const [chosenPictureName, setChosenPictureName] = useState("");
+  const [userImage, setChosenImage] = useState("");
   const [favoriteWriter, setFavoriteWriter] = useState("");
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
@@ -32,8 +33,10 @@ function RegisterProcess() {
   const [birthday, setBirthdate] = useState("");
   const [birthDateError, setBirthDateError] = useState("");
   const [passwordErrorType, setPasswordErrorType] = useState("");
+  let navigate = useNavigate();
+  const { dispatch } = useContext(storeContext);
 
-  const registerNewUser = async (e) => {
+  const RegisterNewUser = async (e) => {
     const userGenresArray = Object.keys(userGenres);
     e.preventDefault();
     if (
@@ -56,7 +59,7 @@ function RegisterProcess() {
       formData.append("password", passwordChosen);
       formData.append("favoriteWriter", favoriteWriter);
       formData.append("email", email);
-      formData.append("photo", selectedImage.imageFile);
+      formData.append("photo", userImage);
       formData.append("genres", userGenresArray);
       formData.append("birthday", JSON.stringify(birthdayObj));
 
@@ -73,7 +76,7 @@ function RegisterProcess() {
         if (response.data.status === "error") {
           console.log(response.data.error);
           if (response.data.error === "Duplicated email") {
-            setRegisterError("duplicate email");
+            setRegisterErrorFunction();
           }
         } else {
           dispatch({
@@ -106,37 +109,17 @@ function RegisterProcess() {
       setBirthDateError(false);
     }
   };
-  const setImageFunction = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      let img = event.target.files[0];
-      const fileType = event.target.files[0].type.split("/")[0];
 
-      if (fileType === "image") {
-        if (img.size > 600000) {
-          setImageError(true);
-          setChosenPictureName(null);
-          setSelectedImage(null);
-        } else {
-          setSelectedImage({
-            imageObj: URL.createObjectURL(img),
-            imageFile: img,
-          });
-          setChosenPictureName(img.name);
-          setImageError(null);
-        }
-      } else {
-        setChosenPictureName(null);
-        setSelectedImage(null);
-        setImageError(true);
-      }
-    }
+  const setRegisterErrorFunction = () => {
+    setRegisterError("duplicate email");
+  };
+
+  const setImageFileFunction = (imageBlob) => {
+    setChosenImage(imageBlob);
   };
 
   const setNameFunction = (e) => {
     setName(e.target.value);
-  };
-  const onInputClick = (event) => {
-    event.target.value = "";
   };
 
   const passWordSetAndCheck = (event) => {
@@ -300,77 +283,7 @@ function RegisterProcess() {
             </div>
           </div>
 
-          <div
-            className="pt-5 pt-lg-1"
-            style={{
-              paddingInlineEnd: FIXEDPADDING,
-              paddingInlineStart: FIXEDPADDING,
-            }}
-          >
-            <div>
-              {!selectedImage && (
-                <div className="mobile-space">
-                  <img
-                    style={{
-                      height: PICTURESIZE,
-                      width: PICTURESIZE,
-                      objectFit: "cover",
-                    }}
-                    src={profileDefault}
-                    alt=""
-                  />
-                </div>
-              )}
-              {selectedImage && (
-                <div style={{ position: "relative" }} className="mobile-space">
-                  <img
-                    style={{
-                      height: PICTURESIZE,
-                      width: PICTURESIZE,
-                      objectFit: "cover",
-                    }}
-                    src={selectedImage.imageObj}
-                    alt=""
-                  />
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      color: "red",
-                      fontWeight: "bold",
-                      paddingInlineStart: "4px",
-                      cursor: "pointer",
-                    }}
-                    onClick={() => {
-                      setSelectedImage(null);
-                      setChosenPictureName(null);
-                    }}
-                  >
-                    X
-                  </div>
-                </div>
-              )}
-              <br />
-              <label htmlFor="formFile" className="btn btn-light btn-sm">
-                {t("form.uploadImage")}
-              </label>
-              <input
-                className="d-none"
-                type="file"
-                onChange={setImageFunction}
-                onClick={onInputClick}
-                name="photo"
-                id="formFile"
-              />
-              <span style={{ marginInlineStart: "10px", fontSize: "12px" }}>
-                {chosenPictureName}
-              </span>
-              <SmallFunction
-                stateError={imageError}
-                translationError={"form.imageError"}
-              />
-            </div>
-          </div>
+          <UploadEditPicture setImageFileFunction={setImageFileFunction} />
         </div>
 
         <div className="d-flex flex-wrap justify-content-around m-3">
@@ -408,18 +321,13 @@ function RegisterProcess() {
             </div>
           </div>
 
-          <div
-            style={{
-              paddingInlineEnd: FIXEDPADDING,
-              paddingInlineStart: FIXEDPADDING,
-            }}
-          >
+          <div className="col-12 col-md-4 col-lg-2">
             <div style={{ width: "165px", height: "100%" }}>
               <div style={{ height: "70px" }}></div>
               <div style={{ textAlign: "end" }}>
                 <button
                   type="submit"
-                  onClick={(e) => registerNewUser(e)}
+                  onClick={(e) => RegisterNewUser(e)}
                   className="btn btn-mg btn-secondary text-start"
                 >
                   {t("form.send")}

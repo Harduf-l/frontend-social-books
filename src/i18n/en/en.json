@@ -26,7 +26,8 @@
     "cancel": "Cancel",
     "save": "Save",
     "save all": "Save all",
-    "close": "Close"
+    "close": "Close",
+    "drag or upload": "Drag or click to upload a picture"
   },
   "genres": {
     "favorite": "Favorite genres",

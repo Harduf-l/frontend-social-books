@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.12.3",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
@@ -12,7 +13,9 @@
     "i18next": "^21.6.4",
     "i18next-browser-languagedetector": "^6.1.2",
     "react": "^17.0.2",
+    "react-avatar-editor": "^12.0.0",
     "react-dom": "^17.0.2",
+    "react-dropzone": "^11.5.1",
     "react-i18next": "^11.15.2",
     "react-router": "^6.2.1",
     "react-router-dom": "^6.2.1",
