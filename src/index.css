@@ -1,8 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@500&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@300&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Arimo&family=IBM+Plex+Sans+Hebrew:wght@300&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Heebo:wght@300&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@300&display=swap");
 
 body {
@@ -55,19 +50,12 @@ body {
   background-color: #919191 !important;
   border: none !important;
 }
-/* .form-check-input:focus {
-  box-shadow: none !important;
-} */
-.form-check-input:hover {
+
+.form-check-input:hover,
+.form-select:hover,
+.form-select:focus {
   box-shadow: none !important;
   border: 1px #a3a3a3 solid !important;
-}
-
-.text-area-style {
-  border: 2px black solid;
-  width: 100%;
-  height: 200px;
-  resize: none;
 }
 
 .autoCompleteOption {

@@ -6,7 +6,9 @@ export const storeReducer = (state, action) => {
         isAuth: true,
         userDetails: { ...action.payload.userDeatils },
         userSuggestedFriends: action.payload.friends,
+        booksRecommendation: action.payload.booksRecommendations,
       };
+
     case "logout":
       localStorage.removeItem("token");
       return { ...state, isAuth: false, userDetails: [] };

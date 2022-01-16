@@ -1,0 +1,48 @@
+.welcomeMessage {
+  padding-top: 20px;
+  padding-inline-start: 20px;
+}
+
+.textAreaStyle {
+  border: 1px #474747 solid;
+
+  border-radius: 5px;
+  resize: none;
+  width: 95%;
+}
+
+.textAreaStyle:focus,
+.textAreaWithContent {
+  border: 1px #474747 solid;
+  border-radius: 5px;
+  resize: none;
+  height: 150px;
+  width: 95%;
+}
+
+.editDiv {
+  height: 100px;
+  width: 95%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.miniHeadingItalic {
+  font-size: 13px;
+  color: #6f6f6f;
+  font-style: italic;
+  font-weight: 500;
+  margin-top: 10px;
+  padding-inline-start: 10px;
+}
+
+.bookItemRecommendation {
+  font-size: 11px;
+  padding: 2px;
+  color: #424242;
+  font-style: normal;
+}
+
+.bookItemRecommendation:hover {
+  color: #1313e0;
+}

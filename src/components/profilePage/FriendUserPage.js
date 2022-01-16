@@ -4,7 +4,7 @@ import { storeContext } from "../../context/store";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { UserCard } from "./helperComponents";
+import { UserCard } from "./UserCard";
 
 function UserPage() {
   let navigate = useNavigate();
@@ -41,7 +41,9 @@ function UserPage() {
     <div className="container pt-5">
       {currentUserPage && (
         <div className="row">
-          <UserCard currentUserPage={currentUserPage} />
+          <div className="col-lg-3 col-12">
+            <UserCard currentUserPage={currentUserPage} />
+          </div>
           <div className="col-lg-9 col-12">
             <div style={{ backgroundColor: "#eeedec", height: "200px" }}>
               קצת עליי...

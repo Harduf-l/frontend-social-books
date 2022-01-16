@@ -14,10 +14,7 @@ export const UserCard = ({ currentUserPage, editOption }) => {
   }, [currentUserPage]);
 
   return (
-    <div
-      className="col-lg-3 col-12"
-      style={{ backgroundColor: "#fff9f1", position: "relative" }}
-    >
+    <div style={{ backgroundColor: "#fff9f1", position: "relative" }}>
       <div className="text-center">
         <img
           style={{

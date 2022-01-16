@@ -33,11 +33,13 @@ function App() {
       )
       .then((res) => {
         if (res.data.status === "ok") {
+          console.log("here in app", res.data);
           dispatch({
             type: "login",
             payload: {
               userDeatils: res.data.userDetails,
               friends: res.data.suggestedUsers,
+              booksRecommendations: res.data.recommendationBookArray,
             },
           });
         }

@@ -62,7 +62,15 @@
     "book lovers": "חובבי קריאה בעלי טעם דומה לשלך",
     "share thought": "שתף במחשבה ספרותית שעלתה בך...",
     "search": "חפש",
-    "welcome": "שלום, "
+    "welcome": "שלום, ",
+    "chooseTag": "בחר תגית",
+    "thought after reading": "מחשבה בעקבות קריאה",
+    "general thought": "הרהור",
+    "recommendation": "המלצה",
+    "looking for a book": "מחפש ספר",
+    "selling a book": "מוכר ספר",
+    "other": "אחר",
+    "books you may like": "ספרים שאולי תאהב"
   },
   "navbar": {
     "profile": "פרופיל",

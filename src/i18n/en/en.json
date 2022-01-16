@@ -62,7 +62,15 @@
     "book lovers": "Other book lovers you may like",
     "share thought": "Share a literature thought you had recently...",
     "search": "Search",
-    "welcome": "Welcome,"
+    "welcome": "Welcome, ",
+    "chooseTag": "Choose a tag",
+    "thought after reading": "A thought after reading",
+    "general thought": "General thought",
+    "recommendation": "Recommendation",
+    "looking for a book": "Looking for a book",
+    "selling a book": "Selling a book",
+    "other": "Other",
+    "books you may like": "Books you may like"
   },
   "navbar": {
     "profile": "Profile",

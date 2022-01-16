@@ -3,125 +3,167 @@ import { storeContext } from "../../context/store";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import styles from "./HomePageUser.module.css";
+import BookModal from "./bookModal";
 
 function HomePageUser() {
-  const profileBackground = "#e07a5f";
-  const barBackground = "#3d405b";
+  const profileBackground = "#c2ccc4";
   const { t } = useTranslation();
   const { dispatch, store } = useContext(storeContext);
-  const [searchedBook, setSearchedBook] = useState("");
-  const { favoriteWriter, picture, username, genres, userAge } =
-    store.userDetails;
-  const [booksResults, setBooksResults] = useState("");
-  const [loading, setLoading] = useState(false);
-  const stringsArr = [
-    "harduf",
-    "hamutal",
-    "ronen",
-    "programming",
-    "ami",
-    "jonas",
-  ];
+  const [userContent, setUserContent] = useState("");
+  const [singleBookData, setSingleBookData] = useState([]);
+  const [open, setOpen] = useState(false);
 
-  const coloredParagraph = (string, index) => {
-    let newArr = string.split("m");
-    return (
-      <p key={index}>
-        {newArr[0]}
-        <span style={{ backgroundColor: "yellow" }}>m</span>
-        {newArr[1]}
-      </p>
+  const { username } = store.userDetails;
+  const { booksRecommendation } = store;
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const chooseTextTag = (e) => {
+    console.log(e.target.value);
+  };
+
+  const getSingleBookData = async (book) => {
+    setSingleBookData([]);
+    setOpen(true);
+    const bookData = await axios.get(
+      `http://localhost:5005/books/get-single-book-data?bookId=${book.bookId}`
     );
+    setSingleBookData({ ...book, ...bookData.data });
   };
-
-  const getBooks = () => {
-    setLoading(true);
-    axios
-      .get(
-        `${process.env.REACT_APP_SERVER_URL}books/get-book-list?search=${searchedBook}`
-      )
-      .then((res) => {
-        setLoading(false);
-        setBooksResults(res.data);
-      });
-  };
-
   return (
-    <div className="d-flex">
+    <div className="d-flex flex-wrap">
+      <BookModal
+        open={open}
+        handleClose={handleClose}
+        chosenBookData={singleBookData}
+      />
       <div
-        className="col-12 col-lg-3 col-md-6"
+        className="col-12 col-lg-2"
         style={{ backgroundColor: profileBackground }}
       >
-        <p>
+        <p className={styles.welcomeMessage}>
           {t("profile.welcome")}
           {username}
         </p>
+
         <button
           onClick={() => dispatch({ type: "logout" })}
-          className="btn btn-light mt-5"
-          style={{ backgroundColor: "#999999", color: "white" }}
+          className="btn btn-light m-4"
         >
           {t("form.logout")}
         </button>
       </div>
 
-      <div className="col-12 col-lg-7 col-md-6">
-        <p className="mt-4">{t("profile.share thought")}</p>
-        <textarea className="text-area-style"></textarea>
-
-        {stringsArr.map((string, index) => {
-          if (string.indexOf("m") !== -1) {
-            return coloredParagraph(string, index);
-          } else {
-            return <p key={index}>{string}</p>;
+      <div className="col-12 col-lg-7 mt-4" style={{ paddingInlineStart: 30 }}>
+        <textarea
+          placeholder={t("profile.share thought")}
+          className={
+            userContent ? styles.textAreaWithContent : styles.textAreaStyle
           }
-        })}
-      </div>
-
-      <div
-        className="col-12 col-lg-2 col-md-6"
-        style={{ backgroundColor: barBackground }}
-      >
-        <p
-          style={{
-            fontSize: "10px",
-            backgroundColor: barBackground,
-            color: "white",
-            padding: "5px",
-            borderRadius: "15px",
-          }}
+          value={userContent}
+          onChange={(e) => setUserContent(e.target.value)}
+        ></textarea>
+        <div
+          className={userContent ? styles.editDiv : `${styles.editDiv} d-none`}
         >
-          {t("profile.book lovers")}
-        </p>
+          <div>
+            <select
+              className="form-select"
+              onChange={chooseTextTag}
+              aria-label="Choose post category"
+            >
+              <option value="">{t("profile.chooseTag")}</option>
+              <option value="thought after reading">
+                {t("profile.thought after reading")}
+              </option>
+              <option value="general thought">
+                {t("profile.general thought")}
+              </option>
+              <option value="recommendation">
+                {t("profile.recommendation")}
+              </option>
+              <option value="looking for a book">
+                {t("profile.looking for a book")}
+              </option>
+              <option value="selling a book">
+                {t("profile.selling a book")}
+              </option>
+              <option value="other">{t("profile.other")}</option>
+            </select>
+          </div>
+          <div>
+            <button className="btn btn-light">{t("form.send")}</button>
+          </div>
+        </div>
+
         <div>
-          {store.userSuggestedFriends &&
-            store.userSuggestedFriends.map((el, index) => {
-              return (
-                <div key={index}>
-                  <div style={{ textAlign: "center", color: "white" }}>
-                    <Link to={`/user/${el._id}`}>
-                      <img
+          <p className={styles.miniHeadingItalic}>
+            {t("profile.book lovers")}...
+          </p>
+          <div className="d-flex flex-wrap">
+            {store.userSuggestedFriends &&
+              store.userSuggestedFriends.map((el, index) => {
+                return (
+                  <div key={index}>
+                    <div
+                      style={{
+                        textAlign: "center",
+                        color: "#251703",
+                        backgroundColor: "#f3f3f3",
+                        margin: 5,
+                        borderRadius: 10,
+                        border: "1px dotted #d3c6b4",
+                      }}
+                    >
+                      <Link to={`/user/${el._id}`}>
+                        <img
+                          style={{
+                            borderRadius: "20px",
+                            height: "80px",
+                            width: "80px",
+                            objectFit: "cover",
+                            padding: 5,
+                          }}
+                          src={`${process.env.REACT_APP_SERVER_URL}${el.picture}`}
+                          alt=""
+                        />
+                      </Link>
+                      <p
                         style={{
-                          borderRadius: "20px",
-                          height: "100px",
-                          width: "100px",
-                          objectFit: "cover",
+                          textAlign: "center",
+                          fontSize: "12px",
+                          marginTop: "6px",
                         }}
-                        src={`${process.env.REACT_APP_SERVER_URL}${el.picture}`}
-                        alt=""
-                      />
-                    </Link>
+                      >
+                        {el.username}
+                      </p>
+                    </div>
                   </div>
-                  <p
-                    style={{
-                      textAlign: "center",
-                      fontSize: "12px",
-                      marginTop: "6px",
-                      color: "white",
-                    }}
-                  >
-                    {el.username}
-                  </p>
+                );
+              })}
+          </div>
+        </div>
+      </div>
+      <div
+        className="col-12 col-lg-3 pt-3"
+        style={{ paddingInlineStart: 30, paddingInlineEnd: 30 }}
+      >
+        <div className={styles.miniHeadingItalic}>
+          {t("profile.books you may like")}...
+          <div style={{ height: 10 }}></div>
+          {booksRecommendation &&
+            booksRecommendation.map((book, index) => {
+              return (
+                <div
+                  onClick={() => getSingleBookData(book)}
+                  role={"button"}
+                  className={styles.bookItemRecommendation}
+                  key={index}
+                >
+                  {book.title}/{book.author}
                 </div>
               );
             })}

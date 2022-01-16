@@ -29,6 +29,7 @@ function RouteWrapper({ component: Component }) {
             payload: {
               userDeatils: res.data.userDetails,
               friends: res.data.suggestedUsers,
+              booksRecommendations: res.data.recommendationBookArray,
             },
           });
         }

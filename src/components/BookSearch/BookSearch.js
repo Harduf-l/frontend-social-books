@@ -64,7 +64,7 @@ function BookSearch() {
             className="d-flex justify-content-between"
           >
             <div
-              class="modal fade"
+              className="modal fade"
               id="staticBackdrop"
               data-bs-backdrop="static"
               data-bs-keyboard="false"
