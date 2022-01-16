@@ -3,6 +3,8 @@
   "Hebrew": "עברית",
   "welcome": "הירשם עוד היום והתחל לשוחח על הספרים האהובים עליך.",
   "loading": "טוען...",
+  "yes": "כן",
+  "no": "לא",
   "form": {
     "email": "אימייל",
     "password": "סיסמא",
@@ -28,7 +30,13 @@
     "save": "שמור",
     "save all": "שמור שינויים",
     "close": "סגור",
-    "drag or upload": "גרור או לחץ כדי להעלות תמונה"
+    "drag or upload": "גרור או לחץ כדי להעלות תמונה",
+    "do you write": "האם את/ה כותב/ת?",
+    "what do you write": "מה את/ה כותב/ת?",
+    "describe yourself": "ספר/י על עצמך",
+    "age": "גיל",
+    "writingDescription": "אני כותב...",
+    "freeText": "קצת עליי"
   },
   "genres": {
     "favorite": "ז'אנרים מועדפים",

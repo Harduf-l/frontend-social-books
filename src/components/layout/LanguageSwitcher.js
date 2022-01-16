@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import BookMeLogo from "../../images/BookMe.png";
 
 const lngs = {
   en: { nativeName: "English" },
@@ -15,8 +16,7 @@ function LanguageSwitcher() {
     <div className="d-flex justify-content-between mb-2 mt-1">
       <Link to="/">
         <div className="menuIcon">
-          <i className="far fa-circle menuIcon"></i>
-          <i className="fas fa-circle"></i>
+          <img src={BookMeLogo} className="iconBook" alt="" />
         </div>
       </Link>
       <div>

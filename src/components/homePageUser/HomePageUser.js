@@ -23,10 +23,10 @@ function HomePageUser() {
     "jonas",
   ];
 
-  const coloredParagraph = (string) => {
+  const coloredParagraph = (string, index) => {
     let newArr = string.split("m");
     return (
-      <p>
+      <p key={index}>
         {newArr[0]}
         <span style={{ backgroundColor: "yellow" }}>m</span>
         {newArr[1]}
@@ -69,11 +69,11 @@ function HomePageUser() {
         <p className="mt-4">{t("profile.share thought")}</p>
         <textarea className="text-area-style"></textarea>
 
-        {stringsArr.map((string) => {
+        {stringsArr.map((string, index) => {
           if (string.indexOf("m") !== -1) {
-            return coloredParagraph(string);
+            return coloredParagraph(string, index);
           } else {
-            return <p>{string}</p>;
+            return <p key={index}>{string}</p>;
           }
         })}
       </div>

@@ -3,7 +3,7 @@ import styles from "./NavBar.module.css";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-
+import BookMeLogo from "../../../images/BookMe.png";
 const lngs = {
   en: { nativeName: "English" },
   he: { nativeName: "Hebrew" },
@@ -71,8 +71,7 @@ function NavBar() {
               to="/"
             >
               <span className={styles.menuIcon}>
-                <i className={`far fa-circle ${styles.menuIcon}`}></i>
-                <i className="fas fa-circle"></i>
+                <img src={BookMeLogo} className="iconBook" alt="" />
               </span>
             </NavLink>
             <NavLink

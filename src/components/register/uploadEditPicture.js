@@ -190,7 +190,7 @@ export const UploadEditPicture = ({ setImageFileFunction }) => {
                   borderRadius: 50,
                 }}
               >
-                <i class="fas fa-sync-alt"></i>
+                <i className="fas fa-sync-alt"></i>
               </Typography>
               <Box>
                 <div className="d-flex justify-content-end pt-2">

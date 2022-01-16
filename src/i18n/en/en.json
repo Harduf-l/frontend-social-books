@@ -3,6 +3,8 @@
   "Hebrew": "Hebrew",
   "welcome": "Register today and start talk to others about the books you love.",
   "loading": "loading...",
+  "yes": "Yes",
+  "no": "No",
   "form": {
     "email": "Email",
     "password": "Password",
@@ -28,7 +30,13 @@
     "save": "Save",
     "save all": "Save all",
     "close": "Close",
-    "drag or upload": "Drag or click to upload a picture"
+    "drag or upload": "Drag or click to upload a picture",
+    "do you write": "Are you a writer?",
+    "what do you write": "What type of writing?",
+    "describe yourself": "Tell about yourself",
+    "age": "Age",
+    "writingDescription": "I write...",
+    "freeText": "About me"
   },
   "genres": {
     "favorite": "Favorite genres",

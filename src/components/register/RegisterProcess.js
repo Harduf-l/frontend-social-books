@@ -6,9 +6,14 @@ import { useContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { storeContext } from "../../context/store";
 
-import { checkIfInputIsHebrew } from "../../components/utlis/utils";
 import LanguageSwitcher from "../layout/LanguageSwitcher";
-import { InputFunction, SmallFunction } from "../../components/utlis/utils";
+import {
+  InputFunction,
+  SmallFunction,
+  AutoComplete,
+  checkIfInputIsHebrew,
+  InputAutoCompleteCombined,
+} from "../../components/utlis/utils";
 import BookShelves from "../../images/bookshelves.jpg";
 import { RegisterNewUser } from "./helpersRegisterProcess";
 import { UploadEditPicture } from "./uploadEditPicture";
@@ -33,6 +38,11 @@ function RegisterProcess() {
   const [birthday, setBirthdate] = useState("");
   const [birthDateError, setBirthDateError] = useState("");
   const [passwordErrorType, setPasswordErrorType] = useState("");
+  const [cities, setCities] = useState([]);
+  const [writingStatus, setWritingStatus] = useState(false);
+  const [freeText, setFreeText] = useState("");
+  const [freeWriterText, setFreeWriterText] = useState("");
+
   let navigate = useNavigate();
   const { dispatch } = useContext(storeContext);
 
@@ -55,6 +65,13 @@ function RegisterProcess() {
       };
 
       const formData = new FormData();
+
+      if (writingStatus) {
+        formData.append("writingDescription", freeWriterText);
+      }
+
+      formData.append("freeText", freeText);
+      formData.append("city", cityChosen);
       formData.append("username", nameChosen);
       formData.append("password", passwordChosen);
       formData.append("favoriteWriter", favoriteWriter);
@@ -120,17 +137,24 @@ function RegisterProcess() {
 
   const citySuggestions = (e) => {
     setCity(e.target.value);
+    if (e.target.value.length > 0) {
+      axios
+        .get(
+          `${process.env.REACT_APP_SERVER_URL}autoComplete/get-cities-list?search=${e.target.value}`
+        )
+        .then((res) => {
+          setCities(res.data.splice(0, 4));
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    } else {
+      setCities([]);
+    }
+  };
 
-    axios
-      .get(
-        `${process.env.REACT_APP_SERVER_URL}autoComplete/get-cities-list?search=${e.target.value}`
-      )
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
+  const setChosenCity = (city) => {
+    setCity(city);
   };
 
   const setNameFunction = (e) => {
@@ -215,7 +239,7 @@ function RegisterProcess() {
         <LanguageSwitcher />
 
         <div className="d-flex flex-wrap justify-content-around m-3">
-          <div className="col-12 col-md-8" style={{}}>
+          <div className="col-11 col-md-5" style={{}}>
             <div
               style={{
                 borderRadius: "10px",
@@ -223,10 +247,11 @@ function RegisterProcess() {
                 paddingTop: "20px",
                 paddingInlineEnd: "5px",
                 paddingInlineStart: "5px",
+                paddingBottom: "20px",
               }}
             >
-              <div className="d-flex flex-wrap justify-content-around">
-                <div style={{ width: 350 }}>
+              <div className="d-flex flex-wrap justify-content-between">
+                <div>
                   <InputFunction
                     fieldName={"name"}
                     stateValue={nameChosen}
@@ -235,8 +260,10 @@ function RegisterProcess() {
                   />
                   <div style={{ height: "20px" }}></div>
                 </div>
-                <div style={{ width: 350 }}>
-                  <InputFunction
+                <div>
+                  <InputAutoCompleteCombined
+                    dataArray={cities}
+                    setChosenInput={setChosenCity}
                     fieldName={"city"}
                     stateValue={cityChosen}
                     functionToSetField={citySuggestions}
@@ -245,103 +272,158 @@ function RegisterProcess() {
                   <div style={{ height: "20px" }}></div>
                 </div>
               </div>
-              <InputFunction
-                onBlurFunction={passwordOnBlur}
-                fieldName={"password"}
-                stateValue={passwordChosen}
-                functionToSetField={passWordSetAndCheck}
-                type={"password"}
-                styleFunction={() => {
-                  let direction;
-                  direction = currentDir === "rtl" ? "end" : "start";
-                  return {
-                    textAlign: direction,
-                  };
-                }}
-                dir={"ltr"}
-                autoComplete={true}
-              />
 
-              <SmallFunction
-                stateError={passwordError}
-                translationError={passwordErrorType}
-              />
+              <div className="d-flex flex-wrap justify-content-between">
+                <div>
+                  <InputFunction
+                    onBlurFunction={passwordOnBlur}
+                    fieldName={"password"}
+                    stateValue={passwordChosen}
+                    functionToSetField={passWordSetAndCheck}
+                    type={"password"}
+                    styleFunction={() => {
+                      let direction;
+                      direction = currentDir === "rtl" ? "end" : "start";
+                      return {
+                        textAlign: direction,
+                        width: "auto",
+                      };
+                    }}
+                    dir={"ltr"}
+                    autoComplete={true}
+                  />
 
-              <InputFunction
-                fieldName={"favorite writer"}
-                stateValue={favoriteWriter}
-                functionToSetField={setFavoriteWriterFunction}
-                type={"text"}
-              />
-              <div style={{ height: "20px" }}></div>
-              <InputFunction
-                dir="ltr"
-                styleFunction={() => {
-                  let direction;
-                  direction = currentDir === "rtl" ? "end" : "start";
-                  return {
-                    textAlign: direction,
-                  };
-                }}
-                fieldName={"email"}
-                stateValue={email}
-                functionToSetField={setEmailFunction}
-                type={"email"}
-                autoComplete={true}
-                onBlurFunction={emailBlurFunction}
-              />
-              <SmallFunction
-                stateError={emailError}
-                translationError={"form.email error"}
-              />
+                  <SmallFunction
+                    stateError={passwordError}
+                    translationError={passwordErrorType}
+                  />
+                </div>
+                <div>
+                  <InputFunction
+                    fieldName={"favorite writer"}
+                    stateValue={favoriteWriter}
+                    functionToSetField={setFavoriteWriterFunction}
+                    type={"text"}
+                  />
+                  <div style={{ height: "20px" }}></div>
+                </div>
+              </div>
 
-              <label style={{ marginInlineEnd: "10px" }} htmlFor="birthdate">
-                {t("form.birth date")}
-              </label>
-              <input
-                type="date"
-                value={birthday}
-                style={{ marginBottom: "5px" }}
-                id="birthdate"
-                onChange={setBirthdateFunction}
-              />
-              <SmallFunction
-                stateError={birthDateError}
-                translationError={"form.birth date error"}
-              />
+              <div className="d-flex flex-wrap justify-content-between">
+                <div>
+                  <InputFunction
+                    dir="ltr"
+                    styleFunction={() => {
+                      let direction;
+                      direction = currentDir === "rtl" ? "end" : "start";
+                      return {
+                        textAlign: direction,
+                        width: "auto",
+                      };
+                    }}
+                    fieldName={"email"}
+                    stateValue={email}
+                    functionToSetField={setEmailFunction}
+                    type={"email"}
+                    autoComplete={true}
+                    onBlurFunction={emailBlurFunction}
+                  />
+                  <SmallFunction
+                    stateError={emailError}
+                    translationError={"form.email error"}
+                  />
+                  <div className="mb-2" style={{ fontSize: 14 }}>
+                    <span style={{ marginInlineEnd: 5 }}>
+                      {t("form.do you write")}
+                    </span>
+                    <input
+                      onClick={() => setWritingStatus(true)}
+                      style={{ marginInlineEnd: 2 }}
+                      type="radio"
+                      id="yes"
+                      name="doIWrite"
+                    />
+                    <label style={{ marginInlineEnd: 5 }} htmlFor="yes">
+                      {t("yes")}
+                    </label>
+                    <input
+                      onClick={() => setWritingStatus(false)}
+                      style={{ marginInlineEnd: 2 }}
+                      type="radio"
+                      id="no"
+                      name="doIWrite"
+                    />
+                    <label htmlFor="no">{t("no")}</label>
+                    {writingStatus && (
+                      <textarea
+                        className="form-control mt-2 mb-2 textAreaForm"
+                        placeholder={t("form.what do you write")}
+                        maxLength={70}
+                        style={{ fontSize: 14 }}
+                        onChange={(e) => setFreeWriterText(e.target.value)}
+                        value={freeWriterText}
+                      ></textarea>
+                    )}
+                  </div>
+
+                  <label
+                    style={{ marginInlineEnd: "10px", fontSize: 13 }}
+                    htmlFor="birthdate"
+                  >
+                    {t("form.birth date")}
+                  </label>
+                  <input
+                    className="form-control"
+                    type="date"
+                    value={birthday}
+                    style={{ marginBottom: "5px", width: "auto" }}
+                    id="birthdate"
+                    onChange={setBirthdateFunction}
+                  />
+                  <SmallFunction
+                    stateError={birthDateError}
+                    translationError={"form.birth date error"}
+                  />
+                </div>
+                <div>
+                  <textarea
+                    rows="7"
+                    cols="25"
+                    placeholder={t("form.describe yourself")}
+                    className=" form-control textAreaForm"
+                    style={{ fontSize: 14 }}
+                    maxLength={200}
+                    onChange={(e) => setFreeText(e.target.value)}
+                    value={freeText}
+                  ></textarea>
+                </div>
+              </div>
             </div>
           </div>
 
-          <UploadEditPicture setImageFileFunction={setImageFileFunction} />
-        </div>
-
-        <div className="d-flex flex-wrap justify-content-around m-3">
           <div
-            className="col-12 col-md-8 p-1"
+            className="col-12 col-md-3 p-1 mt-5 mt-md-0"
             style={{ backgroundColor: BACKCOLOR, borderRadius: "10px" }}
           >
             <p style={{ fontWeight: "500" }}>{t(`genres.favorite`)}</p>
 
             <div className="d-flex flex-wrap">
-              <div className="col-12 col-sm-6 col-xl-3">
+              <div className="col-12 col-sm-5 col-xl-6">
                 <CheckBok name={"novel"} />
                 <CheckBok name={"thriller"} />
                 <CheckBok name={"biographic"} />
                 <CheckBok name={"poetry"} />
-              </div>
-              <div className="col-12 col-sm-6 col-xl-3">
                 <CheckBok name={"fantasy"} />
                 <CheckBok name={"madab"} />
                 <CheckBok name={"children"} />
                 <CheckBok name={"teenagers"} />
               </div>
-              <div className="col-12 col-sm-6 col-xl-3">
+
+              <div className="col-12 col-sm-5 col-xl-6">
                 <CheckBok name={"plays"} />
                 <CheckBok name={"nonfiction"} />
                 <CheckBok name={"self help"} />
                 <CheckBok name={"psychology"} />
-              </div>
-              <div className="col-12 col-sm-6 col-xl-3">
                 <CheckBok name={"phlipsophy"} />
                 <CheckBok name={"history"} />
                 <CheckBok name={"comics"} />
@@ -350,6 +432,10 @@ function RegisterProcess() {
             </div>
           </div>
 
+          <UploadEditPicture setImageFileFunction={setImageFileFunction} />
+        </div>
+
+        <div className="d-flex flex-wrap justify-content-around m-3">
           <div className="col-12 col-md-4 col-lg-2">
             <div style={{ width: "165px", height: "100%" }}>
               <div style={{ height: "70px" }}></div>

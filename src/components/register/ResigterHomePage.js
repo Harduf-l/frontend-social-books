@@ -7,6 +7,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { storeContext } from "../../context/store";
 import LanguageSwitcher from "../layout/LanguageSwitcher";
+import BookMeLogo from "../../images/BookMe.png";
 
 function ResigterHomePage() {
   const { t, i18n } = useTranslation();
