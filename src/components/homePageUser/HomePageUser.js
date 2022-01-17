@@ -5,14 +5,18 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import styles from "./HomePageUser.module.css";
 import BookModal from "./bookModal";
+import defaultPicture from "../../images/plain.jpg";
+import { useNavigate } from "react-router-dom";
 
 function HomePageUser() {
+  let navigate = useNavigate();
   const profileBackground = "#c2ccc4";
   const { t } = useTranslation();
   const { dispatch, store } = useContext(storeContext);
   const [userContent, setUserContent] = useState("");
   const [singleBookData, setSingleBookData] = useState([]);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { username } = store.userDetails;
   const { booksRecommendation } = store;
@@ -27,11 +31,14 @@ function HomePageUser() {
 
   const getSingleBookData = async (book) => {
     setSingleBookData([]);
+    setLoading(true);
     setOpen(true);
+
     const bookData = await axios.get(
       `http://localhost:5005/books/get-single-book-data?bookId=${book.bookId}`
     );
     setSingleBookData({ ...book, ...bookData.data });
+    setLoading(false);
   };
   return (
     <div className="d-flex flex-wrap">
@@ -39,6 +46,7 @@ function HomePageUser() {
         open={open}
         handleClose={handleClose}
         chosenBookData={singleBookData}
+        loading={loading}
       />
       <div
         className="col-12 col-lg-2"
@@ -118,19 +126,24 @@ function HomePageUser() {
                         border: "1px dotted #d3c6b4",
                       }}
                     >
-                      <Link to={`/user/${el._id}`}>
-                        <img
-                          style={{
-                            borderRadius: "20px",
-                            height: "80px",
-                            width: "80px",
-                            objectFit: "cover",
-                            padding: 5,
-                          }}
-                          src={`${process.env.REACT_APP_SERVER_URL}${el.picture}`}
-                          alt=""
-                        />
-                      </Link>
+                      <img
+                        onClick={() => navigate(`/user/${el._id}`)}
+                        role={"button"}
+                        style={{
+                          borderRadius: "20px",
+                          height: "80px",
+                          width: "80px",
+                          objectFit: "cover",
+                          padding: 5,
+                        }}
+                        src={
+                          el.picture
+                            ? `${process.env.REACT_APP_SERVER_URL}${el.picture}`
+                            : defaultPicture
+                        }
+                        alt=""
+                      />
+
                       <p
                         style={{
                           textAlign: "center",

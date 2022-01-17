@@ -3,7 +3,11 @@ import react from "react";
 import styles from "./profilePage.module.css";
 import { calculateAge } from "../utlis/utils";
 
-export const UserCard = ({ currentUserPage, editOption }) => {
+export const UserCard = ({
+  currentUserPage,
+  isItMe,
+  createNewMessageAndNavigate,
+}) => {
   const { t } = useTranslation();
   const [userAge, setuserAge] = react.useState(null);
 
@@ -13,141 +17,83 @@ export const UserCard = ({ currentUserPage, editOption }) => {
     }
   }, [currentUserPage]);
 
+  const InfoBox = ({ translationDate, dataItself }) => {
+    return (
+      <div>
+        <span className={styles.littleHeaderCard}>{t(translationDate)}</span>
+        <br />
+        <span className={styles.dataCard}>{dataItself}</span>
+      </div>
+    );
+  };
+
   return (
-    <div style={{ backgroundColor: "#fff9f1", position: "relative" }}>
+    <div className={styles.cardItself}>
       <div className="text-center">
         <img
-          style={{
-            borderRadius: "30px",
-            marginBottom: "15px",
-            height: "170px",
-            width: "170px",
-            objectFit: "cover",
-          }}
+          className={styles.userImage}
           src={`${process.env.REACT_APP_SERVER_URL}${currentUserPage.picture}`}
           alt=""
         />
       </div>
 
-      <div>
-        <span
-          style={{
-            marginInlineEnd: "5px",
-            fontSize: "12px",
-            fontStyle: "italic",
-            color: "#920000",
-          }}
-        >
-          {t("form.name")}
-        </span>
+      <InfoBox
+        translationDate={"form.name"}
+        dataItself={currentUserPage.username}
+      />
 
-        <p style={{ backgroundColor: "white" }}>{currentUserPage.username}</p>
-      </div>
-      {userAge && (
-        <div>
-          <span
-            style={{
-              marginInlineEnd: "5px",
-              fontSize: "12px",
-              fontStyle: "italic",
-              color: "#920000",
-            }}
-          >
-            {t("form.age")}
-          </span>
-          <p style={{ backgroundColor: "white" }}>{userAge}</p>
-        </div>
-      )}
+      {userAge && <InfoBox translationDate={"form.age"} dataItself={userAge} />}
 
       {currentUserPage.city && (
-        <div>
-          <span
-            style={{
-              marginInlineEnd: "5px",
-              fontSize: "12px",
-              fontStyle: "italic",
-              color: "#920000",
-            }}
-          >
-            {t("form.city")}
-          </span>
-          <p style={{ backgroundColor: "white" }}>{currentUserPage.city}</p>
-        </div>
+        <InfoBox
+          translationDate={"form.city"}
+          dataItself={currentUserPage.city}
+        />
       )}
 
-      {currentUserPage.freeText && (
-        <div>
-          <span
-            style={{
-              marginInlineEnd: "5px",
-              fontSize: "12px",
-              fontStyle: "italic",
-              color: "#920000",
-            }}
-          >
-            {t("form.freeText")}
-          </span>
-          <p style={{ backgroundColor: "white" }}>{currentUserPage.freeText}</p>
-        </div>
-      )}
-
-      {currentUserPage.writingDescription && (
-        <div>
-          <span
-            style={{
-              marginInlineEnd: "5px",
-              fontSize: "12px",
-              fontStyle: "italic",
-              color: "#920000",
-            }}
-          >
-            {t("form.writingDescription")}
-          </span>
-          <p style={{ backgroundColor: "white" }}>
-            {currentUserPage.writingDescription}
-          </p>
-        </div>
+      {currentUserPage.favoriteWriter && (
+        <InfoBox
+          translationDate={"form.favorite writer"}
+          dataItself={currentUserPage.favoriteWriter}
+        />
       )}
 
       <div>
-        <span
-          style={{
-            marginInlineEnd: "5px",
-            fontSize: "12px",
-            fontStyle: "italic",
-            color: "#920000",
-          }}
-        >
-          {t("form.favorite writer")}
-        </span>
-
-        <p style={{ backgroundColor: "white" }}>
-          {currentUserPage.favoriteWriter}
-        </p>
-      </div>
-      <div>
-        <span
-          style={{
-            marginInlineEnd: "5px",
-            fontSize: "12px",
-            fontStyle: "italic",
-            color: "#920000",
-          }}
-        >
-          {t("genres.favorite")}
-        </span>
+        <span className={styles.littleHeaderCard}>{t("genres.favorite")}</span>
 
         <br />
-        <p style={{ backgroundColor: "white" }}>
+        <p>
           {currentUserPage.genres.map((el, index) => {
             if (index === currentUserPage.genres.length - 1) {
-              return <span key={el}> {t(`genres.${el}`)}. </span>;
+              return (
+                <span className={styles.dataCard} key={el}>
+                  {t(`genres.${el}`)}.
+                </span>
+              );
             } else {
-              return <span key={el}> {t(`genres.${el}`)}, </span>;
+              return (
+                <span className={styles.dataCard} key={el}>
+                  {t(`genres.${el}`)},
+                </span>
+              );
             }
           })}
         </p>
       </div>
+
+      {!isItMe && (
+        <div className="d-flex justify-content-between">
+          <button
+            onClick={createNewMessageAndNavigate}
+            className="btn btn-light"
+          >
+            {t("profile.send a message")}
+          </button>
+          <button className="btn btn-light">
+            {t("profile.add as friend")}
+          </button>
+        </div>
+      )}
     </div>
   );
 };

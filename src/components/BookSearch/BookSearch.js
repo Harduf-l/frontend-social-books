@@ -3,19 +3,27 @@ import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import bookDefault from "../../images/book-default.jpg";
 import { useTranslation } from "react-i18next";
+import BookModal from "../homePageUser/bookModal";
 
 function BookSearch() {
   const [searchParams] = useSearchParams();
   const [booksData, setBooksData] = useState([]);
   const [loading, setLoading] = useState(false);
+
   const [chosenBookData, setChosenBookData] = useState({});
   const [singleBookLoading, setSingleBookLoading] = useState(false);
+  const [open, setOpen] = useState(false);
   const { t } = useTranslation();
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const openModalWithDetails = (book) => {
     const { bookId } = book;
     setChosenBookData({});
     setSingleBookLoading(true);
+    setOpen(true);
     axios
       .get(`http://localhost:5005/books/get-single-book-data?bookId=${bookId}`)
       .then((res) => {
@@ -50,6 +58,12 @@ function BookSearch() {
 
   return (
     <div className="d-flex flex-wrap justify-content-center mt-4">
+      <BookModal
+        open={open}
+        handleClose={handleClose}
+        chosenBookData={chosenBookData}
+        loading={singleBookLoading}
+      />
       {booksData.map((book) => {
         return (
           <div
@@ -63,104 +77,6 @@ function BookSearch() {
             }}
             className="d-flex justify-content-between"
           >
-            <div
-              className="modal fade"
-              id="staticBackdrop"
-              data-bs-backdrop="static"
-              data-bs-keyboard="false"
-              tabIndex="-1"
-              aria-labelledby="staticBackdropLabel"
-              aria-hidden="true"
-            >
-              <div className="modal-dialog">
-                <div className="modal-content">
-                  <div className="modal-body pb-2"></div>
-
-                  {singleBookLoading && (
-                    <div style={{ height: 310 }}>
-                      <p style={{ paddingInlineStart: 15 }}>{t("loading")}</p>
-                    </div>
-                  )}
-                  {!singleBookLoading && chosenBookData && (
-                    <div>
-                      <div
-                        style={{ paddingInlineStart: 25, paddingBottom: 15 }}
-                      >
-                        <h3>{chosenBookData.title}</h3>
-                        <h5>{chosenBookData.author}</h5>
-                      </div>
-                      <div className="d-flex justify-content-around flex-wrap">
-                        <div
-                          style={{
-                            width: 250,
-                            maxHeight: 200,
-                            overflowY: "scroll",
-                          }}
-                        >
-                          <p style={{ fontSize: 11 }}>
-                            {chosenBookData.printedBy && (
-                              <span
-                                style={{ display: "inline-block", margin: 2 }}
-                              >
-                                {chosenBookData.printedBy}
-                                {(chosenBookData.pagesInBook ||
-                                  chosenBookData.yearReleased) &&
-                                  ","}
-                              </span>
-                            )}
-                            {chosenBookData.yearReleased && (
-                              <span
-                                style={{ display: "inline-block", margin: 2 }}
-                              >
-                                {chosenBookData.yearReleased}
-                                {chosenBookData.pagesInBook && ","}
-                              </span>
-                            )}
-                            {chosenBookData.pagesInBook && (
-                              <span
-                                style={{ display: "inline-block", margin: 2 }}
-                              >
-                                {chosenBookData.pagesInBook}{" "}
-                                {t("bookCard.pages")}
-                              </span>
-                            )}
-                          </p>
-                          {chosenBookData.bookDescription && (
-                            <p>{chosenBookData.bookDescription}</p>
-                          )}
-                        </div>
-                        <div>
-                          <img
-                            style={{
-                              height: 225,
-                              width: 150,
-                              objectFit: "cover",
-                            }}
-                            className="pb-2 "
-                            src={
-                              chosenBookData.imgSrc
-                                ? `https://simania.co.il/${chosenBookData.imgSrc}`
-                                : bookDefault
-                            }
-                            alt=""
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  <div className="modal-footer justify-content-end">
-                    <button
-                      type="button"
-                      className="btn btn-secondary"
-                      data-bs-dismiss="modal"
-                    >
-                      {t("form.close")}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
             <div
               className="flex-column d-flex justify-content-between"
               style={{

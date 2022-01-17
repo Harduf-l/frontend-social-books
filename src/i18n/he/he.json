@@ -9,6 +9,7 @@
     "email": "אימייל",
     "password": "סיסמא",
     "city": "עיר",
+    "country": "מדינה",
     "birth date": "תאריך לידה",
     "login": "התחבר",
     "register": "צור חשבון חדש",
@@ -35,7 +36,7 @@
     "what do you write": "מה את/ה כותב/ת?",
     "describe yourself": "ספר/י על עצמך",
     "age": "גיל",
-    "writingDescription": "אני כותב...",
+    "writingDescription": "אני כותב/ת...",
     "freeText": "קצת עליי"
   },
   "genres": {
@@ -70,7 +71,11 @@
     "looking for a book": "מחפש ספר",
     "selling a book": "מוכר ספר",
     "other": "אחר",
-    "books you may like": "ספרים שאולי תאהב"
+    "books you may like": "ספרים שאולי תאהב",
+    "add as friend": "הוסף כחבר",
+    "send a message": "שלח הודעה",
+    "didnt add books to list": "עדיין לא הוסיפ/ה ספרים לרשימת הקריאה",
+    "didnt write comments": "לא נמצאו תגובות אחרונות"
   },
   "navbar": {
     "profile": "פרופיל",

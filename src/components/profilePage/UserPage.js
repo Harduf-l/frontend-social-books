@@ -9,7 +9,7 @@ function UserPage() {
     <div className="container pt-5">
       <div className="row">
         <div className="col-lg-3 col-12">
-          <UserCard currentUserPage={store.userDetails} editOption={true} />
+          <UserCard currentUserPage={store.userDetails} isItMe={true} />
         </div>
       </div>
     </div>

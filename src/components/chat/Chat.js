@@ -182,18 +182,20 @@ function Chat() {
             </label>
             <input type="text" id="startConv" />
           </div>
-          {userConversation.length > 0 &&
-            userConversation.map((c) => {
-              return (
-                <Conversation
-                  key={c._id}
-                  conversation={c}
-                  currentUserId={store.userDetails._id}
-                  chosen={chosenConversationId === c._id}
-                  usersOnlineArray={usersOnlineArray}
-                />
-              );
-            })}
+          <div className="d-flex flex-column-reverse">
+            {userConversation.length > 0 &&
+              userConversation.map((c) => {
+                return (
+                  <Conversation
+                    key={c._id}
+                    conversation={c}
+                    currentUserId={store.userDetails._id}
+                    chosen={chosenConversationId === c._id}
+                    usersOnlineArray={usersOnlineArray}
+                  />
+                );
+              })}
+          </div>
         </div>
         <div
           className="col-12 col-lg-9 pt-3 pb-4 d-flex flex-column justify-content-between"

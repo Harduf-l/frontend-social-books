@@ -55,6 +55,7 @@ function ResigterHomePage() {
           payload: {
             userDeatils: response.data.userDetails,
             friends: response.data.suggestedUsers,
+            booksRecommendations: response.data.recommendationBookArray,
           },
         });
         navigate(`/`);

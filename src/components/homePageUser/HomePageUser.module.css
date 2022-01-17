@@ -46,3 +46,9 @@
 .bookItemRecommendation:hover {
   color: #1313e0;
 }
+.closeModalButton {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 10px;
+}

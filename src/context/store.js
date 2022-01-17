@@ -2,13 +2,15 @@ import React, { createContext, useReducer } from "react";
 import { storeReducer } from "../reducer/storeReducer";
 
 export const storeContext = createContext();
-// with useReducer
 
 const StoreContextProvider = ({ children }) => {
   const initalState = {
     isAuth: false,
+    registeredNow: false,
     userDetails: [],
+    initialLogin: false,
   };
+
   const [store, dispatch] = useReducer(storeReducer, initalState);
 
   return (

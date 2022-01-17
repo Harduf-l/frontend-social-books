@@ -28,6 +28,8 @@ function RegisterProcess() {
   const [nameChosen, setName] = useState("");
   const [passwordChosen, setPassword] = useState("");
   const [cityChosen, setCity] = useState("");
+  const [countryChosen, setChousenCountry] = useState("");
+
   const [passwordError, setPasswordError] = useState("");
   const [userImage, setChosenImage] = useState("");
   const [favoriteWriter, setFavoriteWriter] = useState("");
@@ -39,6 +41,7 @@ function RegisterProcess() {
   const [birthDateError, setBirthDateError] = useState("");
   const [passwordErrorType, setPasswordErrorType] = useState("");
   const [cities, setCities] = useState([]);
+  const [countriesOptions, setCountriesOptions] = useState([]);
   const [writingStatus, setWritingStatus] = useState(false);
   const [freeText, setFreeText] = useState("");
   const [freeWriterText, setFreeWriterText] = useState("");
@@ -72,6 +75,7 @@ function RegisterProcess() {
 
       formData.append("freeText", freeText);
       formData.append("city", cityChosen);
+      formData.append("country", countryChosen);
       formData.append("username", nameChosen);
       formData.append("password", passwordChosen);
       formData.append("favoriteWriter", favoriteWriter);
@@ -101,9 +105,10 @@ function RegisterProcess() {
             payload: {
               userDeatils: response.data.userDetails,
               friends: response.data.suggestedUsers,
+              booksRecommendations: response.data.recommendationBookArray,
             },
           });
-
+          dispatch({ type: "registration" });
           navigate(`/`);
         }
       } catch (err) {
@@ -137,7 +142,7 @@ function RegisterProcess() {
 
   const citySuggestions = (e) => {
     setCity(e.target.value);
-    if (e.target.value.length > 0) {
+    if (e.target.value.length > 0 && currentDir === "rtl") {
       axios
         .get(
           `${process.env.REACT_APP_SERVER_URL}autoComplete/get-cities-list?search=${e.target.value}`
@@ -155,6 +160,34 @@ function RegisterProcess() {
 
   const setChosenCity = (city) => {
     setCity(city);
+  };
+
+  const setCountrySuggestions = async (e) => {
+    setChousenCountry(e.target.value);
+    if (!e.target.value) {
+      setCountriesOptions([]);
+    }
+    let asciValue = e.target.value.charCodeAt(0);
+
+    let serverRoute = null;
+
+    if (asciValue >= 1488 && asciValue <= 1514 && currentDir === "rtl") {
+      serverRoute = "get-countriesHeb-list";
+    }
+    if (asciValue >= 65 && asciValue <= 122 && currentDir === "ltr") {
+      serverRoute = "get-countries-list";
+    }
+
+    if (serverRoute) {
+      let response = await axios.get(
+        `${process.env.REACT_APP_SERVER_URL}autoComplete/${serverRoute}?search=${e.target.value}`
+      );
+      setCountriesOptions(response.data.splice(0, 4));
+    }
+  };
+
+  const setChosenCountryFunction = (country) => {
+    setChousenCountry(country);
   };
 
   const setNameFunction = (e) => {
@@ -261,15 +294,27 @@ function RegisterProcess() {
                   <div style={{ height: "20px" }}></div>
                 </div>
                 <div>
-                  <InputAutoCompleteCombined
-                    dataArray={cities}
-                    setChosenInput={setChosenCity}
-                    fieldName={"city"}
-                    stateValue={cityChosen}
-                    functionToSetField={citySuggestions}
-                    type={"text"}
+                  <InputFunction
+                    dir="ltr"
+                    styleFunction={() => {
+                      let direction;
+                      direction = currentDir === "rtl" ? "end" : "start";
+                      return {
+                        textAlign: direction,
+                        width: "auto",
+                      };
+                    }}
+                    fieldName={"email"}
+                    stateValue={email}
+                    functionToSetField={setEmailFunction}
+                    type={"email"}
+                    autoComplete={true}
+                    onBlurFunction={emailBlurFunction}
                   />
-                  <div style={{ height: "20px" }}></div>
+                  <SmallFunction
+                    stateError={emailError}
+                    translationError={"form.email error"}
+                  />
                 </div>
               </div>
 
@@ -311,27 +356,28 @@ function RegisterProcess() {
 
               <div className="d-flex flex-wrap justify-content-between">
                 <div>
-                  <InputFunction
-                    dir="ltr"
-                    styleFunction={() => {
-                      let direction;
-                      direction = currentDir === "rtl" ? "end" : "start";
-                      return {
-                        textAlign: direction,
-                        width: "auto",
-                      };
-                    }}
-                    fieldName={"email"}
-                    stateValue={email}
-                    functionToSetField={setEmailFunction}
-                    type={"email"}
-                    autoComplete={true}
-                    onBlurFunction={emailBlurFunction}
+                  <InputAutoCompleteCombined
+                    dataArray={countriesOptions}
+                    setChosenInput={setChosenCountryFunction}
+                    fieldName={"country"}
+                    stateValue={countryChosen}
+                    functionToSetField={setCountrySuggestions}
+                    type={"text"}
                   />
-                  <SmallFunction
-                    stateError={emailError}
-                    translationError={"form.email error"}
+
+                  <div style={{ height: "20px" }}></div>
+
+                  <InputAutoCompleteCombined
+                    dataArray={cities}
+                    setChosenInput={setChosenCity}
+                    fieldName={"city"}
+                    stateValue={cityChosen}
+                    functionToSetField={citySuggestions}
+                    type={"text"}
                   />
+
+                  <div style={{ height: "20px" }}></div>
+
                   <div className="mb-2" style={{ fontSize: 14 }}>
                     <span style={{ marginInlineEnd: 5 }}>
                       {t("form.do you write")}

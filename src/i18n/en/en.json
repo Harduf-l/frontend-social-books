@@ -9,6 +9,7 @@
     "email": "Email",
     "password": "Password",
     "city": "City",
+    "country": "Country",
     "birth date": "Birth of date",
     "login": "Login",
     "register": "Create new account",
@@ -70,7 +71,11 @@
     "looking for a book": "Looking for a book",
     "selling a book": "Selling a book",
     "other": "Other",
-    "books you may like": "Books you may like"
+    "books you may like": "Books you may like",
+    "add as friend": "Add as friend",
+    "send a message": "Send a message",
+    "didnt add books to list": "didn't add any books to her book list.",
+    "didnt write comments": "No comments found"
   },
   "navbar": {
     "profile": "Profile",

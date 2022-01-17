@@ -1,0 +1,29 @@
+.cardItself {
+  background-color: #f3f3f3;
+  position: relative;
+  padding: 10px;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+}
+
+.userImage {
+  margin-bottom: 15px;
+  border-radius: 6px;
+  width: 150px;
+  padding: 5px;
+  object-fit: cover;
+  border: 2px solid #ddd;
+}
+
+.littleHeaderCard {
+  margin-inline-end: 5px;
+  font-size: 14px;
+  font-style: italic;
+  color: #920000;
+}
+
+.dataCard {
+  font-size: 15px;
+  padding-bottom: 6px;
+  display: inline-block;
+  padding-inline-end: 3px;
+}

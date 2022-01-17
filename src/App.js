@@ -16,44 +16,12 @@ import RouteWrapper from "./components/utlis/RouteWrapper";
 function App() {
   const { i18n } = useTranslation();
   document.body.dir = i18n.dir();
-  const [loading, setLoading] = useState(true);
 
-  const { store, dispatch } = useContext(storeContext);
-
-  useEffect(() => {
-    axios
-      .post(
-        `${process.env.REACT_APP_SERVER_URL}users/token-check`,
-        { token: localStorage.getItem("token") },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((res) => {
-        if (res.data.status === "ok") {
-          console.log("here in app", res.data);
-          dispatch({
-            type: "login",
-            payload: {
-              userDeatils: res.data.userDetails,
-              friends: res.data.suggestedUsers,
-              booksRecommendations: res.data.recommendationBookArray,
-            },
-          });
-        }
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-        console.log(err);
-      });
-  }, [dispatch]);
+  const { store } = useContext(storeContext);
 
   return (
     <div>
-      {!loading && store.isAuth && <NavBar />}
+      {store.isAuth && <NavBar />}
       <Routes>
         <Route path="/" element={<RouteWrapper component={HomePageUser} />} />
         <Route path="/messages" element={<RouteWrapper component={Chat} />} />
@@ -65,7 +33,11 @@ function App() {
           path="/profile"
           element={<RouteWrapper component={UserProfilePage} />}
         />
-        <Route path="/user/:id" element={<FriendUserPage />} />
+
+        <Route
+          path="/user/:id"
+          element={<RouteWrapper component={FriendUserPage} />}
+        />
         <Route path="/bookSearch" element={<BookSearch />} />
         <Route path="/register" element={<RegisterProcess />} />
       </Routes>
