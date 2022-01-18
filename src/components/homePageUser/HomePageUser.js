@@ -35,7 +35,7 @@ function HomePageUser() {
     setOpen(true);
 
     const bookData = await axios.get(
-      `http://localhost:5005/books/get-single-book-data?bookId=${book.bookId}`
+      `${process.env.REACT_APP_SERVER_URL}books/get-single-book-data?bookId=${book.bookId}`
     );
     setSingleBookData({ ...book, ...bookData.data });
     setLoading(false);

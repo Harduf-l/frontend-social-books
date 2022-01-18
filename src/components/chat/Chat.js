@@ -61,9 +61,6 @@ function Chat() {
     socket.current.emit("addUser", store.userDetails._id);
   }, [store.userDetails._id]);
 
-  useEffect(() => {
-    console.log("לךחךגשד");
-  }, [messagesThread]);
   const sendMessage = async () => {
     let textToSend = typedMessage;
     setShowEmoji(false);

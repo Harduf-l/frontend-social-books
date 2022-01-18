@@ -25,7 +25,9 @@ function BookSearch() {
     setSingleBookLoading(true);
     setOpen(true);
     axios
-      .get(`http://localhost:5005/books/get-single-book-data?bookId=${bookId}`)
+      .get(
+        `${process.env.REACT_APP_SERVER_URL}books/get-single-book-data?bookId=${bookId}`
+      )
       .then((res) => {
         setChosenBookData({ ...book, ...res.data });
         console.log({ ...book, ...res.data });
@@ -42,7 +44,7 @@ function BookSearch() {
     const wordSearched = searchParams.get("search");
     axios
       .get(
-        `http://localhost:5005/books/get-book-list-data?search=${wordSearched}`
+        `${process.env.REACT_APP_SERVER_URL}books/get-book-list-data?search=${wordSearched}`
       )
       .then((res) => {
         setLoading(false);
