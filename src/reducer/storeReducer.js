@@ -17,7 +17,7 @@ export const storeReducer = (state, action) => {
     }
     case "logout":
       localStorage.removeItem("token");
-      return { ...state, isAuth: false, userDetails: [] };
+      return { ...state, isAuth: false, userDetails: [], registeredNow: false };
     default:
       return state;
   }

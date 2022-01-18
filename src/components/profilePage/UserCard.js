@@ -32,7 +32,7 @@ export const UserCard = ({
       <div className="text-center">
         <img
           className={styles.userImage}
-          src={`${process.env.REACT_APP_SERVER_URL}${currentUserPage.picture}`}
+          src={currentUserPage.picture}
           alt=""
         />
       </div>

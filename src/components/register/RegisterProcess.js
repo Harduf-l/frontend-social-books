@@ -50,8 +50,10 @@ function RegisterProcess() {
   const { dispatch } = useContext(storeContext);
 
   const RegisterNewUser = async (e) => {
-    const userGenresArray = Object.keys(userGenres);
     e.preventDefault();
+
+    const userGenresArray = Object.keys(userGenres);
+
     if (
       nameChosen &&
       passwordChosen &&
@@ -67,30 +69,32 @@ function RegisterProcess() {
         day: birthArray[2],
       };
 
-      const formData = new FormData();
+      const userObjectToSend = {};
 
       if (writingStatus) {
-        formData.append("writingDescription", freeWriterText);
+        userObjectToSend["writingDescription"] = freeWriterText;
       }
 
-      formData.append("freeText", freeText);
-      formData.append("city", cityChosen);
-      formData.append("country", countryChosen);
-      formData.append("username", nameChosen);
-      formData.append("password", passwordChosen);
-      formData.append("favoriteWriter", favoriteWriter);
-      formData.append("email", email);
-      formData.append("photo", userImage);
-      formData.append("genres", userGenresArray);
-      formData.append("birthday", JSON.stringify(birthdayObj));
+      userObjectToSend["freeText"] = freeText;
+      userObjectToSend["city"] = cityChosen;
+      userObjectToSend["country"] = countryChosen;
+      userObjectToSend["username"] = nameChosen;
+
+      userObjectToSend["password"] = passwordChosen;
+      userObjectToSend["favoriteWriter"] = favoriteWriter;
+      userObjectToSend["email"] = email;
+      userObjectToSend["picture"] = userImage;
+
+      userObjectToSend["genres"] = userGenresArray;
+      userObjectToSend["birthday"] = JSON.stringify(birthdayObj);
 
       try {
         const response = await axios.post(
           `${process.env.REACT_APP_SERVER_URL}users/add-user`,
-          formData,
+          userObjectToSend,
           {
             headers: {
-              "Content-Type": "multipart/form-data",
+              "Content-Type": "application/json",
             },
           }
         );
@@ -136,8 +140,8 @@ function RegisterProcess() {
     setRegisterError("duplicate email");
   };
 
-  const setImageFileFunction = (imageBlob) => {
-    setChosenImage(imageBlob);
+  const setImageFileFunction = (imageDataUrl) => {
+    setChosenImage(imageDataUrl);
   };
 
   const citySuggestions = (e) => {

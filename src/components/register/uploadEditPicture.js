@@ -40,7 +40,6 @@ export const UploadEditPicture = ({ setImageFileFunction }) => {
 
   const handleRotate = () => {
     let newRotateDegree;
-    console.log(picture.rotate);
     if (picture.rotate === 270) newRotateDegree = 0;
     else newRotateDegree = picture.rotate + 90;
 
@@ -67,25 +66,12 @@ export const UploadEditPicture = ({ setImageFileFunction }) => {
     editor = ed;
   };
 
-  function dataURLtoBlob(dataurl) {
-    var arr = dataurl.split(","),
-      mime = arr[0].match(/:(.*?);/)[1],
-      bstr = atob(arr[1]),
-      n = bstr.length,
-      u8arr = new Uint8Array(n);
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new Blob([u8arr], { type: mime });
-  }
-
   const handleSave = (e) => {
     handleClose();
     if (setEditorRef) {
-      const canvasScaled = editor.getImageScaledToCanvas();
+      const canvasScaled = editor.getImage();
       const croppedImg = canvasScaled.toDataURL();
-      const imageFile = dataURLtoBlob(croppedImg);
-      setImageFileFunction(imageFile);
+      setImageFileFunction(croppedImg);
 
       setPicture({
         ...picture,
@@ -110,7 +96,6 @@ export const UploadEditPicture = ({ setImageFileFunction }) => {
     const fileType = e.target.files[0].type.split("/")[0];
 
     if (fileType === "image") {
-      console.log(img.size);
       if (img.size > 1000000) {
         setImageFileFunction(null);
         setPicture({
@@ -120,15 +105,18 @@ export const UploadEditPicture = ({ setImageFileFunction }) => {
         });
         setImageError(true);
       } else {
-        let url = URL.createObjectURL(img);
-        setImageFileFunction(img);
-        setPicture({
-          ...picture,
-          img: url,
-          croppedImg: url,
-        });
-        handleOpen();
-        setImageError(false);
+        const reader = new FileReader();
+        reader.readAsDataURL(img);
+        reader.onloadend = () => {
+          setImageFileFunction(reader.result);
+          setPicture({
+            ...picture,
+            img: reader.result,
+            croppedImg: reader.result,
+          });
+          handleOpen();
+          setImageError(false);
+        };
       }
     } else {
       setImageFileFunction(null);
