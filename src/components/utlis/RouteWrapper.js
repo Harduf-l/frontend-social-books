@@ -14,6 +14,11 @@ function RouteWrapper({ component: Component, type }) {
   useEffect(() => {
     if (store.registeredNow) return;
 
+    if (!localStorage.getItem("token")) {
+      setLoading(false);
+      return;
+    }
+
     if (store.initialLogin) {
       axios
         .post(
