@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import react from "react";
 import styles from "./profilePage.module.css";
 import { calculateAge } from "../utlis/utils";
+import defaultProfilePicture from "../../images/plain.jpg";
 
 export const UserCard = ({
   currentUserPage,
@@ -32,7 +33,11 @@ export const UserCard = ({
       <div className="text-center">
         <img
           className={styles.userImage}
-          src={currentUserPage.picture}
+          src={
+            currentUserPage.picture
+              ? currentUserPage.picture
+              : defaultProfilePicture
+          }
           alt=""
         />
       </div>

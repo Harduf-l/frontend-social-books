@@ -33,11 +33,21 @@ function UserPage() {
     };
 
     try {
-      const newConversationCreated = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}messages/new-conversation`,
-        newConversation
+      let isConversationExist = await axios.get(
+        `${process.env.REACT_APP_SERVER_URL}messages/check-if-conversation-already-exist/${store.userDetails._id}/${params.id}`
       );
-      navigate(`/messages/${newConversationCreated.data._id}/${params.id}`);
+      isConversationExist = isConversationExist.data;
+
+      if (isConversationExist.length === 0) {
+        const newConversationCreated = await axios.post(
+          `${process.env.REACT_APP_SERVER_URL}messages/new-conversation`,
+          newConversation
+        );
+        navigate(`/messages/${newConversationCreated.data._id}/${params.id}`);
+      } else if (isConversationExist.length > 0) {
+        console.log("here");
+        navigate(`/messages/${isConversationExist[0]._id}/${params.id}`);
+      }
     } catch (err) {
       console.log(err.response);
     }

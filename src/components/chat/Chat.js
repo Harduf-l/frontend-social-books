@@ -6,7 +6,6 @@ import { useParams } from "react-router-dom";
 import { format } from "timeago.js";
 import { useTranslation } from "react-i18next";
 import defaultPicture from "../../images/plain.jpg";
-import { io } from "socket.io-client";
 import styles from "./chat.module.css";
 import "emoji-mart/css/emoji-mart.css";
 import { Picker } from "emoji-mart";
@@ -17,11 +16,9 @@ function Chat() {
   const [chosenConversationId, setChosenConversationId] = useState("");
   const [chosenPersonPicture, setChosenPersonPicture] = useState([]);
   const [userConversation, setUserConversations] = useState([]);
-  const [usersOnlineArray, setUsersOnlineArray] = useState([]);
   const [chosenPersonName, setChosenPersonName] = useState("");
   const [typedMessage, setTypedMessage] = useState("");
   const [showEmoji, setShowEmoji] = useState(false);
-  const socket = useRef();
   const { i18n, t } = useTranslation();
   const currentDir = i18n.dir();
   let lastMessage = useRef();
@@ -29,37 +26,7 @@ function Chat() {
 
   useEffect(() => {
     setChosenConversationId("");
-    socket.current = io(process.env.REACT_APP_SOCKET_URL);
-
-    socket.current.on("getMessage", (data) => {
-      console.log(data);
-
-      const newArray = [
-        ...messagesThread,
-        {
-          conversationId: chosenConversationId,
-          sender: data.sender,
-          text: data.text,
-          createdAt: Date.now(),
-          _id: Math.random(),
-        },
-      ];
-
-      setMessagesThread(newArray);
-    });
-
-    socket.current.on("getUsers", (usersOnline) => {
-      setUsersOnlineArray(usersOnline);
-    });
-
-    return () => {
-      socket.current = null;
-    };
   }, []);
-
-  useEffect(() => {
-    socket.current.emit("addUser", store.userDetails._id);
-  }, [store.userDetails._id]);
 
   const sendMessage = async () => {
     let textToSend = typedMessage;
@@ -78,12 +45,6 @@ function Chat() {
         _id: Math.random(),
       },
     ]);
-
-    socket.current.emit("sendMessage", {
-      senderId: store.userDetails._id,
-      receiverId: params.friendId,
-      text: textToSend,
-    });
 
     try {
       await axios.post(
@@ -188,7 +149,6 @@ function Chat() {
                     conversation={c}
                     currentUserId={store.userDetails._id}
                     chosen={chosenConversationId === c._id}
-                    usersOnlineArray={usersOnlineArray}
                   />
                 );
               })}
@@ -257,7 +217,7 @@ function Chat() {
                           <img
                             src={
                               store.userDetails.picture
-                                ? `${process.env.REACT_APP_SERVER_URL}${store.userDetails.picture}`
+                                ? store.userDetails.picture
                                 : defaultPicture
                             }
                             style={{ marginInlineEnd: "10px" }}
@@ -291,7 +251,7 @@ function Chat() {
                           <img
                             src={
                               chosenPersonPicture
-                                ? `${process.env.REACT_APP_SERVER_URL}${chosenPersonPicture}`
+                                ? chosenPersonPicture
                                 : defaultPicture
                             }
                             style={{ marginInlineStart: "10px" }}

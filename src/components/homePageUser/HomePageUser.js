@@ -136,11 +136,7 @@ function HomePageUser() {
                           objectFit: "cover",
                           padding: 5,
                         }}
-                        src={
-                          el.picture
-                            ? `${process.env.REACT_APP_SERVER_URL}${el.picture}`
-                            : defaultPicture
-                        }
+                        src={el.picture ? el.picture : defaultPicture}
                         alt=""
                       />
 

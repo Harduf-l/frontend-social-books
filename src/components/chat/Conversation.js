@@ -4,14 +4,8 @@ import { useNavigate } from "react-router-dom";
 import defaultPicture from "../../images/plain.jpg";
 import styles from "./chat.module.css";
 
-function Conversation({
-  conversation,
-  currentUserId,
-  chosen,
-  usersOnlineArray,
-}) {
+function Conversation({ conversation, currentUserId, chosen }) {
   const [friend, setFriend] = useState(null);
-  const [online, setOnline] = useState(false);
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -26,21 +20,13 @@ function Conversation({
           `${process.env.REACT_APP_SERVER_URL}users/get-by-id/${partnerId}`
         );
         setFriend(res.data);
-
-        if (usersOnlineArray.length > 0) {
-          if (usersOnlineArray.some((el) => el.userId === partnerId)) {
-            setOnline(true);
-          } else {
-            setOnline(false);
-          }
-        }
       } catch (err) {
         console.log(err);
       }
     };
 
     fetchPartnerData();
-  }, [conversation, currentUserId, usersOnlineArray]);
+  }, [conversation, currentUserId]);
 
   if (!friend) {
     return <div></div>;
@@ -57,20 +43,10 @@ function Conversation({
       <div style={{ position: "relative" }}>
         <img
           className={styles.profilePicInChat}
-          src={
-            friend.picture
-              ? `${process.env.REACT_APP_SERVER_URL}${friend.picture}`
-              : defaultPicture
-          }
+          src={friend.picture ? friend.picture : defaultPicture}
           alt=""
         />
-        <div
-          className={
-            online
-              ? `${styles.onlineSign} ${styles.onlineSignOn}`
-              : `${styles.onlineSign} ${styles.onlineSignOff}`
-          }
-        ></div>
+        <div className={styles.onlineSignOn}></div>
       </div>
     </div>
   );
