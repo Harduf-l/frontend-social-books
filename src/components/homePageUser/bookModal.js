@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Box, Typography } from "@material-ui/core";
+import { Modal, Box } from "@mui/material";
 import bookDefault from "../../images/book-default.jpg";
 import { useTranslation } from "react-i18next";
 import styles from "./HomePageUser.module.css";

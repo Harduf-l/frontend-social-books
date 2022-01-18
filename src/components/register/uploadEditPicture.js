@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Avatar,
-  Button,
-  Box,
-  Slider,
-  Modal,
-  Typography,
-} from "@material-ui/core";
+import { Avatar, Button, Box, Slider, Modal, Typography } from "@mui/material";
 import { useState } from "react";
 import AvatarEditor from "react-avatar-editor";
 import defaultProfilePic from "../../images/plain.jpg";

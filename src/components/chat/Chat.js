@@ -221,11 +221,13 @@ function Chat() {
             native={true}
           />
           <div className="">
-            {chosenConversationId && messagesThread.length === 0 && (
-              <p className="p-3">
-                {t("chat.starConversationWith")} {chosenPersonName}
-              </p>
-            )}
+            {chosenConversationId &&
+              messagesThread.length === 0 &&
+              chosenPersonName && (
+                <p className="p-3">
+                  {t("chat.starConversationWith")} {chosenPersonName}
+                </p>
+              )}
             {!chosenConversationId && (
               <p className="p-3">{t("chat.chooseConversation")}</p>
             )}
