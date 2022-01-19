@@ -1,11 +1,10 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import styles from "./NavBar.module.css";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import BookMeLogo from "../../../images/BookMe.png";
 import { storeContext } from "../../../context/store";
-import defaultProfilePicture from "../../../images/plain.jpg";
 import FriendRequestBox from "./FriendRequestsBox";
 
 const lngs = {
@@ -27,6 +26,10 @@ function NavBar() {
   const [showMobileLink, setShowMobileLinks] = useState(false);
   const searchWord = useRef();
   const searchWordMobile = useRef();
+
+  const closeFriendsModal = () => {
+    setOpenFriendsRequestsModal(false);
+  };
 
   const changePendingFriendRequests = (connection) => {
     let newMyPendingConnections = [...myPendingConnections];
@@ -213,6 +216,7 @@ function NavBar() {
         <FriendRequestBox
           myPendingConnections={myPendingConnections}
           changePendingFriendRequests={changePendingFriendRequests}
+          closeFriendsModal={closeFriendsModal}
         />
       )}
     </div>

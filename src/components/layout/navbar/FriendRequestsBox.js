@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import styles from "./NavBar.module.css";
 import defaultPicture from "../../../images/plain.jpg";
 import { useTranslation } from "react-i18next";
@@ -7,9 +7,25 @@ import axios from "axios";
 function FriendRequestsBox({
   myPendingConnections,
   changePendingFriendRequests,
+  closeFriendsModal,
 }) {
   const { i18n } = useTranslation();
   const currentDir = i18n.dir();
+
+  const wrapperRef = useRef(null);
+
+  useEffect(() => {
+    document.addEventListener("click", handleClose);
+
+    function handleClose(event) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        closeFriendsModal();
+      }
+    }
+    return () => {
+      document.removeEventListener("click", handleClose);
+    };
+  }, [closeFriendsModal]);
 
   const confirmFriendRequest = async (connection) => {
     try {
@@ -38,6 +54,7 @@ function FriendRequestsBox({
 
   return (
     <div
+      ref={wrapperRef}
       className={
         currentDir === "rtl" ? styles.friendBoxHeb : styles.friendBoxEng
       }

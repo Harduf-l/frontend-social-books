@@ -171,6 +171,14 @@
 }
 
 @media only screen and (max-width: 950px) {
+  .friendBoxHeb {
+    display: none;
+  }
+
+  .friendBoxEng {
+    display: none;
+  }
+
   .marginInlineStart {
     margin-inline-start: 0px;
   }
