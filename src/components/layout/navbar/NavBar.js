@@ -168,13 +168,14 @@ function NavBar() {
             >
               <i className="far fa-user-friends"></i>
 
-              {store.myPendingConnections.length > 0 && (
-                <div className={styles.notificationNumberContainer}>
-                  <span className={styles.notificationNumber}>
-                    {store.myPendingConnections.length}
-                  </span>
-                </div>
-              )}
+              {store.myPendingConnections &&
+                store.myPendingConnections.length > 0 && (
+                  <div className={styles.notificationNumberContainer}>
+                    <span className={styles.notificationNumber}>
+                      {store.myPendingConnections.length}
+                    </span>
+                  </div>
+                )}
             </div>
           </div>
         </div>
