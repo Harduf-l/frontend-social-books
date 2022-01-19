@@ -4,7 +4,10 @@ import defaultPicture from "../../../images/plain.jpg";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 
-function FriendRequestsBox({ myPendingConnections }) {
+function FriendRequestsBox({
+  myPendingConnections,
+  changePendingFriendRequests,
+}) {
   const { i18n } = useTranslation();
   const currentDir = i18n.dir();
 
@@ -14,6 +17,7 @@ function FriendRequestsBox({ myPendingConnections }) {
         `${process.env.REACT_APP_SERVER_URL}connections/approve-connection-request`,
         { connectionId: connection.connectionId }
       );
+      changePendingFriendRequests(connection);
     } catch (err) {
       console.log(err);
     }
@@ -25,6 +29,8 @@ function FriendRequestsBox({ myPendingConnections }) {
         `${process.env.REACT_APP_SERVER_URL}connections/delete-connection-request`,
         { data: { connectionId: connection.connectionId } }
       );
+
+      changePendingFriendRequests(connection);
     } catch (err) {
       console.log(err);
     }
@@ -76,7 +82,7 @@ function FriendRequestsBox({ myPendingConnections }) {
           })}
         {(myPendingConnections.length === 0 || !myPendingConnections) && (
           <div>
-            <p style={{ textAlign: "center", fontSize: 12, paddingTop: 5 }}>
+            <p style={{ textAlign: "center", fontSize: 12, paddingTop: 13 }}>
               אין הצעות חברות חדשות
             </p>
           </div>

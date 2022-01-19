@@ -14,7 +14,7 @@ const lngs = {
 };
 
 function NavBar() {
-  const { store } = useContext(storeContext);
+  const { store, dispatch } = useContext(storeContext);
   const { username, picture } = store.userDetails;
   const [openFriendsRequestsModal, setOpenFriendsRequestsModal] =
     useState(false);
@@ -27,6 +27,20 @@ function NavBar() {
   const [showMobileLink, setShowMobileLinks] = useState(false);
   const searchWord = useRef();
   const searchWordMobile = useRef();
+
+  const changePendingFriendRequests = (connection) => {
+    let newMyPendingConnections = [...myPendingConnections];
+
+    let indexToDelete = newMyPendingConnections.indexOf(
+      (el) => el.connectionId === connection.connectionId
+    );
+    newMyPendingConnections.splice(indexToDelete, 1);
+
+    dispatch({
+      type: "changePendingFriendRequests",
+      payload: { newMyPendingConnections },
+    });
+  };
 
   const moveToSearchPage = (e, type) => {
     e.preventDefault();
@@ -195,7 +209,10 @@ function NavBar() {
         </div>
       </div>
       {openFriendsRequestsModal && (
-        <FriendRequestBox myPendingConnections={myPendingConnections} />
+        <FriendRequestBox
+          myPendingConnections={myPendingConnections}
+          changePendingFriendRequests={changePendingFriendRequests}
+        />
       )}
     </div>
   );

@@ -11,6 +11,12 @@ export const storeReducer = (state, action) => {
         myPendingConnections: action.payload.myPendingConnections,
         initialLogin: true,
       };
+    case "changePendingFriendRequests":
+      console.log("in reducer", action.payload.newMyPendingConnections);
+      return {
+        ...state,
+        myPendingConnections: action.payload.newMyPendingConnections,
+      };
     case "registration": {
       return {
         ...state,
