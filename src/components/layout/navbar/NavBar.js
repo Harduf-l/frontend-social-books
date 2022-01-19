@@ -1,15 +1,25 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import styles from "./NavBar.module.css";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import BookMeLogo from "../../../images/BookMe.png";
+import { storeContext } from "../../../context/store";
+import defaultProfilePicture from "../../../images/plain.jpg";
+import FriendRequestBox from "./FriendRequestsBox";
+
 const lngs = {
   en: { nativeName: "English" },
   he: { nativeName: "Hebrew" },
 };
 
 function NavBar() {
+  const { store } = useContext(storeContext);
+  const { username, picture } = store.userDetails;
+  const [openFriendsRequestsModal, setOpenFriendsRequestsModal] =
+    useState(false);
+  const { myPendingConnections } = store;
+
   let navigate = useNavigate();
   const { i18n } = useTranslation();
   const { t } = useTranslation();
@@ -66,8 +76,6 @@ function NavBar() {
                 setShowMobileLinks(false);
               }}
               id="homeLogo"
-              className={styles.navlinkStatic}
-              style={{ marginInlineEnd: "20px" }}
               to="/"
             >
               <span className={styles.menuIcon}>
@@ -81,17 +89,27 @@ function NavBar() {
               className={styles.navlink}
               to="/profile"
             >
-              {t("navbar.profile")}
+              <div className={styles.divProfileNav}>
+                <span style={{ marginInlineStart: 5 }}>
+                  {t("navbar.profile")}
+                </span>
+              </div>
             </NavLink>
+
             <NavLink
               onClick={() => {
                 setShowMobileLinks(false);
               }}
               className={styles.navlink}
-              to="/messages"
+              to="/groups"
             >
-              {t("navbar.messages")}
+              <div className={styles.divProfileNav}>
+                <span style={{ marginInlineStart: 5 }}>
+                  {t("navbar.groups")}
+                </span>
+              </div>
             </NavLink>
+
             <NavLink
               onClick={() => {
                 setShowMobileLinks(false);
@@ -99,17 +117,51 @@ function NavBar() {
               className={styles.navlink}
               to="/events"
             >
-              {t("navbar.events")}
+              <div className={styles.divProfileNav}>
+                <span style={{ marginInlineStart: 5 }}>
+                  {t("navbar.events")}
+                </span>
+              </div>
             </NavLink>
+
             <NavLink
               onClick={() => {
                 setShowMobileLinks(false);
               }}
-              className={styles.navlink}
-              to="/books"
+              to="/messages"
+              className={styles.marginInlineStart}
             >
-              {t("navbar.books")}
+              <div className={styles.notificationSymbol}>
+                <i className="far fa-envelope"></i>
+                <div className={styles.notificationNumberContainer}>
+                  <span className={styles.notificationNumber}>3</span>
+                </div>
+              </div>
             </NavLink>
+            <div className={styles.notificationSymbol}>
+              <i className="far fa-bell"></i>
+              <div className={styles.notificationNumberContainer}>
+                <span className={styles.notificationNumber}>1</span>
+              </div>
+            </div>
+
+            <div
+              role={"button"}
+              onClick={() =>
+                setOpenFriendsRequestsModal(!openFriendsRequestsModal)
+              }
+              className={styles.notificationSymbol}
+            >
+              <i className="far fa-user-friends"></i>
+
+              {store.myPendingConnections.length > 0 && (
+                <div className={styles.notificationNumberContainer}>
+                  <span className={styles.notificationNumber}>
+                    {store.myPendingConnections.length}
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
         <div className={styles.LeftSide}>
@@ -142,6 +194,9 @@ function NavBar() {
           ))}
         </div>
       </div>
+      {openFriendsRequestsModal && (
+        <FriendRequestBox myPendingConnections={myPendingConnections} />
+      )}
     </div>
   );
 }

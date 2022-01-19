@@ -60,6 +60,7 @@ function RouteWrapper({ component: Component, type }) {
                 userDeatils: res.data.userDetails,
                 friends: res.data.suggestedUsers,
                 booksRecommendations: res.data.recommendationBookArray,
+                myPendingConnections: res.data.myPendingConnections,
               },
             });
           }

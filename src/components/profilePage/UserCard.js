@@ -8,6 +8,7 @@ export const UserCard = ({
   currentUserPage,
   isItMe,
   createNewMessageAndNavigate,
+  sendFriendRequest,
 }) => {
   const { t } = useTranslation();
   const [userAge, setuserAge] = react.useState(null);
@@ -94,7 +95,7 @@ export const UserCard = ({
           >
             {t("profile.send a message")}
           </button>
-          <button className="btn btn-light">
+          <button className="btn btn-light" onClick={sendFriendRequest}>
             {t("profile.add as friend")}
           </button>
         </div>

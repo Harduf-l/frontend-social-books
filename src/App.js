@@ -12,6 +12,7 @@ import "./i18n/i18n";
 import { storeContext } from "./context/store";
 import axios from "axios";
 import RouteWrapper from "./components/utlis/RouteWrapper";
+import Footer from "./components/layout/footer/Footer";
 
 function App() {
   const { i18n } = useTranslation();
@@ -20,27 +21,34 @@ function App() {
   const { store } = useContext(storeContext);
 
   return (
-    <div>
+    <div id="page-container">
       {store.isAuth && <NavBar />}
-      <Routes>
-        <Route path="/" element={<RouteWrapper component={HomePageUser} />} />
-        <Route path="/messages" element={<RouteWrapper component={Chat} />} />
-        <Route
-          path="/messages/:conversationId/:friendId"
-          element={<RouteWrapper component={Chat} />}
-        />
-        <Route
-          path="/profile"
-          element={<RouteWrapper component={UserProfilePage} />}
-        />
+      <div id="content-wrap">
+        <Routes>
+          <Route path="/" element={<RouteWrapper component={HomePageUser} />} />
+          <Route path="/messages" element={<RouteWrapper component={Chat} />} />
+          <Route
+            path="/messages/:conversationId/:friendId"
+            element={<RouteWrapper component={Chat} />}
+          />
+          <Route
+            path="/profile"
+            element={<RouteWrapper component={UserProfilePage} />}
+          />
 
-        <Route
-          path="/user/:id"
-          element={<RouteWrapper component={FriendUserPage} />}
-        />
-        <Route path="/bookSearch" element={<BookSearch />} />
-        <Route path="/register" element={<RegisterProcess />} />
-      </Routes>
+          <Route
+            path="/user/:id"
+            element={<RouteWrapper component={FriendUserPage} />}
+          />
+          <Route path="/bookSearch" element={<BookSearch />} />
+          <Route path="/register" element={<RegisterProcess />} />
+        </Routes>
+      </div>
+      {store.isAuth && (
+        <div id="footer">
+          <Footer />
+        </div>
+      )}
     </div>
   );
 }

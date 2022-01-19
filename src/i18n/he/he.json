@@ -5,6 +5,7 @@
   "loading": "טוען...",
   "yes": "כן",
   "no": "לא",
+  "rights": "כל הזכויות שמורות",
   "form": {
     "email": "אימייל",
     "password": "סיסמא",
@@ -82,7 +83,8 @@
     "messages": "הודעות",
     "events": "אירועים",
     "books": "ספרים",
-    "search": "חפש..."
+    "search": "חפש...",
+    "groups": "קבוצות דיון"
   },
   "chat": {
     "starConversationWith": "התחל שיחה עם",

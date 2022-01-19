@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 
 function HomePageUser() {
   let navigate = useNavigate();
-  const profileBackground = "#c2ccc4";
   const { t } = useTranslation();
   const { dispatch, store } = useContext(storeContext);
   const [userContent, setUserContent] = useState("");
@@ -41,17 +40,14 @@ function HomePageUser() {
     setLoading(false);
   };
   return (
-    <div className="d-flex flex-wrap">
+    <div className="d-flex flex-wrap ">
       <BookModal
         open={open}
         handleClose={handleClose}
         chosenBookData={singleBookData}
         loading={loading}
       />
-      <div
-        className="col-12 col-lg-2"
-        style={{ backgroundColor: profileBackground }}
-      >
+      <div className={`col-12 col-lg-2 ${styles.sideBarHeight}`}>
         <p className={styles.welcomeMessage}>
           {t("profile.welcome")}
           {username}
@@ -157,7 +153,7 @@ function HomePageUser() {
         </div>
       </div>
       <div
-        className="col-12 col-lg-3 pt-3"
+        className="col-12 col-lg-3 pt-3 pb-3"
         style={{ paddingInlineStart: 30, paddingInlineEnd: 30 }}
       >
         <div className={styles.miniHeadingItalic}>

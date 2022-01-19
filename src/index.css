@@ -11,17 +11,29 @@ body {
   box-sizing: border-box;
 }
 
+#page-container {
+  position: relative;
+  min-height: 100vh;
+}
+
+#content-wrap {
+  padding-bottom: 2.5rem; /* Footer height */
+}
+
+#footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 2.5rem; /* Footer height */
+  background-color: #e6e6e6;
+}
+
 .menuIcon {
   font-size: 25px;
   padding-inline-start: 10px;
   padding-top: 5px;
   color: #1f1f1f;
   cursor: pointer;
-}
-
-@media screen and (max-width: 990px) {
-  .mobile-space {
-  }
 }
 
 @media screen and (max-width: 767px) {

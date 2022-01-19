@@ -52,3 +52,14 @@
   top: 0;
   padding: 10px;
 }
+
+.sideBarHeight {
+  background-color: #c2ccc4;
+  height: calc(100vh - 97px);
+}
+
+@media (max-width: 991px) {
+  .sideBarHeight {
+    height: auto;
+  }
+}

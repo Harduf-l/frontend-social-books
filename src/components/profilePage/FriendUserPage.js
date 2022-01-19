@@ -26,6 +26,18 @@ function UserPage() {
       });
   }, [store, params.id, navigate]);
 
+  const sendFriendRequest = async () => {
+    try {
+      const newConnection = await axios.post(
+        `${process.env.REACT_APP_SERVER_URL}connections/send-connection-request`,
+        { senderId: store.userDetails._id, receiverId: params.id }
+      );
+      console.log(newConnection);
+    } catch (err) {
+      console.log(err.response);
+    }
+  };
+
   const createNewMessageAndNavigate = async () => {
     let newConversation = {
       senderId: store.userDetails._id,
@@ -54,7 +66,7 @@ function UserPage() {
   };
 
   return (
-    <div className="container pt-5">
+    <div className="container pt-5 mb-5">
       {currentUserPage && (
         <div className="row">
           <div className="col-lg-3 col-md-6 col-12">
@@ -62,6 +74,7 @@ function UserPage() {
               currentUserPage={currentUserPage}
               isItMe={false}
               createNewMessageAndNavigate={createNewMessageAndNavigate}
+              sendFriendRequest={sendFriendRequest}
             />
           </div>
           <div className="col-lg-9 col-md-6 col-12 pt-4 pt-md-0">

@@ -2,22 +2,10 @@
   display: flex;
 }
 
-.red {
-  color: red;
-}
-
 .NavTotalBar {
   background-color: #e6e6e6;
   width: 100%;
   padding-top: 5px;
-  padding-bottom: 5px;
-}
-
-#homeLogo {
-  color: #c6ecc0;
-}
-#homeLogo:hover {
-  color: #cf925e;
 }
 
 .LeftSide {
@@ -38,7 +26,9 @@
   text-decoration: none;
   color: black;
   font-size: 17px;
-  padding: 10px;
+  margin: 3px;
+  padding: 5px;
+  padding-bottom: 17px;
 }
 
 .navlinkStatic {
@@ -50,10 +40,59 @@
 
 .navlink:hover {
   color: black;
-  border-bottom: 2px black solid;
+  border-bottom: 2.5px black solid;
 }
-.active {
-  font-weight: 500;
+
+.menuIcon {
+  padding: 5px;
+  display: inline-block;
+}
+
+.divProfileNav {
+  display: inline-block;
+}
+
+.userPicRequestFriend {
+  height: 55px;
+  width: 55px;
+  border-radius: 50%;
+}
+
+.friendBoxHeb {
+  position: absolute;
+  top: 50px;
+  right: 298px;
+  z-index: 9999;
+}
+
+.friendBoxEng {
+  position: absolute;
+  top: 50px;
+  left: 260px;
+  z-index: 9999;
+}
+
+.arrowUp {
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 12px solid white;
+  margin: 0 auto;
+}
+
+.contentItselfBox {
+  width: 300px;
+  padding: 10px;
+  background-color: white;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+  border-radius: 10px;
+  max-height: 300px;
+  overflow: auto;
+}
+
+.profileChange {
+  font-size: 12px;
 }
 
 .searchButton {
@@ -85,14 +124,67 @@
   display: none;
 }
 
-@media screen and (max-width: 850px) {
-  .navlink {
-    font-size: 18px;
-    padding: 6px;
-  }
+.notificationSymbol {
+  font-size: 21px;
+
+  margin-inline-end: 30px;
+  display: inline-block;
+  color: #313123;
+  position: relative;
 }
 
-@media only screen and (max-width: 822px) {
+.marginInlineStart {
+  margin-inline-start: 25px;
+}
+
+.messageText {
+  display: inline-block;
+}
+
+.marginEnd {
+  margin-inline-end: 15px;
+}
+
+.notificationNumberContainer {
+  font-size: 12px;
+  text-align: center;
+  color: white;
+  position: absolute;
+  bottom: 0;
+  border-radius: 50%;
+  display: inline-block;
+  height: 18px;
+  width: 18px;
+  background-color: #000732;
+}
+
+.notificationNumber {
+  text-align: center;
+  margin: 0 auto;
+  display: block;
+}
+
+.profilePicLogo {
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+}
+
+@media only screen and (max-width: 950px) {
+  .marginInlineStart {
+    margin-inline-start: 0px;
+  }
+
+  .marginEnd {
+    margin-inline-end: 0px;
+  }
+
+  .notificationSymbol {
+    font-size: 23px;
+    margin-inline-start: 25px;
+    padding-top: 10px;
+  }
+
   .manubarMobile {
     display: flex;
     color: white;
@@ -109,7 +201,7 @@
   }
   #mobileView {
     display: flex;
-    height: 260px;
+    height: 390px;
     padding-bottom: 20px;
     width: 100%;
     background-color: #e6e6e6;
@@ -118,7 +210,7 @@
   }
 
   .navlink {
-    font-size: 25px;
+    font-size: 20px;
   }
 
   .mobileSection {

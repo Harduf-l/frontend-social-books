@@ -56,6 +56,7 @@ function ResigterHomePage() {
             userDeatils: response.data.userDetails,
             friends: response.data.suggestedUsers,
             booksRecommendations: response.data.recommendationBookArray,
+            myPendingConnections: response.data.myPendingConnections,
           },
         });
         navigate(`/`);

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import axios from "axios";
-import { useContext, useMemo } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { storeContext } from "../../context/store";
 
@@ -10,16 +10,13 @@ import LanguageSwitcher from "../layout/LanguageSwitcher";
 import {
   InputFunction,
   SmallFunction,
-  AutoComplete,
   checkIfInputIsHebrew,
   InputAutoCompleteCombined,
 } from "../../components/utlis/utils";
 import BookShelves from "../../images/bookshelves.jpg";
-import { RegisterNewUser } from "./helpersRegisterProcess";
 import { UploadEditPicture } from "./uploadEditPicture";
 
 function RegisterProcess() {
-  const FIXEDPADDING = "30px";
   const BACKCOLOR = "#f3f3f3";
 
   const { t, i18n } = useTranslation();
@@ -485,24 +482,21 @@ function RegisterProcess() {
           <UploadEditPicture setImageFileFunction={setImageFileFunction} />
         </div>
 
-        <div className="d-flex flex-wrap justify-content-around m-3">
-          <div className="col-12 col-md-4 col-lg-2">
-            <div style={{ width: "165px", height: "100%" }}>
-              <div style={{ height: "70px" }}></div>
-              <div style={{ textAlign: "end" }}>
-                <button
-                  type="submit"
-                  onClick={(e) => RegisterNewUser(e)}
-                  className="btn btn-mg btn-secondary text-start"
-                >
-                  {t("form.send")}
-                </button>
-                <SmallFunction
-                  stateError={registerError}
-                  translationError={`form.${registerError}`}
-                />
-              </div>
+        <div className="d-flex justify-content-center flex-wrap mt-4">
+          <div>
+            <div style={{ textAlign: "center", paddingBottom: 10 }}>
+              <button
+                type="submit"
+                onClick={(e) => RegisterNewUser(e)}
+                className="btn btn-mg btn-secondary"
+              >
+                {t("form.send")}
+              </button>
             </div>
+            <SmallFunction
+              stateError={registerError}
+              translationError={`form.${registerError}`}
+            />
           </div>
         </div>
       </div>
