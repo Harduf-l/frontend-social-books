@@ -2,14 +2,13 @@ import React, { useContext, useState } from "react";
 import { storeContext } from "../../context/store";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
-import { Link } from "react-router-dom";
+
 import styles from "./HomePageUser.module.css";
 import BookModal from "./bookModal";
-import defaultPicture from "../../images/plain.jpg";
-import { useNavigate } from "react-router-dom";
+
+import FriendsList from "./FriendsList";
 
 function HomePageUser() {
-  let navigate = useNavigate();
   const { t } = useTranslation();
   const { dispatch, store } = useContext(storeContext);
   const [userContent, setUserContent] = useState("");
@@ -107,49 +106,10 @@ function HomePageUser() {
           <p className={styles.miniHeadingItalic}>
             {t("profile.book lovers")}...
           </p>
-          <div className="d-flex flex-wrap">
-            {store.userSuggestedFriends &&
-              store.userSuggestedFriends.map((el, index) => {
-                return (
-                  <div key={index}>
-                    <div
-                      style={{
-                        textAlign: "center",
-                        color: "#251703",
-                        backgroundColor: "#f3f3f3",
-                        margin: 5,
-                        borderRadius: 10,
-                        border: "1px dotted #d3c6b4",
-                      }}
-                    >
-                      <img
-                        onClick={() => navigate(`/user/${el._id}`)}
-                        role={"button"}
-                        style={{
-                          borderRadius: "20px",
-                          height: "80px",
-                          width: "80px",
-                          objectFit: "cover",
-                          padding: 5,
-                        }}
-                        src={el.picture ? el.picture : defaultPicture}
-                        alt=""
-                      />
-
-                      <p
-                        style={{
-                          textAlign: "center",
-                          fontSize: "12px",
-                          marginTop: "6px",
-                        }}
-                      >
-                        {el.username}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-          </div>
+          <FriendsList
+            userFriends={store.userSuggestedFriends}
+            userId={store.userDetails._id}
+          />
         </div>
       </div>
       <div

@@ -76,7 +76,10 @@
     "add as friend": "Add as friend",
     "send a message": "Send a message",
     "didnt add books to list": "didn't add any books to her book list.",
-    "didnt write comments": "No comments found"
+    "didnt write comments": "No comments found",
+    "in your friend list": "In your friends list",
+    "friend request was sent": "Friend request was sent",
+    "respond to friend request": "Confirm friend request"
   },
   "navbar": {
     "profile": "Profile",

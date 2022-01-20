@@ -9,6 +9,8 @@ export const UserCard = ({
   isItMe,
   createNewMessageAndNavigate,
   sendFriendRequest,
+  friendshipStatus,
+  confirmFriendRequest,
 }) => {
   const { t } = useTranslation();
   const [userAge, setuserAge] = react.useState(null);
@@ -17,7 +19,7 @@ export const UserCard = ({
     if (currentUserPage.birthday) {
       setuserAge(calculateAge(JSON.parse(currentUserPage.birthday)));
     }
-  }, [currentUserPage]);
+  }, [currentUserPage, friendshipStatus]);
 
   const InfoBox = ({ translationDate, dataItself }) => {
     return (
@@ -95,9 +97,27 @@ export const UserCard = ({
           >
             {t("profile.send a message")}
           </button>
-          <button className="btn btn-light" onClick={sendFriendRequest}>
-            {t("profile.add as friend")}
-          </button>
+
+          {friendshipStatus === "no connection" && (
+            <button className="btn btn-light" onClick={sendFriendRequest}>
+              {t("profile.add as friend")}
+            </button>
+          )}
+          {friendshipStatus === "friendhip" && (
+            <button className="btn btn-light">
+              {t("profile.in your friend list")}
+            </button>
+          )}
+          {friendshipStatus === "friend request was sent" && (
+            <button role={"contentinfo"} className="btn btn-light">
+              {t("profile.friend request was sent")}
+            </button>
+          )}
+          {friendshipStatus === "respond to friend request" && (
+            <button className="btn btn-light" onClick={confirmFriendRequest}>
+              {t("profile.respond to friend request")}
+            </button>
+          )}
         </div>
       )}
     </div>

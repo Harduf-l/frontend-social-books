@@ -1,7 +1,6 @@
 export const storeReducer = (state, action) => {
   switch (action.type) {
     case "login":
-      console.log(action.payload);
       return {
         ...state,
         isAuth: true,
@@ -12,7 +11,6 @@ export const storeReducer = (state, action) => {
         initialLogin: true,
       };
     case "changePendingFriendRequests":
-      console.log("in reducer", action.payload.newMyPendingConnections);
       return {
         ...state,
         myPendingConnections: action.payload.newMyPendingConnections,

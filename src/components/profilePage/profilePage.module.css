@@ -21,6 +21,13 @@
   color: #920000;
 }
 
+.mainMiddleHeader {
+  margin-inline-end: 5px;
+  font-size: 15px;
+  font-style: italic;
+  color: #000b52;
+}
+
 .dataCard {
   font-size: 15px;
   padding-bottom: 6px;

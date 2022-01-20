@@ -53,7 +53,6 @@ function RouteWrapper({ component: Component, type }) {
         )
         .then((res) => {
           if (res.data.status === "ok") {
-            console.log("here in app", res.data);
             dispatch({
               type: "login",
               payload: {

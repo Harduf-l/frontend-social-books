@@ -8,7 +8,6 @@ export const checkIfInputIsHebrew = (e) => {
 };
 
 export const calculateAge = (birthObject) => {
-  console.log(birthObject);
   let currentDate = new Date();
   const currentDateObject = {
     day: currentDate.getDate(),

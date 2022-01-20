@@ -76,7 +76,10 @@
     "add as friend": "הוסף כחבר",
     "send a message": "שלח הודעה",
     "didnt add books to list": "עדיין לא הוסיפ/ה ספרים לרשימת הקריאה",
-    "didnt write comments": "לא נמצאו תגובות אחרונות"
+    "didnt write comments": "לא נמצאו תגובות אחרונות",
+    "in your friend list": "ברשימת החברים שלך",
+    "friend request was sent": "הצעת חברות נשלחה",
+    "respond to friend request": "אשר הצעת חברות"
   },
   "navbar": {
     "profile": "פרופיל",

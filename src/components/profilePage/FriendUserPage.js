@@ -5,13 +5,19 @@ import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { UserCard } from "./UserCard";
+import defaultProfilePicture from "../../images/plain.jpg";
+import { Link } from "react-router-dom";
+import styles from "./profilePage.module.css";
+import ContentProfilePage from "./ContentProfilePage";
 
 function UserPage() {
   let navigate = useNavigate();
   const { t } = useTranslation();
   let params = useParams();
-  const { store } = useContext(storeContext);
+  const { store, dispatch } = useContext(storeContext);
   const [currentUserPage, setCurrentUser] = useState("");
+  const [friendshipStatus, setFriendshipStatus] = useState("");
+  const [approvedFriends, setApprovedFriends] = useState([]);
 
   useEffect(() => {
     axios
@@ -20,9 +26,35 @@ function UserPage() {
         setCurrentUser(res.data);
       })
       .catch((err) => {
-        if (err.response.data.message === "user not found") {
+        if (
+          err.response.data.message &&
+          err.response.data.message === "user not found"
+        ) {
           navigate(`/`);
         }
+      });
+
+    axios
+      .get(
+        `${process.env.REACT_APP_SERVER_URL}connections/all-approved-connections/${params.id}`
+      )
+      .then((res) => {
+        setApprovedFriends(res.data.approvedConnections);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+
+    axios
+      .post(
+        `${process.env.REACT_APP_SERVER_URL}connections/connection-status`,
+        { userId: store.userDetails._id, friendId: params.id }
+      )
+      .then((res) => {
+        setFriendshipStatus(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }, [store, params.id, navigate]);
 
@@ -32,9 +64,38 @@ function UserPage() {
         `${process.env.REACT_APP_SERVER_URL}connections/send-connection-request`,
         { senderId: store.userDetails._id, receiverId: params.id }
       );
-      console.log(newConnection);
+      setFriendshipStatus("friend request was sent");
     } catch (err) {
       console.log(err.response);
+    }
+  };
+
+  const confirmFriendRequest = async () => {
+    const connectionFound = store.myPendingConnections.find(
+      (connection) => connection.idOfSender === params.id
+    );
+
+    ////
+    let newMyPendingConnections = [...store.myPendingConnections];
+    let indexToDelete = newMyPendingConnections.indexOf(
+      (el) => el.connectionId === connectionFound.connectionId
+    );
+    newMyPendingConnections.splice(indexToDelete, 1);
+
+    dispatch({
+      type: "changePendingFriendRequests",
+      payload: { newMyPendingConnections },
+    });
+
+    setFriendshipStatus("friendhip");
+
+    try {
+      await axios.post(
+        `${process.env.REACT_APP_SERVER_URL}connections/approve-connection-request`,
+        { connectionId: connectionFound.connectionId }
+      );
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -57,7 +118,6 @@ function UserPage() {
         );
         navigate(`/messages/${newConversationCreated.data._id}/${params.id}`);
       } else if (isConversationExist.length > 0) {
-        console.log("here");
         navigate(`/messages/${isConversationExist[0]._id}/${params.id}`);
       }
     } catch (err) {
@@ -75,60 +135,17 @@ function UserPage() {
               isItMe={false}
               createNewMessageAndNavigate={createNewMessageAndNavigate}
               sendFriendRequest={sendFriendRequest}
+              confirmFriendRequest={confirmFriendRequest}
+              friendshipStatus={friendshipStatus}
             />
           </div>
-          <div className="col-lg-9 col-md-6 col-12 pt-4 pt-md-0">
-            <div
-              style={{
-                backgroundColor: "#eeedec",
-                padding: "5px 10px 10px 10px",
-              }}
-            >
-              {currentUserPage.freeText && (
-                <div>
-                  <span
-                    style={{
-                      marginInlineEnd: "5px",
-                      fontSize: "12px",
-                      fontStyle: "italic",
-                      color: "#920000",
-                    }}
-                  >
-                    {t("form.freeText")}
-                  </span>
-                  <p>{currentUserPage.freeText}</p>
-                </div>
-              )}
 
-              {currentUserPage.writingDescription && (
-                <div>
-                  <span
-                    style={{
-                      marginInlineEnd: "5px",
-                      fontSize: "12px",
-                      fontStyle: "italic",
-                      color: "#920000",
-                    }}
-                  >
-                    {t("form.writingDescription")}
-                  </span>
-                  <p>{currentUserPage.writingDescription}</p>
-                </div>
-              )}
-            </div>
-            <div className="row pt-3" style={{ height: 275 }}>
-              <div className="col-12 col-md-6">
-                <h5>ברשימת הקריאה שלי</h5>
-                {true &&
-                  currentUserPage.username +
-                    " " +
-                    t("profile.didnt add books to list")}
-              </div>
-              <div className="col-12 col-md-6">
-                <h5>תגובות אחרונות שלי בקבוצות דיון</h5>
-                {true && t("profile.didnt write comments")}
-              </div>
-            </div>
+          <div className="col-lg-9 col-md-6 col-12 pt-4 pt-md-0">
+            <ContentProfilePage
+              currentUserPage={currentUserPage}
+              approvedFriends={approvedFriends}
+              userId={store.userDetails._id}
+            />
           </div>
         </div>
       )}

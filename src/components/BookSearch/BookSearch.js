@@ -30,7 +30,7 @@ function BookSearch() {
       )
       .then((res) => {
         setChosenBookData({ ...book, ...res.data });
-        console.log({ ...book, ...res.data });
+
         setSingleBookLoading(false);
       })
       .catch((err) => {
