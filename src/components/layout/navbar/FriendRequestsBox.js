@@ -18,13 +18,14 @@ function FriendRequestsBox({
     document.addEventListener("click", handleClose);
 
     function handleClose(event) {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target) &&
+        event.target.className !== "far fa-user-friends"
+      ) {
         closeFriendsModal();
       }
     }
-    return () => {
-      document.removeEventListener("click", handleClose);
-    };
   }, [closeFriendsModal]);
 
   const confirmFriendRequest = async (connection) => {

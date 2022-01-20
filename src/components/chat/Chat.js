@@ -14,7 +14,7 @@ function Chat() {
   const { store } = useContext(storeContext);
   const [messagesThread, setMessagesThread] = useState([]);
   const [chosenConversationId, setChosenConversationId] = useState("");
-  const [chosenPersonPicture, setChosenPersonPicture] = useState([]);
+  const [chosenPersonPicture, setChosenPersonPicture] = useState("");
   const [userConversation, setUserConversations] = useState([]);
   const [chosenPersonName, setChosenPersonName] = useState("");
   const [typedMessage, setTypedMessage] = useState("");

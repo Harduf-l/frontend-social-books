@@ -59,12 +59,12 @@ function UserPage() {
   }, [store, params.id, navigate]);
 
   const sendFriendRequest = async () => {
+    setFriendshipStatus("friend request was sent");
     try {
-      const newConnection = await axios.post(
+      await axios.post(
         `${process.env.REACT_APP_SERVER_URL}connections/send-connection-request`,
         { senderId: store.userDetails._id, receiverId: params.id }
       );
-      setFriendshipStatus("friend request was sent");
     } catch (err) {
       console.log(err.response);
     }

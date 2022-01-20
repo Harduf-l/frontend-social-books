@@ -27,8 +27,12 @@ function NavBar() {
   const searchWord = useRef();
   const searchWordMobile = useRef();
 
-  const closeFriendsModal = () => {
-    setOpenFriendsRequestsModal(false);
+  const closeFriendsModal = (type) => {
+    if (type === "opposite") {
+      setOpenFriendsRequestsModal(!openFriendsRequestsModal);
+    } else {
+      setOpenFriendsRequestsModal(false);
+    }
   };
 
   const changePendingFriendRequests = (connection) => {
@@ -164,9 +168,7 @@ function NavBar() {
 
             <div
               role={"button"}
-              onClick={() =>
-                setOpenFriendsRequestsModal(!openFriendsRequestsModal)
-              }
+              onClick={() => closeFriendsModal("opposite")}
               className={styles.notificationSymbol}
             >
               <i className="far fa-user-friends"></i>
