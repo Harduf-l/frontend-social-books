@@ -93,9 +93,11 @@ function Chat() {
             const friend = await axios.get(
               `${process.env.REACT_APP_SERVER_URL}users/get-by-id/${params.friendId}`
             );
+            setChosenPersonName(friend.data.username);
             if (friend.data.picture) {
               setChosenPersonPicture(friend.data.picture);
-              setChosenPersonName(friend.data.username);
+            } else {
+              setChosenPersonPicture(null);
             }
           } catch (err) {
             console.log(err);
