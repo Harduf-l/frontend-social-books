@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { storeContext } from "../../context/store";
 import axios from "axios";
 import Conversation from "./Conversation";
@@ -12,39 +12,24 @@ import { Picker } from "emoji-mart";
 
 function Chat() {
   const { store } = useContext(storeContext);
-  const [messagesThread, setMessagesThread] = useState([]);
-  const [chosenConversationId, setChosenConversationId] = useState("");
-  const [chosenPersonPicture, setChosenPersonPicture] = useState("");
-  const [userConversation, setUserConversations] = useState([]);
-  const [chosenPersonName, setChosenPersonName] = useState("");
+
+  const [chosenConversation, setChosenConversation] = useState("");
   const [typedMessage, setTypedMessage] = useState("");
   const [showEmoji, setShowEmoji] = useState(false);
   const { i18n, t } = useTranslation();
   const currentDir = i18n.dir();
-  let lastMessage = useRef();
   let params = useParams();
-
-  useEffect(() => {
-    setChosenConversationId("");
-  }, []);
 
   const sendMessage = async () => {
     let textToSend = typedMessage;
     setShowEmoji(false);
     setTypedMessage("");
     const newMessage = {
-      conversationId: chosenConversationId,
-      sender: store.userDetails._id,
+      conversationId: chosenConversation._id,
+      senderId: store.userDetails._id,
+      receiverId: params.friendId,
       text: textToSend,
     };
-
-    setMessagesThread([
-      ...messagesThread,
-      {
-        ...newMessage,
-        _id: Math.random(),
-      },
-    ]);
 
     try {
       await axios.post(
@@ -55,60 +40,19 @@ function Chat() {
       console.log(err);
     }
   };
-  useEffect(() => {
-    const asyncOperations = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_SERVER_URL}messages/get-all-conversations/${store.userDetails._id}`
-        );
-        setUserConversations(response.data);
-      } catch (err) {
-        console.log(err.response);
-      }
-    };
-
-    asyncOperations();
-  }, [store.userDetails._id]);
 
   useEffect(() => {
     if (!params.conversationId) {
-      setMessagesThread([]);
-      setChosenConversationId("");
-      setChosenPersonName("");
+      setChosenConversation("");
     }
 
     if (params.conversationId) {
-      setChosenConversationId(params.conversationId);
-
-      const fetchMessages = async () => {
-        setChosenConversationId(params.conversationId);
-
-        try {
-          const response = await axios.get(
-            `${process.env.REACT_APP_SERVER_URL}messages/get-messages/${params.conversationId}`
-          );
-          setMessagesThread(response.data);
-
-          try {
-            const friend = await axios.get(
-              `${process.env.REACT_APP_SERVER_URL}users/get-by-id/${params.friendId}`
-            );
-            setChosenPersonName(friend.data.username);
-            if (friend.data.picture) {
-              setChosenPersonPicture(friend.data.picture);
-            } else {
-              setChosenPersonPicture(null);
-            }
-          } catch (err) {
-            console.log(err);
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      };
-      fetchMessages();
+      const convFound = store.myConversations.find(
+        (el) => el._id === params.conversationId
+      );
+      setChosenConversation(convFound);
     }
-  }, [params.conversationId, params.friendId]);
+  }, [params.conversationId, store.myConversations]);
 
   const calculateStyle = (senderId, userId) => {
     if (currentDir === "rtl") {
@@ -128,14 +72,13 @@ function Chat() {
     setTypedMessage((prev) => prev + emojiObject.native);
   };
 
-  // const hereAtLast = () => {
-  //   lastMessage.current?.scrollIntoView({ behavior: "smooth" });
-  // };
-
   return (
     <div className="container mt-1 p-3">
       <div className="d-flex  flex-wrap" style={{ height: "500px" }}>
-        <div className={`col-12 col-lg-3 pt-3 ${styles.contactsChatContainer}`}>
+        <div
+          className={`col-12 col-lg-3 pt-3 ${styles.contactsChatContainer}`}
+          style={{ border: "1px black solid" }}
+        >
           <div className="d-flex justify-content-around pb-3">
             <label style={{ fontSize: "17px" }} htmlFor="startConv">
               {t("profile.search")}
@@ -143,14 +86,13 @@ function Chat() {
             <input type="text" id="startConv" />
           </div>
           <div className="d-flex flex-column-reverse">
-            {userConversation.length > 0 &&
-              userConversation.map((c) => {
+            {store.myConversations.length > 0 &&
+              store.myConversations.map((c) => {
                 return (
                   <Conversation
                     key={c._id}
                     conversation={c}
-                    currentUserId={store.userDetails._id}
-                    chosen={chosenConversationId === c._id}
+                    chosen={chosenConversation._id === c._id}
                   />
                 );
               })}
@@ -180,14 +122,15 @@ function Chat() {
             native={true}
           />
           <div className="">
-            {chosenConversationId &&
-              messagesThread.length === 0 &&
-              chosenPersonName && (
+            {chosenConversation._id &&
+              chosenConversation.messages === 0 &&
+              chosenConversation.nameOfFriend && (
                 <p className="p-3">
-                  {t("chat.starConversationWith")} {chosenPersonName}
+                  {t("chat.starConversationWith")}{" "}
+                  {chosenConversation.nameOfFriend}
                 </p>
               )}
-            {!chosenConversationId && (
+            {!chosenConversation && (
               <p className="p-3">{t("chat.chooseConversation")}</p>
             )}
           </div>
@@ -199,23 +142,22 @@ function Chat() {
               position: "relative",
             }}
           >
-            {messagesThread.length > 0 &&
-              messagesThread
+            {chosenConversation.messages &&
+              chosenConversation.messages.length > 0 &&
+              chosenConversation.messages
                 .slice(0)
                 .reverse()
                 .map((el, index) => {
                   return (
                     <div key={index}>
                       <div
-                        ref={index === 0 ? lastMessage : null}
-                        // onLoad={index === 0 ? hereAtLast : undefined}
                         className={
-                          el.sender === store.userDetails._id
+                          el.senderId === store.userDetails._id
                             ? styles.userMessage
                             : styles.partnerMessage
                         }
                       >
-                        {el.sender === store.userDetails._id && (
+                        {el.senderId === store.userDetails._id && (
                           <img
                             src={
                               store.userDetails.picture
@@ -249,11 +191,11 @@ function Chat() {
                           </div>
                         </div>
 
-                        {el.sender !== store.userDetails._id && (
+                        {el.senderId !== store.userDetails._id && (
                           <img
                             src={
-                              chosenPersonPicture
-                                ? chosenPersonPicture
+                              chosenConversation.pictureOfFriend
+                                ? chosenConversation.pictureOfFriend
                                 : defaultPicture
                             }
                             style={{ marginInlineStart: "10px" }}
@@ -268,7 +210,7 @@ function Chat() {
           </div>
 
           <div style={{ height: "100px", paddingTop: "10px" }}>
-            {chosenConversationId && (
+            {chosenConversation && (
               <div className={styles.emojiRow}>
                 <i
                   onClick={() => setShowEmoji((prev) => !prev)}
@@ -277,7 +219,7 @@ function Chat() {
                 ></i>
               </div>
             )}
-            {chosenConversationId && (
+            {chosenConversation && (
               <div className="d-flex justify-content-between flex-row">
                 <textarea
                   type="text"

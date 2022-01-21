@@ -179,6 +179,9 @@
 }
 
 @media only screen and (max-width: 920px) {
+  .notificationNumberContainer {
+    background-color: #1c2672;
+  }
   .mobileView {
     padding-top: 20px;
     display: flex;
@@ -219,7 +222,7 @@
     font-size: 23px;
     margin-inline-end: 30px;
     display: inline-block;
-    color: #313123;
+    color: #2c2c2c;
     position: relative;
   }
 

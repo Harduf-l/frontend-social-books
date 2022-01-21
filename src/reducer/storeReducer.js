@@ -8,6 +8,8 @@ export const storeReducer = (state, action) => {
         userSuggestedFriends: action.payload.friends,
         booksRecommendation: action.payload.booksRecommendations,
         myPendingConnections: action.payload.myPendingConnections,
+        myConversations: action.payload.myConversations,
+        numberOfUnSeenMessages: action.payload.numberOfUnSeenMessages,
         initialLogin: true,
       };
     case "changePendingFriendRequests":

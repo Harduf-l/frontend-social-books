@@ -28,7 +28,7 @@ function App() {
           <Route path="/" element={<RouteWrapper component={HomePageUser} />} />
           <Route path="/messages" element={<RouteWrapper component={Chat} />} />
           <Route
-            path="/messages/:conversationId/:friendId"
+            path="/messages/:conversationId"
             element={<RouteWrapper component={Chat} />}
           />
           <Route

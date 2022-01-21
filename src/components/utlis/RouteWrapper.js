@@ -51,8 +51,17 @@ function RouteWrapper({ component: Component, type }) {
             },
           }
         )
-        .then((res) => {
+        .then(async (res) => {
           if (res.data.status === "ok") {
+            async function getFriends() {
+              const response = await axios.get(
+                `${process.env.REACT_APP_SERVER_URL}messages/get-all-conversations/${res.data.userDetails._id}`
+              );
+              return response;
+            }
+
+            let messagesData = await getFriends();
+
             dispatch({
               type: "login",
               payload: {
@@ -60,6 +69,9 @@ function RouteWrapper({ component: Component, type }) {
                 friends: res.data.suggestedUsers,
                 booksRecommendations: res.data.recommendationBookArray,
                 myPendingConnections: res.data.myPendingConnections,
+                myConversations: messagesData.data.conversationsWithFriendData,
+                numberOfUnSeenMessages:
+                  messagesData.data.numberOfUnseenMessages,
               },
             });
           }
