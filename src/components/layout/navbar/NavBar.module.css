@@ -1,25 +1,13 @@
-.NavBar {
-  display: flex;
-}
-
 .NavTotalBar {
   background-color: #e6e6e6;
   width: 100%;
-  padding-top: 5px;
+  padding-top: 3px;
+  height: 60px;
 }
 
-.LeftSide {
-  flex: 20%;
+.navBarFlexDirection {
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-.RightSide {
-  flex: 80%;
-  display: flex;
-  justify-content: start;
-  align-items: center;
+  justify-content: space-between;
 }
 
 .navlink {
@@ -29,6 +17,8 @@
   margin: 3px;
   padding: 5px;
   padding-bottom: 17px;
+  display: inline-block;
+  margin-top: 8px;
 }
 
 .navlinkStatic {
@@ -82,7 +72,7 @@
 }
 
 .contentItselfBox {
-  width: 300px;
+  min-width: 300px;
   padding: 10px;
   background-color: white;
   box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
@@ -96,21 +86,23 @@
 }
 
 .searchButton {
-  font-size: 30px;
+  font-size: 24px;
   color: white;
   cursor: pointer;
   border: none;
-  background-color: #e6e6e6 !important;
+  background-color: transparent !important;
 }
 
 .searchButton:hover {
   color: lightgrey;
 }
 
-.LeftSide input {
+.searchInput {
   width: 220px;
-  height: 30px;
+  margin-bottom: 10px;
+  margin-top: 10px;
   border: none;
+  padding: 5px;
   border-radius: 4px;
   font-size: 16px;
   padding-inline-start: 5px;
@@ -120,9 +112,9 @@
   display: none;
 }
 
-.mobileSection {
+/* .mobileSection {
   display: none;
-}
+} */
 
 .notificationSymbol {
   font-size: 21px;
@@ -135,6 +127,8 @@
 
 .marginInlineStart {
   margin-inline-start: 25px;
+  margin-top: 8px;
+  display: inline-block;
 }
 
 .messageText {
@@ -170,13 +164,96 @@
   border-radius: 50%;
 }
 
+.flexDirection {
+  display: flex;
+}
+
+.flexDirectionWithReverse {
+  display: flex;
+}
+
+.marginTopDesktop {
+  margin-top: 8px;
+}
+
 @media only screen and (max-width: 950px) {
   .friendBoxHeb {
+    position: absolute;
+    top: 65px;
+    right: 0px;
+    width: 100%;
+    z-index: 9999;
+  }
+
+  .arrowUp {
+    border-bottom: 12px solid transparent;
+  }
+
+  .marginTopDesktop {
+    margin-top: 0px;
+  }
+  .marginInlineStart {
+    margin-top: 0px;
+  }
+
+  .notificationSymbolPhone {
+    font-size: 21px;
+    margin-inline-end: 30px;
+    display: inline-block;
+    color: #313123;
+    position: relative;
+  }
+
+  .searchGroup {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 5px;
+    padding-bottom: 30px;
+  }
+
+  .searchInput {
+    width: 200px;
+  }
+
+  .searchButton {
+    font-size: 20px;
+  }
+
+  .notificationSymbol {
     display: none;
   }
 
-  .friendBoxEng {
+  .NavTotalBarPhone {
+    background-color: #e6e6e6;
+    width: 100%;
+
+    padding-top: 3px;
+  }
+
+  .NavTotalBar {
+    padding-top: 0;
+    height: auto;
+  }
+
+  .flexDirection {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .flexDirectionWithReverse {
+    flex-direction: column-reverse;
+    text-align: center;
+  }
+
+  .navBarFlexDirection {
     display: none;
+  }
+
+  .showNavBar {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
   }
 
   .marginInlineStart {
@@ -195,22 +272,25 @@
 
   .manubarMobile {
     display: flex;
+    justify-content: space-between;
+    margin-inline-start: 12px;
+    align-items: flex-start;
+    flex-direction: row;
     color: white;
     font-size: 45px;
-    margin-inline-start: 15px;
     cursor: pointer;
   }
   .myRightLinks {
     display: none;
   }
 
-  .LeftSide {
+  #dontDisplay {
     display: none;
   }
-  #mobileView {
+
+  .mobileView {
     display: flex;
-    height: 390px;
-    padding-bottom: 20px;
+
     width: 100%;
     background-color: #e6e6e6;
     flex-direction: column;
@@ -219,26 +299,5 @@
 
   .navlink {
     font-size: 20px;
-  }
-
-  .mobileSection {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
-
-  .inputMobile {
-    border: none;
-    border-radius: 4px;
-    font-size: 18px;
-    padding-inline-start: 5px;
-    margin-inline-start: 15px;
-    margin-inline-end: 5px;
-    flex-grow: 1;
-  }
-  .searchButton {
-    font-size: 35px;
   }
 }

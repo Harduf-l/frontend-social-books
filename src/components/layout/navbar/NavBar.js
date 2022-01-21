@@ -6,6 +6,9 @@ import { useNavigate } from "react-router-dom";
 import BookMeLogo from "../../../images/BookMe.png";
 import { storeContext } from "../../../context/store";
 import FriendRequestBox from "./FriendRequestsBox";
+import FriendIcon from "./FriendIcon";
+import MessageIcon from "./MessageIcon";
+import NotificationsIcon from "./NotificationsIcon";
 
 const lngs = {
   en: { nativeName: "English" },
@@ -64,133 +67,103 @@ function NavBar() {
   };
 
   return (
-    <div className={styles.NavTotalBar}>
-      <div className={styles.mobileSection}>
+    <div
+      className={!showMobileLink ? styles.NavTotalBar : styles.NavTotalBarPhone}
+    >
+      <div className={styles.manubarMobile}>
         <div
           onClick={() => {
             setShowMobileLinks(!showMobileLink);
           }}
-          className={`${styles.manubarMobile} mt-1`}
+          className={`mt-1`}
         >
           <i className="fas fa-bars"></i>
         </div>
-        <form onSubmit={moveToSearchPage} className="d-flex flex-wrap">
-          <input
-            ref={searchWordMobile}
-            className={styles.inputMobile}
-            type="text"
-            placeholder="אני מחפש..."
+        <div className="d-flex flex-row flex-wrap mb-2">
+          <MessageIcon mobileView={true} />
+          <NotificationsIcon mobileView={true} />
+          <FriendIcon
+            mobileView={true}
+            closeFriendsModal={closeFriendsModal}
+            myPendingConnections={store.myPendingConnections}
+            styles={styles}
           />
-          <button type="submit" className={`${styles.searchButton} me-3 ms-3`}>
-            <i className="fas fa-search"></i>
-          </button>
-        </form>
-      </div>
-      <div className={styles.NavBar}>
-        <div className={styles.RightSide}>
-          <div
-            className={styles.myRightLinks}
-            id={showMobileLink ? styles.mobileView : ""}
-          >
-            <NavLink
-              onClick={() => {
-                setShowMobileLinks(false);
-              }}
-              id="homeLogo"
-              to="/"
-            >
-              <span className={styles.menuIcon}>
-                <img src={BookMeLogo} className="iconBook" alt="" />
-              </span>
-            </NavLink>
-            <NavLink
-              onClick={() => {
-                setShowMobileLinks(false);
-              }}
-              className={styles.navlink}
-              to="/profile"
-            >
-              <div className={styles.divProfileNav}>
-                <span style={{ marginInlineStart: 5 }}>
-                  {t("navbar.profile")}
-                </span>
-              </div>
-            </NavLink>
-
-            <NavLink
-              onClick={() => {
-                setShowMobileLinks(false);
-              }}
-              className={styles.navlink}
-              to="/groups"
-            >
-              <div className={styles.divProfileNav}>
-                <span style={{ marginInlineStart: 5 }}>
-                  {t("navbar.groups")}
-                </span>
-              </div>
-            </NavLink>
-
-            <NavLink
-              onClick={() => {
-                setShowMobileLinks(false);
-              }}
-              className={styles.navlink}
-              to="/events"
-            >
-              <div className={styles.divProfileNav}>
-                <span style={{ marginInlineStart: 5 }}>
-                  {t("navbar.events")}
-                </span>
-              </div>
-            </NavLink>
-
-            <NavLink
-              onClick={() => {
-                setShowMobileLinks(false);
-              }}
-              to="/messages"
-              className={styles.marginInlineStart}
-            >
-              <div className={styles.notificationSymbol}>
-                <i className="far fa-envelope"></i>
-                <div className={styles.notificationNumberContainer}>
-                  <span className={styles.notificationNumber}>3</span>
-                </div>
-              </div>
-            </NavLink>
-            <div className={styles.notificationSymbol}>
-              <i className="far fa-bell"></i>
-              <div className={styles.notificationNumberContainer}>
-                <span className={styles.notificationNumber}>1</span>
-              </div>
-            </div>
-
-            <div
-              role={"button"}
-              onClick={() => closeFriendsModal("opposite")}
-              className={styles.notificationSymbol}
-            >
-              <i className="far fa-user-friends"></i>
-
-              {store.myPendingConnections &&
-                store.myPendingConnections.length > 0 && (
-                  <div className={styles.notificationNumberContainer}>
-                    <span className={styles.notificationNumber}>
-                      {store.myPendingConnections.length}
-                    </span>
-                  </div>
-                )}
-            </div>
-          </div>
         </div>
-        <div className={styles.LeftSide}>
-          <form onSubmit={(e) => moveToSearchPage(e)} className="d-flex">
+      </div>
+
+      <div
+        className={
+          !showMobileLink ? styles.navBarFlexDirection : styles.mobileView
+        }
+      >
+        <div className={styles.flexDirection}>
+          <NavLink
+            onClick={() => {
+              setShowMobileLinks(false);
+            }}
+            id="homeLogo"
+            to="/"
+          >
+            <span className={styles.menuIcon}>
+              <img src={BookMeLogo} className="iconBook" alt="" />
+            </span>
+          </NavLink>
+          <NavLink
+            onClick={() => {
+              setShowMobileLinks(false);
+            }}
+            className={styles.navlink}
+            to="/profile"
+          >
+            <div className={styles.divProfileNav}>
+              <span style={{ marginInlineStart: 5 }}>
+                {t("navbar.profile")}
+              </span>
+            </div>
+          </NavLink>
+          <NavLink
+            onClick={() => {
+              setShowMobileLinks(false);
+            }}
+            className={styles.navlink}
+            to="/groups"
+          >
+            <div className={styles.divProfileNav}>
+              <span style={{ marginInlineStart: 5 }}>{t("navbar.groups")}</span>
+            </div>
+          </NavLink>
+          <NavLink
+            onClick={() => {
+              setShowMobileLinks(false);
+            }}
+            className={styles.navlink}
+            to="/events"
+          >
+            <div className={styles.divProfileNav}>
+              <span style={{ marginInlineStart: 5 }}>{t("navbar.events")}</span>
+            </div>
+          </NavLink>
+
+          <MessageIcon mobileView={false} />
+          <NotificationsIcon mobileView={false} />
+          <FriendIcon
+            mobileView={false}
+            closeFriendsModal={closeFriendsModal}
+            myPendingConnections={store.myPendingConnections}
+            styles={styles}
+          />
+        </div>
+
+        <div className={styles.flexDirectionWithReverse}>
+          <form
+            onSubmit={(e) => moveToSearchPage(e)}
+            className={styles.searchGroup}
+          >
             <input
+              className={styles.searchInput}
               ref={searchWord}
               type="text"
               placeholder={t("navbar.search")}
-              className="mt-2"
             />
             <button
               type="submit"
