@@ -93,7 +93,7 @@ function NavBar() {
 
       <div
         className={
-          !showMobileLink ? styles.navBarFlexDirection : styles.mobileView
+          showMobileLink ? styles.mobileView : styles.navBarFlexDirection
         }
       >
         <div className={styles.flexDirection}>

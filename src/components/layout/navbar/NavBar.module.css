@@ -158,12 +158,6 @@
   display: block;
 }
 
-.profilePicLogo {
-  height: 45px;
-  width: 45px;
-  border-radius: 50%;
-}
-
 .flexDirection {
   display: flex;
 }
@@ -176,11 +170,34 @@
   margin-top: 8px;
 }
 
-@media only screen and (max-width: 950px) {
+.mobileView {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  background-color: #e6e6e6;
+  align-items: center;
+}
+
+@media only screen and (max-width: 920px) {
+  .mobileView {
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    background-color: #e6e6e6;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .contentItselfBox {
+    min-width: auto;
+  }
+
   .friendBoxHeb,
   .friendBoxEng {
     position: absolute;
-    top: 65px;
+    width: 100%;
+    top: 48px;
     right: 0px;
     left: 0px;
     width: 100%;
@@ -199,7 +216,7 @@
   }
 
   .notificationSymbolPhone {
-    font-size: 21px;
+    font-size: 23px;
     margin-inline-end: 30px;
     display: inline-block;
     color: #313123;
@@ -275,11 +292,14 @@
   .manubarMobile {
     display: flex;
     justify-content: space-between;
-    margin-inline-start: 12px;
+    padding-inline-start: 12px;
+    border-bottom: 2px black solid;
+
     align-items: flex-start;
     flex-direction: row;
+    background-color: #c4c4c4;
     color: white;
-    font-size: 45px;
+    font-size: 35px;
     cursor: pointer;
   }
   .myRightLinks {
@@ -288,15 +308,6 @@
 
   #dontDisplay {
     display: none;
-  }
-
-  .mobileView {
-    display: flex;
-
-    width: 100%;
-    background-color: #e6e6e6;
-    flex-direction: column;
-    align-items: center;
   }
 
   .navlink {

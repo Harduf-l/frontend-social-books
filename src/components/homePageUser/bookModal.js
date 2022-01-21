@@ -8,6 +8,8 @@ const style = {
   position: "absolute",
   top: "45%",
   left: "50%",
+  maxHeight: 380,
+  overflowY: "auto",
   transform: "translate(-50%, -50%)",
   bgcolor: "background.paper",
   border: "2px solid #000",
@@ -33,7 +35,7 @@ function BookModal({ open, handleClose, chosenBookData, loading }) {
           <i style={{ fontSize: 24 }} className="fas fa-times"></i>
         </div>
         <div>
-          <div style={{ paddingInlineStart: 10, paddingBottom: 15 }}>
+          <div>
             {loading ? (
               <div>{t("loading")}</div>
             ) : (
@@ -43,7 +45,7 @@ function BookModal({ open, handleClose, chosenBookData, loading }) {
               </div>
             )}
           </div>
-          <div className="d-flex justify-content-around flex-wrap">
+          <div className="d-flex justify-content-between flex-wrap">
             <div>
               <div
                 style={{
@@ -76,7 +78,7 @@ function BookModal({ open, handleClose, chosenBookData, loading }) {
                   </p>
                 )}
                 {chosenBookData.bookDescription && (
-                  <p>{chosenBookData.bookDescription}</p>
+                  <p className="ps-3">{chosenBookData.bookDescription}</p>
                 )}
               </div>
               <div style={{ height: 20 }}></div>

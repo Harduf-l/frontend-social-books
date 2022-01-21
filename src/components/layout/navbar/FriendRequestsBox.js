@@ -9,7 +9,6 @@ function FriendRequestsBox({
   changePendingFriendRequests,
   closeFriendsModal,
 }) {
-  console.log("here");
   const { i18n } = useTranslation();
   const currentDir = i18n.dir();
 
