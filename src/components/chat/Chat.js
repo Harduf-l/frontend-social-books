@@ -11,7 +11,7 @@ import "emoji-mart/css/emoji-mart.css";
 
 import EmojiPicker from "./EmojiPicker";
 
-function Chat() {
+function Chat({ sendMessageToSocket }) {
   const { store, dispatch } = useContext(storeContext);
   const [chosenConversation, setChosenConversation] = useState({});
   const [typedMessage, setTypedMessage] = useState("");
@@ -34,6 +34,8 @@ function Chat() {
       receiverId: chosenConversation.idOfFriend,
       text: textToSend,
     };
+
+    sendMessageToSocket(newMessage);
 
     dispatch({
       type: "addMessage",
@@ -187,7 +189,7 @@ function Chat() {
                         <div className={styles.chatContentNoPic}>
                           <div
                             className={
-                              el.sender === store.userDetails._id
+                              el.senderId === store.userDetails._id
                                 ? styles.userMiniMessage
                                 : styles.partnerMiniMessage
                             }
@@ -198,7 +200,7 @@ function Chat() {
                             dir="ltr"
                             className={styles.timeAgo}
                             style={calculateStyle(
-                              el.sender,
+                              el.senderId,
                               store.userDetails._id
                             )}
                           >

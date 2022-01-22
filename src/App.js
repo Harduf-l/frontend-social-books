@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import RegisterProcess from "./components/register/RegisterProcess";
 import { Routes, Route } from "react-router-dom";
@@ -10,15 +10,72 @@ import Chat from "../src/components/chat/Chat";
 import BookSearch from "../src/components/BookSearch/BookSearch";
 import "./i18n/i18n";
 import { storeContext } from "./context/store";
-import axios from "axios";
 import RouteWrapper from "./components/utlis/RouteWrapper";
 import Footer from "./components/layout/footer/Footer";
+import { io } from "socket.io-client";
+import axios from "axios";
 
 function App() {
   const { i18n } = useTranslation();
   document.body.dir = i18n.dir();
+  const socket = useRef();
+  const { store, dispatch } = useContext(storeContext);
 
-  const { store } = useContext(storeContext);
+  useEffect(() => {
+    if (!store.userDetails._id) return;
+
+    console.log("here at socket");
+    socket.current = io(process.env.REACT_APP_SOCKET_URL);
+    socket.current.emit("addUser", store.userDetails._id);
+
+    socket.current.on("userDisconnected", (onlineUsersId) => {
+      console.log("get refreshed object", onlineUsersId);
+    });
+
+    socket.current.on("onlineArray", (onlineUsersId) => {
+      console.log("get online object of id when logging in", onlineUsersId);
+    });
+
+    socket.current.on("newMessage", (newMessage) => {
+      console.log("got new message! ", newMessage);
+
+      let result = store.myConversations.some(
+        (el) => el._id === newMessage.conversationId
+      );
+
+      if (!result) {
+        const asyncOperations = async () => {
+          const response = await axios.get(
+            `${process.env.REACT_APP_SERVER_URL}messages/get-all-conversations/${store.userDetails._id}`
+          );
+          dispatch({
+            type: "updatedMessages",
+            payload: {
+              myConversations: response.data.conversationsWithFriendData,
+              numberOfUnSeenMessages: response.data.numberOfUnseenMessages,
+            },
+          });
+        };
+        asyncOperations();
+      } else {
+        dispatch({
+          type: "addMessage",
+          payload: {
+            newMessage,
+            chosenConversationId: newMessage.conversationId,
+          },
+        });
+      }
+    });
+
+    return () => {
+      socket.current = null;
+    };
+  }, [store.userDetails._id, dispatch, store.myConversations]);
+
+  const sendMessageToSocket = (message) => {
+    socket.current.emit("messageSend", message);
+  };
 
   return (
     <div id="page-container">
@@ -29,7 +86,12 @@ function App() {
           <Route path="/messages" element={<RouteWrapper component={Chat} />} />
           <Route
             path="/messages/:conversationId"
-            element={<RouteWrapper component={Chat} />}
+            element={
+              <RouteWrapper
+                component={Chat}
+                sendMessageToSocket={sendMessageToSocket}
+              />
+            }
           />
           <Route
             path="/profile"

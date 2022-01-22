@@ -7,7 +7,7 @@ const Blank = () => {
   return <div></div>;
 };
 
-function RouteWrapper({ component: Component, type }) {
+function RouteWrapper({ component: Component, sendMessageToSocket }) {
   const [loading, setLoading] = useState(true);
   const { store, dispatch } = useContext(storeContext);
 
@@ -93,7 +93,11 @@ function RouteWrapper({ component: Component, type }) {
     return <Blank />;
   } else {
     if (!loading && store.isAuth) {
-      return <Component />;
+      if (sendMessageToSocket) {
+        return <Component sendMessageToSocket={sendMessageToSocket} />;
+      } else {
+        return <Component />;
+      }
     }
     if (!loading && !store.isAuth) {
       return <ResigterHomePage />;

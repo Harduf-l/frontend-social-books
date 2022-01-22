@@ -18,6 +18,8 @@ export const storeReducer = (state, action) => {
         myPendingConnections: action.payload.newMyPendingConnections,
       };
     case "addMessage":
+      console.log("here at dispatch action", action.payload);
+
       const convId = action.payload.chosenConversationId;
       let { myConversations } = { ...state };
       let chosenConvIndex = myConversations.findIndex(
@@ -60,6 +62,13 @@ export const storeReducer = (state, action) => {
         myConversations: addToMyConversations,
       };
 
+    case "updatedMessages":
+      console.log(action.payload);
+      return {
+        ...state,
+        myConversations: action.payload.myConversations,
+        numberOfUnSeenMessages: action.payload.numberOfUnSeenMessages,
+      };
     case "registration": {
       return {
         ...state,
