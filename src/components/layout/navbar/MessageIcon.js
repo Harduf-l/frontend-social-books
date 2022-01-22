@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import styles from "./NavBar.module.css";
 
-function MessageIcon({ mobileView }) {
+function MessageIcon({ mobileView, numberOfUnViewdMessages }) {
   return (
     <NavLink to="/messages" className={styles.marginInlineStart}>
       <div
@@ -13,9 +13,13 @@ function MessageIcon({ mobileView }) {
         }
       >
         <i className="far fa-envelope"></i>
-        <div className={styles.notificationNumberContainer}>
-          <span className={styles.notificationNumber}>3</span>
-        </div>
+        {numberOfUnViewdMessages > 0 && (
+          <div className={styles.notificationNumberContainer}>
+            <span className={styles.notificationNumber}>
+              {numberOfUnViewdMessages}
+            </span>
+          </div>
+        )}
       </div>
     </NavLink>
   );

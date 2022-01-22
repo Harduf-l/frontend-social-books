@@ -50,6 +50,10 @@ function ResigterHomePage() {
         setLoginError("login error");
       } else if (response.data.status === "ok") {
         localStorage.setItem("token", response.data.token);
+
+        const messagesData = await axios.get(
+          `${process.env.REACT_APP_SERVER_URL}messages/get-all-conversations/${response.data.userDetails._id}`
+        );
         dispatch({
           type: "login",
           payload: {
@@ -57,6 +61,8 @@ function ResigterHomePage() {
             friends: response.data.suggestedUsers,
             booksRecommendations: response.data.recommendationBookArray,
             myPendingConnections: response.data.myPendingConnections,
+            myConversations: messagesData.data.conversationsWithFriendData,
+            numberOfUnSeenMessages: messagesData.data.numberOfUnseenMessages,
           },
         });
         navigate(`/`);

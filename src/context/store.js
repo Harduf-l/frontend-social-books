@@ -9,6 +9,7 @@ const StoreContextProvider = ({ children }) => {
     registeredNow: false,
     userDetails: [],
     initialLogin: false,
+    myConversations: [],
   };
 
   const [store, dispatch] = useReducer(storeReducer, initalState);

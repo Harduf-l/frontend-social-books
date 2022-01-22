@@ -3,12 +3,14 @@ import styles from "./NavBar.module.css";
 import defaultPicture from "../../../images/plain.jpg";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function FriendRequestsBox({
   myPendingConnections,
   changePendingFriendRequests,
   closeFriendsModal,
 }) {
+  const navigate = useNavigate();
   const { i18n } = useTranslation();
   const currentDir = i18n.dir();
 
@@ -26,6 +28,8 @@ function FriendRequestsBox({
         closeFriendsModal();
       }
     }
+
+    return () => document.removeEventListener("click", handleClose);
   }, [closeFriendsModal]);
 
   const confirmFriendRequest = async (connection) => {
@@ -53,6 +57,11 @@ function FriendRequestsBox({
     }
   };
 
+  const navigateAndCloseFriendModal = (el) => {
+    closeFriendsModal();
+    navigate(`/user/${el.idOfSender}`);
+  };
+
   return (
     <div
       ref={wrapperRef}
@@ -76,7 +85,10 @@ function FriendRequestsBox({
                       el.pictureOfSender ? el.pictureOfSender : defaultPicture
                     }
                     alt=""
+                    role={"button"}
+                    onClick={() => navigateAndCloseFriendModal(el)}
                   />
+
                   <span style={{ paddingInlineStart: 10 }}>
                     {el.nameOfSender}
                   </span>

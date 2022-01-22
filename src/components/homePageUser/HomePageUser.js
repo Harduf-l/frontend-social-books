@@ -38,6 +38,12 @@ function HomePageUser() {
     setSingleBookData({ ...book, ...bookData.data });
     setLoading(false);
   };
+
+  const logOutFunction = () => {
+    console.log("here at logout");
+    dispatch({ type: "logout" });
+  };
+
   return (
     <div className="d-flex flex-wrap ">
       <BookModal
@@ -52,10 +58,7 @@ function HomePageUser() {
           {username}
         </p>
 
-        <button
-          onClick={() => dispatch({ type: "logout" })}
-          className="btn btn-light m-4"
-        >
+        <button onClick={logOutFunction} className="btn btn-light m-4">
           {t("form.logout")}
         </button>
       </div>

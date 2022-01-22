@@ -91,7 +91,8 @@
   },
   "chat": {
     "starConversationWith": "Start a conversation with",
-    "chooseConversation": "Choose a conversation..."
+    "chooseConversation": "Choose a conversation...",
+    "messages not read": "Messages were not read"
   },
   "bookCard": {
     "add to book list": "Add to reading list",

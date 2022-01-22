@@ -11,9 +11,9 @@ function NotificationsIcon({ mobileView }) {
         }
       >
         <i className="far fa-bell"></i>
-        <div className={styles.notificationNumberContainer}>
+        {/* <div className={styles.notificationNumberContainer}>
           <span className={styles.notificationNumber}>1</span>
-        </div>
+        </div> */}
       </div>
     </div>
   );

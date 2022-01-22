@@ -116,9 +116,19 @@ function UserPage() {
           `${process.env.REACT_APP_SERVER_URL}messages/new-conversation`,
           newConversation
         );
-        navigate(`/messages/${newConversationCreated.data._id}/${params.id}`);
+
+        let fullConvObject = { ...newConversationCreated.data };
+        fullConvObject.pictureOfFriend = currentUserPage.picture;
+        fullConvObject.nameOfFriend = currentUserPage.username;
+        fullConvObject.idOfFriend = currentUserPage._id;
+        dispatch({
+          type: "addConversation",
+          payload: { newConversationCreated: fullConvObject },
+        });
+
+        navigate(`/messages/${newConversationCreated.data._id}`);
       } else if (isConversationExist.length > 0) {
-        navigate(`/messages/${isConversationExist[0]._id}/${params.id}`);
+        navigate(`/messages/${isConversationExist[0]._id}`);
       }
     } catch (err) {
       console.log(err.response);

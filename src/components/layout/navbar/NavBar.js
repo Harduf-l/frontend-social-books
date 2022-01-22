@@ -80,7 +80,10 @@ function NavBar() {
           <i className="fas fa-bars"></i>
         </div>
         <div className="d-flex flex-row flex-wrap mb-2">
-          <MessageIcon mobileView={true} />
+          <MessageIcon
+            mobileView={true}
+            numberOfUnViewdMessages={store.numberOfUnSeenMessages}
+          />
           <NotificationsIcon mobileView={true} />
           <FriendIcon
             mobileView={true}
@@ -144,7 +147,10 @@ function NavBar() {
             </div>
           </NavLink>
 
-          <MessageIcon mobileView={false} />
+          <MessageIcon
+            mobileView={false}
+            numberOfUnViewdMessages={store.numberOfUnSeenMessages}
+          />
           <NotificationsIcon mobileView={false} />
           <FriendIcon
             mobileView={false}

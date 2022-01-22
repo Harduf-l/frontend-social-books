@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { storeContext } from "../../context/store";
 import axios from "axios";
 import Conversation from "./Conversation";
@@ -8,17 +8,21 @@ import { useTranslation } from "react-i18next";
 import defaultPicture from "../../images/plain.jpg";
 import styles from "./chat.module.css";
 import "emoji-mart/css/emoji-mart.css";
-import { Picker } from "emoji-mart";
+
+import EmojiPicker from "./EmojiPicker";
 
 function Chat() {
-  const { store } = useContext(storeContext);
-
-  const [chosenConversation, setChosenConversation] = useState("");
+  const { store, dispatch } = useContext(storeContext);
+  const [chosenConversation, setChosenConversation] = useState({});
   const [typedMessage, setTypedMessage] = useState("");
   const [showEmoji, setShowEmoji] = useState(false);
   const { i18n, t } = useTranslation();
   const currentDir = i18n.dir();
   let params = useParams();
+
+  const closeEmojiModal = () => {
+    setShowEmoji(false);
+  };
 
   const sendMessage = async () => {
     let textToSend = typedMessage;
@@ -27,9 +31,14 @@ function Chat() {
     const newMessage = {
       conversationId: chosenConversation._id,
       senderId: store.userDetails._id,
-      receiverId: params.friendId,
+      receiverId: chosenConversation.idOfFriend,
       text: textToSend,
     };
+
+    dispatch({
+      type: "addMessage",
+      payload: { newMessage, chosenConversationId: chosenConversation._id },
+    });
 
     try {
       await axios.post(
@@ -42,17 +51,38 @@ function Chat() {
   };
 
   useEffect(() => {
-    if (!params.conversationId) {
-      setChosenConversation("");
-    }
-
+    setChosenConversation("");
     if (params.conversationId) {
-      const convFound = store.myConversations.find(
-        (el) => el._id === params.conversationId
-      );
-      setChosenConversation(convFound);
+      if (store.myConversations && store.myConversations.length > 0) {
+        const convFound = store.myConversations.find(
+          (el) => el._id === params.conversationId
+        );
+        setChosenConversation(convFound);
+
+        if (convFound.shouldSee.personId === store.userDetails._id) {
+          axios
+            .get(
+              `${process.env.REACT_APP_SERVER_URL}messages/update-should-see/${convFound._id}`
+            )
+            .then((res) => console.log(res));
+
+          dispatch({
+            type: "updateSeen",
+            payload: { convId: convFound._id },
+          });
+        }
+      }
     }
-  }, [params.conversationId, store.myConversations]);
+  }, [
+    params.conversationId,
+    store.myConversations,
+    store.userDetails._id,
+    dispatch,
+  ]);
+
+  const removeCurrentConversation = () => {
+    setChosenConversation("");
+  };
 
   const calculateStyle = (senderId, userId) => {
     if (currentDir === "rtl") {
@@ -85,18 +115,12 @@ function Chat() {
             </label>
             <input type="text" id="startConv" />
           </div>
-          <div className="d-flex flex-column-reverse">
-            {store.myConversations.length > 0 &&
-              store.myConversations.map((c) => {
-                return (
-                  <Conversation
-                    key={c._id}
-                    conversation={c}
-                    chosen={chosenConversation._id === c._id}
-                  />
-                );
-              })}
-          </div>
+          <Conversation
+            conversations={store.myConversations}
+            chosen={chosenConversation._id}
+            removeCurrentConversation={removeCurrentConversation}
+            userId={store.userDetails._id}
+          />
         </div>
         <div
           className="col-12 col-lg-9 pt-3 pb-4 d-flex flex-column justify-content-between"
@@ -106,24 +130,15 @@ function Chat() {
             position: "relative",
           }}
         >
-          <Picker
-            style={{
-              position: "absolute",
-              bottom: "120px",
-              marginInlineStart: "5px",
-              zIndex: "999",
-              width: "75%",
-              display: showEmoji ? "block" : "none",
-            }}
-            showSkinTones={false}
-            showPreview={false}
-            onClick={onEmojiClick}
-            exclude={["flags"]}
-            native={true}
+          <EmojiPicker
+            showEmoji={showEmoji}
+            onEmojiClick={onEmojiClick}
+            closeEmojiModal={closeEmojiModal}
           />
           <div className="">
-            {chosenConversation._id &&
-              chosenConversation.messages === 0 &&
+            {chosenConversation &&
+              chosenConversation._id &&
+              chosenConversation.messages.length === 0 &&
               chosenConversation.nameOfFriend && (
                 <p className="p-3">
                   {t("chat.starConversationWith")}{" "}
@@ -142,8 +157,8 @@ function Chat() {
               position: "relative",
             }}
           >
-            {chosenConversation.messages &&
-              chosenConversation.messages.length > 0 &&
+            {chosenConversation &&
+              chosenConversation.messages &&
               chosenConversation.messages
                 .slice(0)
                 .reverse()
@@ -215,6 +230,7 @@ function Chat() {
                 <i
                   onClick={() => setShowEmoji((prev) => !prev)}
                   role="button"
+                  id="emojiButton"
                   className={`far fa-grin ${styles.emojiButton}`}
                 ></i>
               </div>
@@ -222,6 +238,7 @@ function Chat() {
             {chosenConversation && (
               <div className="d-flex justify-content-between flex-row">
                 <textarea
+                  id="textAreaZone"
                   type="text"
                   className={`flex-grow-1 ${styles.inputChat}`}
                   value={typedMessage}

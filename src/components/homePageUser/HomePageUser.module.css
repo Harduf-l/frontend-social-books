@@ -55,7 +55,7 @@
 
 .sideBarHeight {
   background-color: #c2ccc4;
-  z-index: -100;
+  margin-top: 1px;
   height: calc(100vh - 97px);
 }
 

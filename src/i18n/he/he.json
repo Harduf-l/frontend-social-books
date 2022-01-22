@@ -91,7 +91,8 @@
   },
   "chat": {
     "starConversationWith": "התחל שיחה עם",
-    "chooseConversation": "בחר שיחה..."
+    "chooseConversation": "בחר שיחה...",
+    "messages not read": "הודעות שלא נקראו"
   },
   "bookCard": {
     "add to book list": "הוסף לרשימת קריאה",
