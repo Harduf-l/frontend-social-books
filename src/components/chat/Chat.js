@@ -31,7 +31,7 @@ function Chat({ sendMessageToSocket }) {
     const newMessage = {
       conversationId: chosenConversation._id,
       senderId: store.userDetails._id,
-      receiverId: chosenConversation.idOfFriend,
+      receiverId: chosenConversation.members[0]._id,
       text: textToSend,
     };
 

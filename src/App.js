@@ -14,11 +14,13 @@ import RouteWrapper from "./components/utlis/RouteWrapper";
 import Footer from "./components/layout/footer/Footer";
 import { io } from "socket.io-client";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 function App() {
   const { i18n } = useTranslation();
   document.body.dir = i18n.dir();
   const socket = useRef();
+  let params = useParams();
   const { store, dispatch } = useContext(storeContext);
 
   useEffect(() => {
@@ -37,8 +39,19 @@ function App() {
     });
 
     socket.current.on("newMessage", (newMessage) => {
-      console.log("got new message! ", newMessage);
+      //// check if user is clicking on the conv ///
+      const urlArray = window.location.href.split("/");
+      if (
+        urlArray[urlArray.length - 1] === newMessage.conversationId &&
+        urlArray[urlArray.length - 2] === "messages"
+      ) {
+        console.log("user is on the current conversation");
+      } else {
+        console.log("user is not on the current conversation");
+      }
+      ///////////////
 
+      console.log("got new message! ", newMessage);
       let result = store.myConversations.some(
         (el) => el._id === newMessage.conversationId
       );
