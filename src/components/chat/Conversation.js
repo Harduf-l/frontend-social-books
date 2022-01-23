@@ -53,7 +53,7 @@ function Conversation({
               style={chosen === c._id ? { backgroundColor: "white" } : {}}
             >
               <div>
-                <p>{c.nameOfFriend}</p>
+                <p>{c.members[0].username}</p>
                 {c.shouldSee.personId === userId && (
                   <p
                     style={{
@@ -70,7 +70,9 @@ function Conversation({
               <div style={{ position: "relative" }}>
                 <img
                   className={styles.profilePicInChat}
-                  src={c.pictureOfFriend ? c.pictureOfFriend : defaultPicture}
+                  src={
+                    c.members[0].picture ? c.members[0].picture : defaultPicture
+                  }
                   alt=""
                 />
                 <div className={styles.onlineSignOn}></div>

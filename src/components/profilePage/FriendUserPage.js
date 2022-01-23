@@ -117,13 +117,11 @@ function UserPage() {
           newConversation
         );
 
-        let fullConvObject = { ...newConversationCreated.data };
-        fullConvObject.pictureOfFriend = currentUserPage.picture;
-        fullConvObject.nameOfFriend = currentUserPage.username;
-        fullConvObject.idOfFriend = currentUserPage._id;
+        console.log(newConversationCreated, "here in friend page");
+
         dispatch({
           type: "addConversation",
-          payload: { newConversationCreated: fullConvObject },
+          payload: { newConversationCreated: newConversationCreated.data },
         });
 
         navigate(`/messages/${newConversationCreated.data._id}`);

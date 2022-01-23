@@ -141,10 +141,10 @@ function Chat({ sendMessageToSocket }) {
             {chosenConversation &&
               chosenConversation._id &&
               chosenConversation.messages.length === 0 &&
-              chosenConversation.nameOfFriend && (
+              chosenConversation.members[0].username && (
                 <p className="p-3">
                   {t("chat.starConversationWith")}{" "}
-                  {chosenConversation.nameOfFriend}
+                  {chosenConversation.members[0].username}
                 </p>
               )}
             {!chosenConversation && (
@@ -211,8 +211,8 @@ function Chat({ sendMessageToSocket }) {
                         {el.senderId !== store.userDetails._id && (
                           <img
                             src={
-                              chosenConversation.pictureOfFriend
-                                ? chosenConversation.pictureOfFriend
+                              chosenConversation.members[0].picture
+                                ? chosenConversation.members[0].picture
                                 : defaultPicture
                             }
                             style={{ marginInlineStart: "10px" }}
