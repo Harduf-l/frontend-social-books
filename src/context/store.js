@@ -10,6 +10,7 @@ const StoreContextProvider = ({ children }) => {
     userDetails: [],
     initialLogin: false,
     myConversations: [],
+    onlineUsers: {},
   };
 
   const [store, dispatch] = useReducer(storeReducer, initalState);

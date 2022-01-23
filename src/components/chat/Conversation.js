@@ -11,6 +11,7 @@ function Conversation({
   chosen,
   removeCurrentConversation,
   userId,
+  onlineUsersMap,
 }) {
   const { dispatch } = useContext(storeContext);
   let navigate = useNavigate();
@@ -54,6 +55,7 @@ function Conversation({
             >
               <div>
                 <p>{c.members[0].username}</p>
+
                 {c.shouldSee.personId === userId && (
                   <p
                     style={{
@@ -75,7 +77,13 @@ function Conversation({
                   }
                   alt=""
                 />
-                <div className={styles.onlineSignOn}></div>
+                <div
+                  className={
+                    onlineUsersMap[c.members[0]._id]
+                      ? `${styles.onlineSignOn} ${styles.onlineSign}`
+                      : `${styles.onlineSignOff} ${styles.onlineSign}`
+                  }
+                ></div>
               </div>
             </div>
           );

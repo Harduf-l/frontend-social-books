@@ -18,20 +18,37 @@ export const storeReducer = (state, action) => {
         myPendingConnections: action.payload.newMyPendingConnections,
       };
     case "addMessage":
-      console.log("here at dispatch action", action.payload);
-
       const convId = action.payload.chosenConversationId;
-      let { myConversations } = { ...state };
-      let chosenConvIndex = myConversations.findIndex(
+      let { myConversations, numberOfUnSeenMessages } = { ...state };
+      let newMyConversations = [...myConversations];
+      let chosenConvIndex = newMyConversations.findIndex(
         (el) => el._id === convId
       );
-      let elementDeleted = myConversations.splice(chosenConvIndex, 1);
+
+      let elementDeleted = newMyConversations.splice(chosenConvIndex, 1);
+      action.payload.newMessage._id = Math.random().toString();
+
+      // because of problem with duplicated messages when sent fast by client
+      // checking that last message id isn't identical to next message id
+
       elementDeleted[0].messages.push(action.payload.newMessage);
-      myConversations.push(elementDeleted[0]);
+
+      if (action.payload.instuctions === "increment both") {
+        let { userDetails } = { ...state };
+        elementDeleted[0].shouldSee.personId = userDetails._id;
+        elementDeleted[0].shouldSee.count = 1;
+
+        numberOfUnSeenMessages++;
+      }
+      if (action.payload.instuctions === "increment internal") {
+        elementDeleted[0].shouldSee.count += 1;
+      }
+      newMyConversations.push(elementDeleted[0]);
 
       return {
         ...state,
-        myConversations,
+        myConversations: newMyConversations,
+        numberOfUnSeenMessages,
       };
     case "updateSeen":
       const convParamsId = action.payload.convId;
@@ -42,7 +59,6 @@ export const storeReducer = (state, action) => {
       updateLastSeenInArray[indexToUpdate].shouldSee.count = 0;
       updateLastSeenInArray[indexToUpdate].shouldSee.personId = "";
 
-      console.log("here in store", updateLastSeenInArray);
       let newUnSeen = state.numberOfUnSeenMessages;
       if (newUnSeen > 0) {
         newUnSeen = state.numberOfUnSeenMessages - 1;
@@ -54,7 +70,6 @@ export const storeReducer = (state, action) => {
       };
 
     case "addConversation":
-      console.log(action.payload.newConversationCreated);
       let addToMyConversations = [...state.myConversations];
       addToMyConversations.push(action.payload.newConversationCreated);
       return {
@@ -63,11 +78,15 @@ export const storeReducer = (state, action) => {
       };
 
     case "updatedMessages":
-      console.log(action.payload);
       return {
         ...state,
         myConversations: action.payload.myConversations,
         numberOfUnSeenMessages: action.payload.numberOfUnSeenMessages,
+      };
+    case "onlineUsers":
+      return {
+        ...state,
+        onlineUsers: action.payload.onlineUsersId,
       };
     case "registration": {
       return {

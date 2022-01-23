@@ -14,13 +14,12 @@ import RouteWrapper from "./components/utlis/RouteWrapper";
 import Footer from "./components/layout/footer/Footer";
 import { io } from "socket.io-client";
 import axios from "axios";
-import { useParams } from "react-router-dom";
 
 function App() {
   const { i18n } = useTranslation();
   document.body.dir = i18n.dir();
   const socket = useRef();
-  let params = useParams();
+
   const { store, dispatch } = useContext(storeContext);
 
   useEffect(() => {
@@ -31,32 +30,20 @@ function App() {
     socket.current.emit("addUser", store.userDetails._id);
 
     socket.current.on("userDisconnected", (onlineUsersId) => {
-      console.log("get refreshed object", onlineUsersId);
+      dispatch({ type: "onlineUsers", payload: { onlineUsersId } });
     });
 
     socket.current.on("onlineArray", (onlineUsersId) => {
-      console.log("get online object of id when logging in", onlineUsersId);
+      dispatch({ type: "onlineUsers", payload: { onlineUsersId } });
     });
 
     socket.current.on("newMessage", (newMessage) => {
-      //// check if user is clicking on the conv ///
-      const urlArray = window.location.href.split("/");
-      if (
-        urlArray[urlArray.length - 1] === newMessage.conversationId &&
-        urlArray[urlArray.length - 2] === "messages"
-      ) {
-        console.log("user is on the current conversation");
-      } else {
-        console.log("user is not on the current conversation");
-      }
-      ///////////////
-
-      console.log("got new message! ", newMessage);
-      let result = store.myConversations.some(
+      let conversationIndex = store.myConversations.findIndex(
         (el) => el._id === newMessage.conversationId
       );
 
-      if (!result) {
+      if (conversationIndex === -1) {
+        // it  means we need to get the new conversation from the server
         const asyncOperations = async () => {
           const response = await axios.get(
             `${process.env.REACT_APP_SERVER_URL}messages/get-all-conversations/${store.userDetails._id}`
@@ -71,20 +58,56 @@ function App() {
         };
         asyncOperations();
       } else {
-        dispatch({
-          type: "addMessage",
-          payload: {
-            newMessage,
-            chosenConversationId: newMessage.conversationId,
-          },
-        });
+        //// check if user is clicking on the conv where message was sent ///
+        const urlArray = window.location.href.split("/");
+        if (
+          urlArray[urlArray.length - 1] === newMessage.conversationId &&
+          urlArray[urlArray.length - 2] === "messages"
+        ) {
+          ///user is on the current conversation
+          dispatch({
+            type: "addMessage",
+            payload: {
+              newMessage,
+              chosenConversationId: newMessage.conversationId,
+            },
+          });
+        } else {
+          if (
+            store.myConversations[conversationIndex].shouldSee.personId !==
+            store.userDetails._id
+          ) {
+            // it means we got a new conversation going on, needs to increment top bar with 1,
+            // and also increment specific conversation count to 1
+            // and put our id in the "shall see"
+            dispatch({
+              type: "addMessage",
+              payload: {
+                newMessage,
+                chosenConversationId: newMessage.conversationId,
+                instuctions: "increment both",
+              },
+            });
+          } else {
+            // it means we already have unseen messages from that user,
+            // so we only need to increment the internal count by 1
+            dispatch({
+              type: "addMessage",
+              payload: {
+                newMessage,
+                chosenConversationId: newMessage.conversationId,
+                instuctions: "increment internal",
+              },
+            });
+          }
+        }
       }
     });
 
     return () => {
       socket.current = null;
     };
-  }, [store.userDetails._id, dispatch, store.myConversations]);
+  }, [store.userDetails._id]);
 
   const sendMessageToSocket = (message) => {
     socket.current.emit("messageSend", message);

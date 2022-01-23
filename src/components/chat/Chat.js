@@ -122,6 +122,7 @@ function Chat({ sendMessageToSocket }) {
             chosen={chosenConversation._id}
             removeCurrentConversation={removeCurrentConversation}
             userId={store.userDetails._id}
+            onlineUsersMap={store.onlineUsers}
           />
         </div>
         <div

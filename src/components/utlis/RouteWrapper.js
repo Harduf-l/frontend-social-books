@@ -61,7 +61,6 @@ function RouteWrapper({ component: Component, sendMessageToSocket }) {
             }
 
             let messagesData = await getFriends();
-            console.log(messagesData);
 
             dispatch({
               type: "login",
