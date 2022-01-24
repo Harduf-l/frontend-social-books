@@ -6,7 +6,6 @@ export const storeContext = createContext();
 const StoreContextProvider = ({ children }) => {
   const initalState = {
     isAuth: false,
-    registeredNow: false,
     userDetails: [],
     initialLogin: false,
     myConversations: [],

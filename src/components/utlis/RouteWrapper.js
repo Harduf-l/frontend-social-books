@@ -12,8 +12,6 @@ function RouteWrapper({ component: Component, sendMessageToSocket }) {
   const { store, dispatch } = useContext(storeContext);
 
   useEffect(() => {
-    if (store.registeredNow) return;
-
     if (!localStorage.getItem("token")) {
       setLoading(false);
       return;
@@ -83,11 +81,7 @@ function RouteWrapper({ component: Component, sendMessageToSocket }) {
           console.log(err.response);
         });
     }
-  }, [dispatch, store.registeredNow, store.initialLogin]);
-
-  if (store.registeredNow) {
-    return <Component />;
-  }
+  }, [dispatch, store.initialLogin]);
 
   if (loading) {
     return <Blank />;

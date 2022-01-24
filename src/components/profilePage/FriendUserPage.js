@@ -100,36 +100,33 @@ function UserPage() {
   };
 
   const createNewMessageAndNavigate = async () => {
-    let newConversation = {
-      senderId: store.userDetails._id,
-      receiverId: params.id,
-    };
-
-    try {
-      let isConversationExist = await axios.get(
-        `${process.env.REACT_APP_SERVER_URL}messages/check-if-conversation-already-exist/${store.userDetails._id}/${params.id}`
+    let indexResult = -1;
+    if (store.myConversations && store.myConversations.length > 0) {
+      indexResult = store.myConversations.findIndex(
+        (el) => el.members[0] === params.id || el.members[1] === params.id
       );
-      isConversationExist = isConversationExist.data;
+    }
+    if (indexResult === -1) {
+      let newConversationDemo = {
+        members: [
+          {
+            username: currentUserPage.username,
+            _id: currentUserPage._id,
+            picture: currentUserPage.picture,
+          },
+        ],
+        messages: [],
+        shouldSee: { personId: "", count: 0 },
+        _id: Math.random().toString(),
+      };
 
-      if (isConversationExist.length === 0) {
-        const newConversationCreated = await axios.post(
-          `${process.env.REACT_APP_SERVER_URL}messages/new-conversation`,
-          newConversation
-        );
-
-        console.log(newConversationCreated, "here in friend page");
-
-        dispatch({
-          type: "addConversation",
-          payload: { newConversationCreated: newConversationCreated.data },
-        });
-
-        navigate(`/messages/${newConversationCreated.data._id}`);
-      } else if (isConversationExist.length > 0) {
-        navigate(`/messages/${isConversationExist[0]._id}`);
-      }
-    } catch (err) {
-      console.log(err.response);
+      dispatch({
+        type: "addConversation",
+        payload: { newConversationCreated: newConversationDemo },
+      });
+      navigate(`/messages/${newConversationDemo._id}`);
+    } else {
+      navigate(`/messages/${store.myConversations[indexResult]._id}`);
     }
   };
 

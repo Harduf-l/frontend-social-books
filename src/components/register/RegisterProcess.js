@@ -101,15 +101,18 @@ function RegisterProcess() {
             setRegisterErrorFunction();
           }
         } else {
+          localStorage.setItem("token", response.data.token);
           dispatch({
             type: "login",
             payload: {
               userDeatils: response.data.userDetails,
               friends: response.data.suggestedUsers,
               booksRecommendations: response.data.recommendationBookArray,
+              myPendingConnections: [],
+              myConversations: [],
+              numberOfUnSeenMessages: 0,
             },
           });
-          dispatch({ type: "registration" });
           navigate(`/`);
         }
       } catch (err) {

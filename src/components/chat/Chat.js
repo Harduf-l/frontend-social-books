@@ -7,15 +7,18 @@ import { format } from "timeago.js";
 import { useTranslation } from "react-i18next";
 import defaultPicture from "../../images/plain.jpg";
 import styles from "./chat.module.css";
+import { useNavigate } from "react-router-dom";
 import "emoji-mart/css/emoji-mart.css";
 
 import EmojiPicker from "./EmojiPicker";
 
 function Chat({ sendMessageToSocket }) {
+  let navigate = useNavigate();
   const { store, dispatch } = useContext(storeContext);
   const [chosenConversation, setChosenConversation] = useState({});
   const [typedMessage, setTypedMessage] = useState("");
   const [showEmoji, setShowEmoji] = useState(false);
+
   const { i18n, t } = useTranslation();
   const currentDir = i18n.dir();
   let params = useParams();
@@ -28,51 +31,77 @@ function Chat({ sendMessageToSocket }) {
     let textToSend = typedMessage;
     setShowEmoji(false);
     setTypedMessage("");
+
     const newMessage = {
       conversationId: chosenConversation._id,
       senderId: store.userDetails._id,
       receiverId: chosenConversation.members[0]._id,
       text: textToSend,
     };
-
-    sendMessageToSocket(newMessage);
-
     dispatch({
       type: "addMessage",
       payload: { newMessage, chosenConversationId: chosenConversation._id },
     });
 
-    try {
-      await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}messages/add-message`,
-        newMessage
-      );
-    } catch (err) {
-      console.log(err);
+    if (chosenConversation.messages.length === 1) {
+      try {
+        let newConversationAfterCreation = await axios.post(
+          `${process.env.REACT_APP_SERVER_URL}messages/add-message`,
+          { ...newMessage, createNewConversation: true }
+        );
+
+        newConversationAfterCreation =
+          newConversationAfterCreation.data.newConverationCreated;
+
+        dispatch({
+          type: "replaceDemoConversationWithReal",
+          payload: {
+            demoConversationId: chosenConversation._id,
+            newConversationAfterCreation,
+          },
+        });
+        navigate(`/messages/${newConversationAfterCreation._id}`);
+        sendMessageToSocket(newMessage);
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      try {
+        await axios.post(
+          `${process.env.REACT_APP_SERVER_URL}messages/add-message`,
+          newMessage
+        );
+        sendMessageToSocket(newMessage);
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
   useEffect(() => {
     setChosenConversation("");
-    if (params.conversationId) {
-      if (store.myConversations && store.myConversations.length > 0) {
-        const convFound = store.myConversations.find(
-          (el) => el._id === params.conversationId
-        );
-        setChosenConversation(convFound);
+    if (
+      params.conversationId &&
+      store.myConversations &&
+      store.myConversations.length > 0
+    ) {
+      const convFound = store.myConversations.find((el) => {
+        return el._id === params.conversationId;
+      });
+      if (!convFound) return;
+      setChosenConversation(convFound);
 
-        if (convFound.shouldSee.personId === store.userDetails._id) {
-          axios
-            .get(
-              `${process.env.REACT_APP_SERVER_URL}messages/update-should-see/${convFound._id}`
-            )
-            .then((res) => console.log(res));
+      if (convFound.shouldSee.personId === store.userDetails._id) {
+        axios
+          .get(
+            `${process.env.REACT_APP_SERVER_URL}messages/update-should-see/${convFound._id}`
+          )
+          .then((res) => console.log(res));
 
-          dispatch({
-            type: "updateSeen",
-            payload: { convId: convFound._id },
-          });
-        }
+        dispatch({
+          type: "updateSeen",
+          payload: { convId: convFound._id },
+        });
       }
     }
   }, [

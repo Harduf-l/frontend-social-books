@@ -70,13 +70,27 @@ export const storeReducer = (state, action) => {
       };
 
     case "addConversation":
-      let addToMyConversations = [...state.myConversations];
+      let addToMyConversations = [];
+      if (state.myConversations && state.myConversations.length > 0) {
+        addToMyConversations = [...state.myConversations];
+      }
+
       addToMyConversations.push(action.payload.newConversationCreated);
       return {
         ...state,
         myConversations: addToMyConversations,
       };
-
+    case "replaceDemoConversationWithReal":
+      let newUpdatedConversationsArray = [...state.myConversations];
+      let index = newUpdatedConversationsArray.findIndex(
+        (el) => el._id === action.payload.demoConversationId
+      );
+      newUpdatedConversationsArray[index] =
+        action.payload.newConversationAfterCreation;
+      return {
+        ...state,
+        myConversations: newUpdatedConversationsArray,
+      };
     case "updatedMessages":
       return {
         ...state,
@@ -88,15 +102,9 @@ export const storeReducer = (state, action) => {
         ...state,
         onlineUsers: action.payload.onlineUsersId,
       };
-    case "registration": {
-      return {
-        ...state,
-        registeredNow: true,
-      };
-    }
     case "logout":
       localStorage.removeItem("token");
-      return { ...state, isAuth: false, userDetails: [], registeredNow: false };
+      return { ...state, isAuth: false, userDetails: [] };
     default:
       return state;
   }
