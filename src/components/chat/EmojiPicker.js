@@ -27,7 +27,7 @@ function EmojiPicker({ showEmoji, onEmojiClick, closeEmojiModal }) {
       <Picker
         style={{
           position: "absolute",
-          bottom: 115,
+          bottom: 75,
           marginInlineStart: "5px",
           zIndex: "999",
           width: "250px",

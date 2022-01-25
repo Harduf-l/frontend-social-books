@@ -93,7 +93,9 @@
   "chat": {
     "starConversationWith": "Start a conversation with",
     "chooseConversation": "Choose a conversation...",
-    "messages not read": "Messages were not read"
+    "messages not read": "Messages were not read",
+    "online": "online",
+    "offline": "offline"
   },
   "bookCard": {
     "add to book list": "Add to reading list",

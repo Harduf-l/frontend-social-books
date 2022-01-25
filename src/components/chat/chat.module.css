@@ -5,13 +5,15 @@
 }
 
 .borderBottomProfile {
-  border-bottom: 2px #fcfcfc solid;
+  border-bottom: 1px #e6e6e6 solid;
+  height: 80px;
 }
 .contactsChatContainer {
-  overflow-y: scroll;
-  background-color: #f3f3f3;
+  overflow-y: auto;
+  background-color: white;
   margin-bottom: 30px;
-  height: 480px;
+  height: 458px;
+  border: 1px #e6e6e6 solid;
 }
 
 .userMessage {
@@ -51,7 +53,7 @@
 
 @media screen and (max-width: 990px) {
   .contactsChatContainer {
-    height: 200px;
+    max-height: 300px;
   }
 }
 .timeAgo {
@@ -65,7 +67,6 @@
 .inputChat {
   resize: none;
   border: none;
-  height: 80px;
 }
 
 .profileChatPic {
@@ -80,7 +81,7 @@ textarea {
 }
 
 .emojiRow {
-  background-color: #dadada;
+  background-color: #eeeeee;
 }
 
 .emojiButton {
@@ -93,12 +94,9 @@ textarea {
 }
 
 .onlineSign {
-  height: 10px;
-  width: 10px;
+  height: 8px;
+  width: 8px;
   border-radius: 50%;
-  position: absolute;
-  left: 13px;
-  bottom: 10px;
 }
 
 .onlineSignOn {

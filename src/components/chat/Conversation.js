@@ -50,16 +50,37 @@ function Conversation({
               role="button"
               key={c._id}
               onClick={() => removeCurrentAndNavigate(c)}
-              className={`d-flex justify-content-between p-3 ${styles.borderBottomProfile}`}
-              style={chosen === c._id ? { backgroundColor: "white" } : {}}
+              className={`d-flex justify-content-around align-items-center  ${styles.borderBottomProfile}`}
+              style={chosen === c._id ? { backgroundColor: "#e6e6e6" } : {}}
             >
               <div>
-                <p>{c.members[0].username}</p>
-
+                <div style={{ height: 50 }}>
+                  <div style={{ fontSize: 14, fontWeight: 500 }}>
+                    {c.members[0].username}
+                  </div>
+                  <div className="mt-1 d-flex align-items-center">
+                    <div
+                      className={
+                        onlineUsersMap[c.members[0]._id]
+                          ? `${styles.onlineSignOn} ${styles.onlineSign}`
+                          : `${styles.onlineSignOff} ${styles.onlineSign}`
+                      }
+                    ></div>
+                    {onlineUsersMap[c.members[0]._id] ? (
+                      <div style={{ fontSize: 12, marginInlineStart: 5 }}>
+                        {t("chat.online")}
+                      </div>
+                    ) : (
+                      <div style={{ fontSize: 12, marginInlineStart: 5 }}>
+                        {t("chat.offline")}
+                      </div>
+                    )}
+                  </div>
+                </div>
                 {c.shouldSee.personId === userId && (
                   <p
                     style={{
-                      fontSize: 13,
+                      fontSize: 12,
                       color: "#6d6d6d",
                       fontStyle: "italic",
                     }}
@@ -77,13 +98,6 @@ function Conversation({
                   }
                   alt=""
                 />
-                <div
-                  className={
-                    onlineUsersMap[c.members[0]._id]
-                      ? `${styles.onlineSignOn} ${styles.onlineSign}`
-                      : `${styles.onlineSignOff} ${styles.onlineSign}`
-                  }
-                ></div>
               </div>
             </div>
           );

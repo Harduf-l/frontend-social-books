@@ -93,7 +93,9 @@
   "chat": {
     "starConversationWith": "התחל שיחה עם",
     "chooseConversation": "בחר שיחה...",
-    "messages not read": "הודעות שלא נקראו"
+    "messages not read": "הודעות שלא נקראו",
+    "online": "מחובר/ת",
+    "offline": "לא מחובר/ת"
   },
   "bookCard": {
     "add to book list": "הוסף לרשימת קריאה",
