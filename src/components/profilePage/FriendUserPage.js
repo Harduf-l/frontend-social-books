@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import styles from "./profilePage.module.css";
 import ContentProfilePage from "./ContentProfilePage";
 
-function UserPage() {
+function UserPage({ sendConnectionToSocket }) {
   let navigate = useNavigate();
   const { t } = useTranslation();
   let params = useParams();
@@ -61,10 +61,18 @@ function UserPage() {
   const sendFriendRequest = async () => {
     setFriendshipStatus("friend request was sent");
     try {
-      await axios.post(
+      const friendRequest = await axios.post(
         `${process.env.REACT_APP_SERVER_URL}connections/send-connection-request`,
         { senderId: store.userDetails._id, receiverId: params.id }
       );
+      let newConnection = {
+        connectionId: friendRequest.data._id,
+        pictureOfSender: store.userDetails.picture,
+        nameOfSender: store.userDetails.username,
+        idOfSender: store.userDetails._id,
+        idOfReceiver: params.id,
+      };
+      sendConnectionToSocket(newConnection);
     } catch (err) {
       console.log(err.response);
     }

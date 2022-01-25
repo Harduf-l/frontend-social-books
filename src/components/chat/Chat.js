@@ -32,6 +32,7 @@ function Chat({ sendMessageToSocket }) {
     setShowEmoji(false);
     setTypedMessage("");
 
+    console.log(chosenConversation.members[0]._id);
     const newMessage = {
       conversationId: chosenConversation._id,
       senderId: store.userDetails._id,
@@ -88,6 +89,7 @@ function Chat({ sendMessageToSocket }) {
       const convFound = store.myConversations.find((el) => {
         return el._id === params.conversationId;
       });
+
       if (!convFound) return;
       setChosenConversation(convFound);
 

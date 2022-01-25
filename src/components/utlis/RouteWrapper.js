@@ -7,7 +7,11 @@ const Blank = () => {
   return <div></div>;
 };
 
-function RouteWrapper({ component: Component, sendMessageToSocket }) {
+function RouteWrapper({
+  component: Component,
+  sendMessageToSocket,
+  sendConnectionToSocket,
+}) {
   const [loading, setLoading] = useState(true);
   const { store, dispatch } = useContext(storeContext);
 
@@ -89,6 +93,8 @@ function RouteWrapper({ component: Component, sendMessageToSocket }) {
     if (!loading && store.isAuth) {
       if (sendMessageToSocket) {
         return <Component sendMessageToSocket={sendMessageToSocket} />;
+      } else if (sendConnectionToSocket) {
+        return <Component sendConnectionToSocket={sendConnectionToSocket} />;
       } else {
         return <Component />;
       }

@@ -37,6 +37,13 @@ function App() {
       dispatch({ type: "onlineUsers", payload: { onlineUsersId } });
     });
 
+    socket.current.on("newFriendRequest", (friendRequest) => {
+      dispatch({
+        type: "addToPendingFriendRequsts",
+        payload: { friendRequest },
+      });
+    });
+
     socket.current.on("newMessage", (newMessage) => {
       let conversationIndex = store.myConversations.findIndex(
         (el) => el._id === newMessage.conversationId
@@ -65,6 +72,15 @@ function App() {
           urlArray[urlArray.length - 2] === "messages"
         ) {
           ///user is on the current conversation
+
+          // update should see in the server ///
+          axios
+            .get(
+              `${process.env.REACT_APP_SERVER_URL}messages/update-should-see/${newMessage.conversationId}`
+            )
+            .then((res) => console.log(res));
+
+          /// add message to current thread, without incrementing anything
           dispatch({
             type: "addMessage",
             payload: {
@@ -105,12 +121,17 @@ function App() {
     });
 
     return () => {
+      socket.current.emit("userLogout", store.userDetails._id);
       socket.current = null;
     };
   }, [store.userDetails._id]);
 
   const sendMessageToSocket = (message) => {
     socket.current.emit("messageSend", message);
+  };
+
+  const sendConnectionToSocket = (friendRequest) => {
+    socket.current.emit("friendRequestSend", friendRequest);
   };
 
   return (
@@ -136,7 +157,12 @@ function App() {
 
           <Route
             path="/user/:id"
-            element={<RouteWrapper component={FriendUserPage} />}
+            element={
+              <RouteWrapper
+                component={FriendUserPage}
+                sendConnectionToSocket={sendConnectionToSocket}
+              />
+            }
           />
           <Route path="/bookSearch" element={<BookSearch />} />
           <Route path="/register" element={<RegisterProcess />} />

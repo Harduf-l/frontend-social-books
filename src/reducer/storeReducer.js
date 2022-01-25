@@ -28,9 +28,6 @@ export const storeReducer = (state, action) => {
       let elementDeleted = newMyConversations.splice(chosenConvIndex, 1);
       action.payload.newMessage._id = Math.random().toString();
 
-      // because of problem with duplicated messages when sent fast by client
-      // checking that last message id isn't identical to next message id
-
       elementDeleted[0].messages.push(action.payload.newMessage);
 
       if (action.payload.instuctions === "increment both") {
@@ -96,6 +93,17 @@ export const storeReducer = (state, action) => {
         ...state,
         myConversations: action.payload.myConversations,
         numberOfUnSeenMessages: action.payload.numberOfUnSeenMessages,
+      };
+    case "addToPendingFriendRequsts":
+      let newPendingArray = [];
+      if (state.myPendingConnections && state.myPendingConnections.length > 0) {
+        newPendingArray = [...state.myPendingConnections];
+      }
+
+      newPendingArray.push(action.payload.friendRequest);
+      return {
+        ...state,
+        myPendingConnections: newPendingArray,
       };
     case "onlineUsers":
       return {

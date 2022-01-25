@@ -20,7 +20,6 @@ function NavBar() {
   const { username, picture } = store.userDetails;
   const [openFriendsRequestsModal, setOpenFriendsRequestsModal] =
     useState(false);
-  const { myPendingConnections } = store;
 
   let navigate = useNavigate();
   const { i18n } = useTranslation();
@@ -38,13 +37,10 @@ function NavBar() {
     }
   };
 
-  const changePendingFriendRequests = (connection) => {
-    let newMyPendingConnections = [...myPendingConnections];
+  const changePendingFriendRequests = (index) => {
+    let newMyPendingConnections = [...store.myPendingConnections];
 
-    let indexToDelete = newMyPendingConnections.indexOf(
-      (el) => el.connectionId === connection.connectionId
-    );
-    newMyPendingConnections.splice(indexToDelete, 1);
+    newMyPendingConnections.splice(index, 1);
 
     dispatch({
       type: "changePendingFriendRequests",
@@ -195,7 +191,7 @@ function NavBar() {
       </div>
       {openFriendsRequestsModal && (
         <FriendRequestBox
-          myPendingConnections={myPendingConnections}
+          myPendingConnections={store.myPendingConnections}
           changePendingFriendRequests={changePendingFriendRequests}
           closeFriendsModal={closeFriendsModal}
         />

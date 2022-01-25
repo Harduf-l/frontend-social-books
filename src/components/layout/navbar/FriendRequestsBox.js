@@ -32,26 +32,26 @@ function FriendRequestsBox({
     return () => document.removeEventListener("click", handleClose);
   }, [closeFriendsModal]);
 
-  const confirmFriendRequest = async (connection) => {
+  const confirmFriendRequest = async (connection, index) => {
     try {
       await axios.post(
         `${process.env.REACT_APP_SERVER_URL}connections/approve-connection-request`,
         { connectionId: connection.connectionId }
       );
-      changePendingFriendRequests(connection);
+      changePendingFriendRequests(index);
     } catch (err) {
       console.log(err);
     }
   };
 
-  const deleteFriendRequest = async (connection) => {
+  const deleteFriendRequest = async (connection, index) => {
     try {
       await axios.delete(
         `${process.env.REACT_APP_SERVER_URL}connections/delete-connection-request`,
         { data: { connectionId: connection.connectionId } }
       );
 
-      changePendingFriendRequests(connection);
+      changePendingFriendRequests(index);
     } catch (err) {
       console.log(err);
     }
@@ -72,7 +72,7 @@ function FriendRequestsBox({
       <div className={styles.arrowUp}></div>
       <div className={styles.contentItselfBox}>
         {myPendingConnections.length > 0 &&
-          myPendingConnections.map((el) => {
+          myPendingConnections.map((el, index) => {
             return (
               <div
                 key={el.connectionId}
@@ -95,13 +95,13 @@ function FriendRequestsBox({
                 </div>
                 <div className="align-self-center">
                   <button
-                    onClick={() => confirmFriendRequest(el)}
+                    onClick={() => confirmFriendRequest(el, index)}
                     className="btn btn-sm btn-light m-2"
                   >
                     אשר
                   </button>
                   <button
-                    onClick={() => deleteFriendRequest(el)}
+                    onClick={() => deleteFriendRequest(el, index)}
                     className="btn btn-sm btn-light"
                   >
                     בטל
