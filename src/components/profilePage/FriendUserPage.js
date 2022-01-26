@@ -111,7 +111,7 @@ function UserPage({ sendConnectionToSocket }) {
     let indexResult = -1;
     if (store.myConversations && store.myConversations.length > 0) {
       indexResult = store.myConversations.findIndex(
-        (el) => el.members[0] === params.id || el.members[1] === params.id
+        (el) => el.members[0]._id === params.id
       );
     }
     if (indexResult === -1) {
