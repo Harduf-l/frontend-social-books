@@ -1,3 +1,5 @@
+import { store } from "emoji-mart";
+
 export const storeReducer = (state, action) => {
   switch (action.type) {
     case "login":
@@ -47,6 +49,21 @@ export const storeReducer = (state, action) => {
         myConversations: newMyConversations,
         numberOfUnSeenMessages,
       };
+    case "friendTyping":
+      let newVersion = [...state.myConversations];
+      newVersion[action.payload.indexOfTypingConversation]["typing"] = true;
+      return {
+        ...state,
+        myConversations: newVersion,
+      };
+    case "friendStoppedTyping":
+      let newVersion2 = [...state.myConversations];
+      newVersion2[action.payload.indexOfTypingConversation]["typing"] = false;
+      return {
+        ...state,
+        myConversations: newVersion2,
+      };
+
     case "updateSeen":
       const convParamsId = action.payload.convId;
       let updateLastSeenInArray = [...state.myConversations];

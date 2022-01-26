@@ -44,6 +44,33 @@ function App() {
       });
     });
 
+    let freezeOperation = {};
+
+    socket.current.on("newTypingEvent", (convId) => {
+      if (freezeOperation[convId]) return;
+
+      let indexOfTypingConversation = store.myConversations.findIndex((el) => {
+        console.log(el._id);
+        return el._id === convId;
+      });
+
+      if (indexOfTypingConversation >= 0) {
+        freezeOperation[convId] = true;
+        dispatch({
+          type: "friendTyping",
+          payload: { indexOfTypingConversation },
+        });
+
+        setTimeout(() => {
+          freezeOperation[convId] = false;
+          dispatch({
+            type: "friendStoppedTyping",
+            payload: { indexOfTypingConversation },
+          });
+        }, 2000);
+      }
+    });
+
     socket.current.on("newMessage", (newMessage) => {
       let conversationIndex = store.myConversations.findIndex(
         (el) => el._id === newMessage.conversationId
@@ -135,6 +162,10 @@ function App() {
     socket.current.emit("friendRequestSend", friendRequest);
   };
 
+  const sendTypingToSocket = (receiverId, convId) => {
+    socket.current.emit("userIsTyping", { receiverId, convId });
+  };
+
   return (
     <div id="page-container">
       {store.isAuth && <NavBar />}
@@ -148,6 +179,7 @@ function App() {
               <RouteWrapper
                 component={Chat}
                 sendMessageToSocket={sendMessageToSocket}
+                sendTypingToSocket={sendTypingToSocket}
               />
             }
           />

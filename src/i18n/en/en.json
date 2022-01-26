@@ -95,7 +95,8 @@
     "chooseConversation": "Choose a conversation...",
     "messages not read": "Messages were not read",
     "online": "online",
-    "offline": "offline"
+    "offline": "offline",
+    "typing": " is typing..."
   },
   "bookCard": {
     "add to book list": "Add to reading list",

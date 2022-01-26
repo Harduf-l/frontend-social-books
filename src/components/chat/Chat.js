@@ -12,7 +12,7 @@ import "emoji-mart/css/emoji-mart.css";
 
 import EmojiPicker from "./EmojiPicker";
 
-function Chat({ sendMessageToSocket }) {
+function Chat({ sendMessageToSocket, sendTypingToSocket }) {
   let navigate = useNavigate();
   const { store, dispatch } = useContext(storeContext);
   const [chosenConversation, setChosenConversation] = useState({});
@@ -219,12 +219,44 @@ function Chat({ sendMessageToSocket }) {
                             <div
                               className={
                                 el.senderId === store.userDetails._id
-                                  ? styles.userMiniMessage
-                                  : styles.partnerMiniMessage
+                                  ? "d-flex "
+                                  : "d-flex justify-content-end"
                               }
                             >
-                              <div> {el.text}</div>
+                              {el.senderId === store.userDetails._id && (
+                                <div
+                                  className={
+                                    currentDir === "rtl"
+                                      ? styles.rightTriangle
+                                      : styles.rightTriangleEng
+                                  }
+                                ></div>
+                              )}
+
+                              <div
+                                className={
+                                  el.senderId === store.userDetails._id
+                                    ? currentDir === "rtl"
+                                      ? styles.userMiniMessage
+                                      : styles.userMiniMessageEng
+                                    : currentDir === "rtl"
+                                    ? styles.partnerMiniMessage
+                                    : styles.partnerMiniMessageEng
+                                }
+                              >
+                                <div> {el.text}</div>
+                              </div>
+                              {el.senderId !== store.userDetails._id && (
+                                <div
+                                  className={
+                                    currentDir === "ltr"
+                                      ? styles.leftTriangleEng
+                                      : styles.leftTriangle
+                                  }
+                                ></div>
+                              )}
                             </div>
+
                             <div
                               dir="ltr"
                               className={styles.timeAgo}
@@ -264,6 +296,12 @@ function Chat({ sendMessageToSocket }) {
                     id="emojiButton"
                     className={`far fa-grin ${styles.emojiButton}`}
                   ></i>
+                  {chosenConversation && chosenConversation.typing && (
+                    <span style={{ fontSize: 12, marginInlineStart: 5 }}>
+                      {chosenConversation.members[0].username}
+                      {t("chat.typing")}
+                    </span>
+                  )}
                 </div>
               )}
               {chosenConversation && (
@@ -273,6 +311,12 @@ function Chat({ sendMessageToSocket }) {
                     id="textAreaZone"
                     type="text"
                     className={`flex-grow-1 ${styles.inputChat}`}
+                    onKeyDown={() =>
+                      sendTypingToSocket(
+                        chosenConversation.members[0]._id,
+                        chosenConversation._id
+                      )
+                    }
                   />
 
                   <button
