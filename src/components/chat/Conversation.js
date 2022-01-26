@@ -17,6 +17,17 @@ function Conversation({
   let navigate = useNavigate();
   const { t } = useTranslation();
 
+  const [filteredSearch, setFilteredSearch] = useState(conversations);
+
+  const filterConversations = (e) => {
+    if (!e.target.value) {
+      setFilteredSearch(conversations);
+    }
+    let newFilteredArray = conversations.filter((el) =>
+      el.members[0].username.startsWith(e.target.value)
+    );
+    setFilteredSearch(newFilteredArray);
+  };
   const removeCurrentAndNavigate = (conversation) => {
     if (conversation._id === chosen) {
       return;
@@ -41,67 +52,81 @@ function Conversation({
   };
 
   return (
-    <div className="d-flex flex-column-reverse">
-      {conversations &&
-        conversations.length > 0 &&
-        conversations.map((c, index) => {
-          return (
-            <div
-              role="button"
-              key={c._id}
-              onClick={() => removeCurrentAndNavigate(c)}
-              className={`d-flex justify-content-around align-items-center  ${styles.borderBottomProfile}`}
-              style={chosen === c._id ? { backgroundColor: "#e6e6e6" } : {}}
-            >
-              <div>
-                <div style={{ height: 50 }}>
-                  <div style={{ fontSize: 14, fontWeight: 500 }}>
-                    {c.members[0].username}
-                  </div>
-                  <div className="mt-1 d-flex align-items-center">
-                    <div
-                      className={
-                        onlineUsersMap[c.members[0]._id]
-                          ? `${styles.onlineSignOn} ${styles.onlineSign}`
-                          : `${styles.onlineSignOff} ${styles.onlineSign}`
-                      }
-                    ></div>
-                    {onlineUsersMap[c.members[0]._id] ? (
-                      <div style={{ fontSize: 12, marginInlineStart: 5 }}>
-                        {t("chat.online")}
-                      </div>
-                    ) : (
-                      <div style={{ fontSize: 12, marginInlineStart: 5 }}>
-                        {t("chat.offline")}
-                      </div>
-                    )}
-                  </div>
-                </div>
-                {c.shouldSee.personId === userId && (
-                  <p
-                    style={{
-                      fontSize: 12,
-                      color: "#6d6d6d",
-                      fontStyle: "italic",
-                    }}
-                  >
-                    {c.shouldSee.count} {t("chat.messages not read")}
-                  </p>
-                )}
-              </div>
+    <div>
+      <div className="d-flex justify-content-between align-items-center p-3 pt-0">
+        <input
+          onChange={filterConversations}
+          style={{ width: "84%" }}
+          type="text"
+          id="startConv"
+        />
+        <i style={{ fontSize: 23 }} className="far fa-search"></i>
+      </div>
 
-              <div style={{ position: "relative" }}>
-                <img
-                  className={styles.profilePicInChat}
-                  src={
-                    c.members[0].picture ? c.members[0].picture : defaultPicture
-                  }
-                  alt=""
-                />
+      <div className="d-flex flex-column-reverse">
+        {filteredSearch &&
+          filteredSearch.length > 0 &&
+          filteredSearch.map((c, index) => {
+            return (
+              <div
+                role="button"
+                key={c._id}
+                onClick={() => removeCurrentAndNavigate(c)}
+                className={`d-flex justify-content-around align-items-center  ${styles.borderBottomProfile}`}
+                style={chosen === c._id ? { backgroundColor: "#e6e6e6" } : {}}
+              >
+                <div>
+                  <div style={{ height: 50 }}>
+                    <div style={{ fontSize: 14, fontWeight: 500 }}>
+                      {c.members[0].username}
+                    </div>
+                    <div className="mt-1 d-flex align-items-center">
+                      <div
+                        className={
+                          onlineUsersMap[c.members[0]._id]
+                            ? `${styles.onlineSignOn} ${styles.onlineSign}`
+                            : `${styles.onlineSignOff} ${styles.onlineSign}`
+                        }
+                      ></div>
+                      {onlineUsersMap[c.members[0]._id] ? (
+                        <div style={{ fontSize: 12, marginInlineStart: 5 }}>
+                          {t("chat.online")}
+                        </div>
+                      ) : (
+                        <div style={{ fontSize: 12, marginInlineStart: 5 }}>
+                          {t("chat.offline")}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  {c.shouldSee.personId === userId && (
+                    <p
+                      style={{
+                        fontSize: 12,
+                        color: "#6d6d6d",
+                        fontStyle: "italic",
+                      }}
+                    >
+                      {c.shouldSee.count} {t("chat.messages not read")}
+                    </p>
+                  )}
+                </div>
+
+                <div style={{ position: "relative" }}>
+                  <img
+                    className={styles.profilePicInChat}
+                    src={
+                      c.members[0].picture
+                        ? c.members[0].picture
+                        : defaultPicture
+                    }
+                    alt=""
+                  />
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+      </div>
     </div>
   );
 }

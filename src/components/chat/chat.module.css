@@ -3,6 +3,10 @@
   width: 60px;
   border-radius: 50%;
 }
+/* 
+.rowContainer {
+  height: 450px;
+} */
 
 .borderBottomProfile {
   border-bottom: 1px #e6e6e6 solid;
@@ -12,14 +16,14 @@
   overflow-y: auto;
   background-color: white;
   margin-bottom: 30px;
-  height: 458px;
+  height: 450px;
   border: 1px #e6e6e6 solid;
 }
 
 .userMessage {
   display: flex;
   justify-content: start;
-  color: #002f5e;
+
   margin: 8px;
   min-height: 60px;
   white-space: pre-line;
@@ -37,14 +41,14 @@
 }
 
 .userMiniMessage {
-  background-color: #b4c5d3;
+  background-color: #cad7e2;
   padding: 5px 10px;
   border-radius: 15px;
   font-size: 13px;
 }
 
 .partnerMiniMessage {
-  background-color: #bdd8cb;
+  background-color: #e9e9e9;
 
   padding: 5px 10px;
   border-radius: 15px;
@@ -54,6 +58,7 @@
 @media screen and (max-width: 990px) {
   .contactsChatContainer {
     max-height: 300px;
+    margin-bottom: 50px;
   }
 }
 .timeAgo {
@@ -108,3 +113,7 @@ textarea {
   background-color: #ee3434;
   border: 1px solid #ca1c1c;
 }
+
+/* .rowContainer {
+  height: auto;
+} */

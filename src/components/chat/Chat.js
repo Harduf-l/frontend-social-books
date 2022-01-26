@@ -136,18 +136,12 @@ function Chat({ sendMessageToSocket }) {
   };
 
   return (
-    <div style={{ backgroundColor: "#f5f5f5", paddingBottom: 40 }}>
-      <div className="container mt-1 p-3">
-        <div className="d-flex  flex-wrap" style={{ height: "450px" }}>
+    <div style={{ backgroundColor: "#f5f5f5", paddingBottom: 10 }}>
+      <div className="container p-3">
+        <div className={`d-flex flex-wrap mt-3 pb-1 `}>
           <div
             className={`col-12 col-lg-3 pt-3 ${styles.contactsChatContainer}`}
           >
-            <div className="d-flex justify-content-around pb-3">
-              <label style={{ fontSize: "17px" }} htmlFor="startConv">
-                {t("profile.search")}
-              </label>
-              <input type="text" id="startConv" />
-            </div>
             <Conversation
               conversations={store.myConversations}
               chosen={chosenConversation._id}
@@ -187,7 +181,7 @@ function Chat({ sendMessageToSocket }) {
             <div
               className="d-flex flex-column-reverse"
               style={{
-                height: "400px",
+                height: "390px",
                 overflowY: "auto",
                 position: "relative",
               }}
@@ -259,7 +253,7 @@ function Chat({ sendMessageToSocket }) {
                   })}
             </div>
 
-            <div style={{ height: 50 }}>
+            <div style={{ height: "60px" }}>
               {chosenConversation && (
                 <div className={styles.emojiRow}>
                   <i
