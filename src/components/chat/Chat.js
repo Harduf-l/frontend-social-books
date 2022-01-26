@@ -16,9 +16,10 @@ function Chat({ sendMessageToSocket }) {
   let navigate = useNavigate();
   const { store, dispatch } = useContext(storeContext);
   const [chosenConversation, setChosenConversation] = useState({});
-  const [typedMessage, setTypedMessage] = useState("");
+
   const [showEmoji, setShowEmoji] = useState(false);
 
+  let inputText = useRef("");
   const { i18n, t } = useTranslation();
   const currentDir = i18n.dir();
   let params = useParams();
@@ -28,9 +29,10 @@ function Chat({ sendMessageToSocket }) {
   };
 
   const sendMessage = async () => {
-    let textToSend = typedMessage;
+    let textToSend = inputText.current.value;
+    if (!textToSend) return;
     setShowEmoji(false);
-    setTypedMessage("");
+    inputText.current.value = "";
 
     console.log(chosenConversation.members[0]._id);
     const newMessage = {
@@ -132,7 +134,7 @@ function Chat({ sendMessageToSocket }) {
   };
 
   const onEmojiClick = (emojiObject) => {
-    setTypedMessage((prev) => prev + emojiObject.native);
+    inputText.current.value = inputText.current.value + emojiObject.native;
   };
 
   return (
@@ -267,11 +269,10 @@ function Chat({ sendMessageToSocket }) {
               {chosenConversation && (
                 <div className="d-flex justify-content-between flex-row">
                   <textarea
+                    ref={inputText}
                     id="textAreaZone"
                     type="text"
                     className={`flex-grow-1 ${styles.inputChat}`}
-                    value={typedMessage}
-                    onChange={(e) => setTypedMessage(e.target.value)}
                   />
 
                   <button

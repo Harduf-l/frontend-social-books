@@ -55,6 +55,7 @@ function App() {
           const response = await axios.get(
             `${process.env.REACT_APP_SERVER_URL}messages/get-all-conversations/${store.userDetails._id}`
           );
+          console.log(response.data.conversationsWithFriendData);
           dispatch({
             type: "updatedMessages",
             payload: {

@@ -18,16 +18,19 @@ function Conversation({
   const { t } = useTranslation();
 
   const [filteredSearch, setFilteredSearch] = useState(conversations);
+  const [searchWord, setSearchWord] = useState("");
 
-  const filterConversations = (e) => {
-    if (!e.target.value) {
+  useEffect(() => {
+    if (!searchWord) {
       setFilteredSearch(conversations);
+      return;
     }
     let newFilteredArray = conversations.filter((el) =>
-      el.members[0].username.startsWith(e.target.value)
+      el.members[0].username.startsWith(searchWord)
     );
     setFilteredSearch(newFilteredArray);
-  };
+  }, [searchWord, conversations]);
+
   const removeCurrentAndNavigate = (conversation) => {
     if (conversation._id === chosen) {
       return;
@@ -55,7 +58,7 @@ function Conversation({
     <div>
       <div className="d-flex justify-content-between align-items-center p-3 pt-0">
         <input
-          onChange={filterConversations}
+          onChange={(e) => setSearchWord(e.target.value)}
           style={{ width: "84%" }}
           type="text"
           id="startConv"
@@ -72,10 +75,10 @@ function Conversation({
                 role="button"
                 key={c._id}
                 onClick={() => removeCurrentAndNavigate(c)}
-                className={`d-flex justify-content-around align-items-center  ${styles.borderBottomProfile}`}
+                className={`d-flex justify-content-around pt-2 pb-2 ${styles.borderBottomProfile}`}
                 style={chosen === c._id ? { backgroundColor: "#e6e6e6" } : {}}
               >
-                <div>
+                <div style={{ width: 133 }}>
                   <div style={{ height: 50 }}>
                     <div style={{ fontSize: 14, fontWeight: 500 }}>
                       {c.members[0].username}
@@ -102,7 +105,7 @@ function Conversation({
                   {c.shouldSee.personId === userId && (
                     <p
                       style={{
-                        fontSize: 12,
+                        fontSize: 11,
                         color: "#6d6d6d",
                         fontStyle: "italic",
                       }}
