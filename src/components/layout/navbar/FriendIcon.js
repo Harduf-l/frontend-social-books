@@ -1,6 +1,11 @@
 import React from "react";
 import styles from "./NavBar.module.css";
-function FriendIcon({ closeFriendsModal, myPendingConnections, mobileView }) {
+function FriendIcon({
+  closeFriendsModal,
+  myPendingConnections,
+  mobileView,
+  openFriendsRequestsModal,
+}) {
   return (
     <div className={styles.marginTopDesktop}>
       <div
@@ -22,6 +27,9 @@ function FriendIcon({ closeFriendsModal, myPendingConnections, mobileView }) {
           </div>
         )}
       </div>
+      {mobileView && openFriendsRequestsModal && (
+        <div className={styles.arrowUpMobile}></div>
+      )}
     </div>
   );
 }

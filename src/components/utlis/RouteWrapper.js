@@ -3,12 +3,31 @@ import React, { useContext, useEffect, useState } from "react";
 import { storeContext } from "../../context/store";
 import ResigterHomePage from "../register/ResigterHomePage";
 
-const Blank = () => {
+const Blank = ({ type }) => {
+  if (type === "homePage") {
+    return (
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "100vh", marginInlineEnd: 30 }}
+      >
+        <div className="lds-ellipsis">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <h3 className="mb-3 loadingHome" style={{ marginInlineStart: 10 }}>
+          Loading
+        </h3>
+      </div>
+    );
+  }
   return <div></div>;
 };
 
 function RouteWrapper({
   component: Component,
+  type,
   sendMessageToSocket,
   sendConnectionToSocket,
   sendTypingToSocket,
@@ -89,7 +108,7 @@ function RouteWrapper({
   }, [dispatch, store.initialLogin]);
 
   if (loading) {
-    return <Blank />;
+    return <Blank type={type} />;
   } else {
     if (!loading && store.isAuth) {
       if (sendMessageToSocket) {

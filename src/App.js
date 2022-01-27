@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import RegisterProcess from "./components/register/RegisterProcess";
 import { Routes, Route } from "react-router-dom";
@@ -26,7 +26,7 @@ function App() {
     if (!store.userDetails._id) return;
 
     console.log("here at socket");
-    socket.current = io(process.env.REACT_APP_SOCKET_URL);
+    socket.current = io(process.env.REACT_APP_SERVER_URL);
     socket.current.emit("addUser", store.userDetails._id);
 
     socket.current.on("userDisconnected", (onlineUsersId) => {
@@ -44,30 +44,37 @@ function App() {
       });
     });
 
-    let freezeOperation = {};
-
+    const freezerObj = {};
     socket.current.on("newTypingEvent", (convId) => {
-      if (freezeOperation[convId]) return;
+      if (!store.myConversations || store.myConversations.length < 1) return;
+      console.log(freezerObj);
+      if (freezerObj[convId]) {
+        return;
+      }
 
       let indexOfTypingConversation = store.myConversations.findIndex((el) => {
-        console.log(el._id);
         return el._id === convId;
       });
 
       if (indexOfTypingConversation >= 0) {
-        freezeOperation[convId] = true;
+        freezerObj[convId] = true;
+
         dispatch({
           type: "friendTyping",
           payload: { indexOfTypingConversation },
         });
 
         setTimeout(() => {
-          freezeOperation[convId] = false;
+          deleteTypingTrue();
           dispatch({
             type: "friendStoppedTyping",
             payload: { indexOfTypingConversation },
           });
         }, 2000);
+
+        function deleteTypingTrue() {
+          delete freezerObj[convId];
+        }
       }
     });
 
@@ -82,7 +89,7 @@ function App() {
           const response = await axios.get(
             `${process.env.REACT_APP_SERVER_URL}messages/get-all-conversations/${store.userDetails._id}`
           );
-          console.log(response.data.conversationsWithFriendData);
+
           dispatch({
             type: "updatedMessages",
             payload: {
@@ -106,7 +113,7 @@ function App() {
             .get(
               `${process.env.REACT_APP_SERVER_URL}messages/update-should-see/${newMessage.conversationId}`
             )
-            .then((res) => console.log(res));
+            .then((res) => console.log("message is seen"));
 
           /// add message to current thread, without incrementing anything
           dispatch({
@@ -171,7 +178,12 @@ function App() {
       {store.isAuth && <NavBar />}
       <div id="content-wrap">
         <Routes>
-          <Route path="/" element={<RouteWrapper component={HomePageUser} />} />
+          <Route
+            path="/"
+            element={
+              <RouteWrapper component={HomePageUser} type={"homePage"} />
+            }
+          />
           <Route path="/messages" element={<RouteWrapper component={Chat} />} />
           <Route
             path="/messages/:conversationId"

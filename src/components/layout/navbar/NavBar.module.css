@@ -200,7 +200,7 @@
   .friendBoxEng {
     position: absolute;
     width: 100%;
-    top: 48px;
+    top: 47px;
     right: 0px;
     left: 0px;
     width: 100%;
@@ -209,6 +209,15 @@
 
   .arrowUp {
     border-bottom: 12px solid transparent;
+  }
+
+  .arrowUpMobile {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 15px solid white;
   }
 
   .marginTopDesktop {
@@ -300,8 +309,8 @@
 
     align-items: flex-start;
     flex-direction: row;
-    background-color: #c4c4c4;
-    color: white;
+    background-color: #e4e4e4;
+    color: rgb(49, 49, 49);
     font-size: 35px;
     cursor: pointer;
   }

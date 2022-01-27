@@ -70,6 +70,7 @@ function FriendRequestsBox({
       }
     >
       <div className={styles.arrowUp}></div>
+
       <div className={styles.contentItselfBox}>
         {myPendingConnections.length > 0 &&
           myPendingConnections.map((el, index) => {

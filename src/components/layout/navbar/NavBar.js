@@ -86,7 +86,15 @@ function NavBar() {
             closeFriendsModal={closeFriendsModal}
             myPendingConnections={store.myPendingConnections}
             styles={styles}
+            openFriendsRequestsModal={openFriendsRequestsModal}
           />
+          <div style={{ marginInlineStart: 20 }}>
+            <NavLink to="/" className={styles.marginInlineStart}>
+              <div className={styles.notificationSymbolPhone}>
+                <i style={{ fontSize: 28 }} class="far fa-home"></i>
+              </div>
+            </NavLink>
+          </div>
         </div>
       </div>
 
