@@ -51,14 +51,22 @@ export const storeReducer = (state, action) => {
       };
     case "friendTyping":
       let newVersion = [...state.myConversations];
-      newVersion[action.payload.indexOfTypingConversation]["typing"] = true;
+
+      let indexOfTypingConversation = newVersion.findIndex((el) => {
+        return el._id === action.payload.convId;
+      });
+
+      newVersion[indexOfTypingConversation]["typing"] = true;
       return {
         ...state,
         myConversations: newVersion,
       };
     case "friendStoppedTyping":
       let newVersion2 = [...state.myConversations];
-      newVersion2[action.payload.indexOfTypingConversation]["typing"] = false;
+      let indexOfTypingConversation2 = newVersion2.findIndex((el) => {
+        return el._id === action.payload.convId;
+      });
+      newVersion2[indexOfTypingConversation2]["typing"] = false;
       return {
         ...state,
         myConversations: newVersion2,

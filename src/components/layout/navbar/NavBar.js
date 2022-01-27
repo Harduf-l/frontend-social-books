@@ -91,7 +91,7 @@ function NavBar() {
           <div style={{ marginInlineStart: 20 }}>
             <NavLink to="/" className={styles.marginInlineStart}>
               <div className={styles.notificationSymbolPhone}>
-                <i style={{ fontSize: 28 }} class="far fa-home"></i>
+                <i style={{ fontSize: 28 }} className="far fa-home"></i>
               </div>
             </NavLink>
           </div>

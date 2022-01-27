@@ -128,6 +128,7 @@ export const InputFunction = ({
   autoComplete,
   dir,
   onBlurFunction,
+  onFocusFunction,
 }) => {
   const { t } = useTranslation();
   return (
@@ -143,6 +144,7 @@ export const InputFunction = ({
         style={styleFunction ? styleFunction() : { width: "auto" }}
         autoComplete={autoComplete ? "on" : "off"}
         onBlur={onBlurFunction && onBlurFunction}
+        onFocus={onFocusFunction && onFocusFunction}
       />
     </div>
   );

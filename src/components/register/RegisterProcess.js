@@ -121,6 +121,10 @@ function RegisterProcess() {
     }
   };
 
+  const wakeUpServer = async () => {
+    await axios.get(`${process.env.REACT_APP_SERVER_URL}users/wake-up`);
+  };
+
   const setBirthdateFunction = (event) => {
     const dateEntered = event.target.value;
     setBirthdate(event.target.value);
@@ -294,6 +298,7 @@ function RegisterProcess() {
                     stateValue={nameChosen}
                     functionToSetField={setNameFunction}
                     type={"text"}
+                    onFocusFunction={wakeUpServer}
                   />
                   <div style={{ height: "20px" }}></div>
                 </div>

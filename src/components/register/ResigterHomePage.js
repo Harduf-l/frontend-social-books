@@ -32,6 +32,10 @@ function ResigterHomePage() {
     setPassword(event.target.value);
   };
 
+  const wakeUpServer = async () => {
+    await axios.get(`${process.env.REACT_APP_SERVER_URL}users/wake-up`);
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -106,6 +110,7 @@ function ResigterHomePage() {
                     setLoginError("");
                   }}
                   placeholder={t("form.email")}
+                  onFocus={wakeUpServer}
                 ></input>
                 <input
                   dir="ltr"

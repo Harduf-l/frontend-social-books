@@ -19,7 +19,6 @@ function App() {
   const { i18n } = useTranslation();
   document.body.dir = i18n.dir();
   const socket = useRef();
-
   const { store, dispatch } = useContext(storeContext);
 
   useEffect(() => {
@@ -46,36 +45,20 @@ function App() {
 
     const freezerObj = {};
     socket.current.on("newTypingEvent", (convId) => {
-      if (!store.myConversations || store.myConversations.length < 1) return;
-      console.log(freezerObj);
-      if (freezerObj[convId]) {
-        return;
-      }
-
-      let indexOfTypingConversation = store.myConversations.findIndex((el) => {
-        return el._id === convId;
+      if (freezerObj[convId]) return;
+      freezerObj[convId] = true;
+      dispatch({
+        type: "friendTyping",
+        payload: { convId },
       });
 
-      if (indexOfTypingConversation >= 0) {
-        freezerObj[convId] = true;
-
+      setTimeout(() => {
+        delete freezerObj[convId];
         dispatch({
-          type: "friendTyping",
-          payload: { indexOfTypingConversation },
+          type: "friendStoppedTyping",
+          payload: { convId },
         });
-
-        setTimeout(() => {
-          deleteTypingTrue();
-          dispatch({
-            type: "friendStoppedTyping",
-            payload: { indexOfTypingConversation },
-          });
-        }, 2000);
-
-        function deleteTypingTrue() {
-          delete freezerObj[convId];
-        }
-      }
+      }, 2000);
     });
 
     socket.current.on("newMessage", (newMessage) => {
@@ -170,6 +153,7 @@ function App() {
   };
 
   const sendTypingToSocket = (receiverId, convId) => {
+    if (convId < 1.1) return;
     socket.current.emit("userIsTyping", { receiverId, convId });
   };
 
