@@ -24,8 +24,29 @@ function App() {
   useEffect(() => {
     if (!store.userDetails._id) return;
 
-    setInterval(() => {
+    setInterval(async () => {
       if (!socket.current || !socket.current.connected) {
+        //// axios call to fetch all former messages ////
+
+        async function getFriends() {
+          const response = await axios.get(
+            `${process.env.REACT_APP_SERVER_URL}messages/get-all-conversations/${store.userDetails._id}`
+          );
+          return response;
+        }
+
+        let messagesData = await getFriends();
+
+        dispatch({
+          type: "renewConversation",
+          payload: {
+            myConversations: messagesData.data.conversationsWithFriendData,
+            numberOfUnSeenMessages: messagesData.data.numberOfUnseenMessages,
+          },
+        });
+
+        ////////
+
         socket.current = io(process.env.REACT_APP_SERVER_URL);
         socket.current.emit("addUser", store.userDetails._id);
 
@@ -72,6 +93,12 @@ function App() {
             // it  means we need to get the new conversation from the server
             // remember, the store might already have this converstation, but the useEffect
             // might not be aware of it
+
+            /// better to move everything to useReducer, because this information isn't reliable.
+            // it's better to build a paralle conversation with the real id, and not fetch
+            // "the real one" from database --> move all logic to reducer,
+            // only there we can figure out if we shall build a "copy" of the new conversation
+            // that was created in the database
             const asyncOperations = async () => {
               const response = await axios.get(
                 `${process.env.REACT_APP_SERVER_URL}messages/get-single-conversation/${newMessage.conversationId}/${store.userDetails._id}`

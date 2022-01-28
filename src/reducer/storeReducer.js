@@ -162,6 +162,12 @@ export const storeReducer = (state, action) => {
           numberOfUnSeenMessages: unSeenMessages,
         };
       }
+    case "renewConversation":
+      return {
+        ...state,
+        myConversations: action.payload.myConversations,
+        numberOfUnSeenMessages: action.payload.numberOfUnSeenMessages,
+      };
     case "addToPendingFriendRequsts":
       let newPendingArray = [];
       if (state.myPendingConnections && state.myPendingConnections.length > 0) {
