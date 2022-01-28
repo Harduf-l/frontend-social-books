@@ -89,7 +89,7 @@ function UserPage({ sendConnectionToSocket }) {
 
     ////
     let newMyPendingConnections = [...store.myPendingConnections];
-    let indexToDelete = newMyPendingConnections.indexOf(
+    let indexToDelete = newMyPendingConnections.findIndex(
       (el) => el.connectionId === connectionFound.connectionId
     );
     newMyPendingConnections.splice(indexToDelete, 1);

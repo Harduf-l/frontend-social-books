@@ -64,6 +64,8 @@ function Chat({ sendMessageToSocket, sendTypingToSocket }) {
           },
         });
         navigate(`/messages/${newConversationAfterCreation._id}`);
+        // sending to socket the message with the id of the newly created conversation
+        // the demo id isn't useful to the receiver side
         sendMessageToSocket({
           ...newMessage,
           conversationId: newConversationAfterCreation._id,

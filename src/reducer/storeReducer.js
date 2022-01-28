@@ -21,33 +21,34 @@ export const storeReducer = (state, action) => {
       };
     case "addMessage":
       const convId = action.payload.chosenConversationId;
-      let { myConversations, numberOfUnSeenMessages } = { ...state };
-      let newMyConversations = [...myConversations];
+      let updateNumberOfUnSeenMessages = state.numberOfUnSeenMessages;
+      let newMyConversations = [...state.myConversations];
       let chosenConvIndex = newMyConversations.findIndex(
         (el) => el._id === convId
       );
 
+      if (chosenConvIndex === -1) return;
       let elementDeleted = newMyConversations.splice(chosenConvIndex, 1);
-      action.payload.newMessage._id = Math.random().toString();
-
       elementDeleted[0].messages.push(action.payload.newMessage);
 
+      // these cases are relevant for receicing messages, not sending them
       if (action.payload.instuctions === "increment both") {
         let { userDetails } = { ...state };
         elementDeleted[0].shouldSee.personId = userDetails._id;
         elementDeleted[0].shouldSee.count = 1;
 
-        numberOfUnSeenMessages++;
+        updateNumberOfUnSeenMessages++;
       }
       if (action.payload.instuctions === "increment internal") {
         elementDeleted[0].shouldSee.count += 1;
       }
+
       newMyConversations.push(elementDeleted[0]);
 
       return {
         ...state,
         myConversations: newMyConversations,
-        numberOfUnSeenMessages,
+        updateNumberOfUnSeenMessages,
       };
     case "friendTyping":
       let newVersion = [...state.myConversations];
