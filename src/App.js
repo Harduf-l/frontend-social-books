@@ -19,19 +19,17 @@ function App() {
   const { i18n } = useTranslation();
   document.body.dir = i18n.dir();
   const { store, dispatch } = useContext(storeContext);
+  const [connectAgain, setConnectAgain] = useState(false);
   let socket = useRef("");
 
   useEffect(() => {
     setInterval(() => {
-      if (
-        (!socket.current || !socket.current.connected) &&
-        store.userDetails._id
-      ) {
-        socket.current = io(process.env.REACT_APP_SERVER_URL);
-        socket.current.emit("addUser", store.userDetails._id);
+      if (!socket.current || !socket.current.connected) {
+        // making the main useEffect run again
+        setConnectAgain((prev) => !prev);
       }
     }, 2000);
-  }, [store.userDetails._id]);
+  }, []);
 
   useEffect(() => {
     if (!store.userDetails._id) return;
@@ -154,7 +152,7 @@ function App() {
       socket.current.emit("userLogout", store.userDetails._id);
       socket.current = null;
     };
-  }, [store.userDetails._id, dispatch]);
+  }, [store.userDetails._id, dispatch, connectAgain]);
 
   const sendMessageToSocket = (message) => {
     socket.current.emit("messageSend", message);
