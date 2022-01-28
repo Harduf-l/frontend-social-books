@@ -130,10 +130,24 @@ export const storeReducer = (state, action) => {
         let newConversationsArray = [...state.myConversations];
         newConversationsArray.splice(conversationIndex, 1);
         newConversationsArray.push(action.payload.foundConversation);
-        return {
-          ...state,
-          myConversations: newConversationsArray,
-        };
+
+        if (
+          action.payload.foundConversation.shouldSee.count === 1 &&
+          action.payload.foundConversation.shouldSee.personId ===
+            state.userDetails._id
+        ) {
+          let unSeenMessages = state.numberOfUnSeenMessages + 1;
+          return {
+            ...state,
+            myConversations: newConversationsArray,
+            numberOfUnSeenMessages: unSeenMessages,
+          };
+        } else {
+          return {
+            ...state,
+            myConversations: newConversationsArray,
+          };
+        }
       }
       // in case the conversation is completely new and the store haven't heard of it
       else {
