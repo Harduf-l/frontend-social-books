@@ -48,7 +48,7 @@ export const storeReducer = (state, action) => {
       return {
         ...state,
         myConversations: newMyConversations,
-        updateNumberOfUnSeenMessages,
+        numberOfUnSeenMessages: updateNumberOfUnSeenMessages,
       };
     case "friendTyping":
       let newVersion = [...state.myConversations];
