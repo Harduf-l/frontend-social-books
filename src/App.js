@@ -22,16 +22,17 @@ function App() {
   let socket = useRef("");
 
   useEffect(() => {
-    /// checking every 2 seconds if connection is lost. if it is, refreshing page
-    setInterval(function () {
-      if (!store.userDetails || socket.current) return;
+    var lastTime = new Date().getTime();
 
-      // mandatory, because in case it's only a guest, we don't need socket!
-      if (store.userDetails || !socket.current.connected) {
+    setInterval(function () {
+      var currentTime = new Date().getTime();
+      if (currentTime > lastTime + 2000 * 2) {
+        // ignore small delays
         window.location.reload();
       }
+      lastTime = currentTime;
     }, 2000);
-  }, [store.userDetails]);
+  }, []);
 
   useEffect(() => {
     if (!store.userDetails._id) return;
