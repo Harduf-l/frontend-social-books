@@ -22,6 +22,18 @@ function App() {
   const { store, dispatch } = useContext(storeContext);
 
   useEffect(() => {
+    // var lastTime = new Date().getTime();
+
+    setInterval(function () {
+      if (!socket.current && store.userDetails._id) {
+        console.log("restarting socket");
+        socket.current = io(process.env.REACT_APP_SERVER_URL);
+        socket.current.emit("addUser", store.userDetails._id);
+      }
+    }, 2000);
+  }, [store.userDetails._id]);
+
+  useEffect(() => {
     if (!store.userDetails._id) return;
 
     console.log("here at socket");
