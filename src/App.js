@@ -22,153 +22,142 @@ function App() {
   let socket = useRef("");
 
   useEffect(() => {
-    if (!store.userDetails._id) return;
+    /// checking every 2 seconds if connection is lost. if it is, refreshing page
+    setInterval(function () {
+      if (!store.userDetails || socket.current) return;
 
-    setInterval(async () => {
-      if (!socket.current || !socket.current.connected) {
-        //// axios call to fetch all former messages ////
-
-        async function getFriends() {
-          const response = await axios.get(
-            `${process.env.REACT_APP_SERVER_URL}messages/get-all-conversations/${store.userDetails._id}`
-          );
-          return response;
-        }
-
-        let messagesData = await getFriends();
-
-        dispatch({
-          type: "renewConversation",
-          payload: {
-            myConversations: messagesData.data.conversationsWithFriendData,
-            numberOfUnSeenMessages: messagesData.data.numberOfUnseenMessages,
-          },
-        });
-
-        ////////
-
-        socket.current = io(process.env.REACT_APP_SERVER_URL);
-        socket.current.emit("addUser", store.userDetails._id);
-
-        socket.current.on("userDisconnected", (onlineUsersId) => {
-          dispatch({ type: "onlineUsers", payload: { onlineUsersId } });
-        });
-
-        socket.current.on("onlineArray", (onlineUsersId) => {
-          dispatch({ type: "onlineUsers", payload: { onlineUsersId } });
-        });
-
-        socket.current.on("newFriendRequest", (friendRequest) => {
-          dispatch({
-            type: "addToPendingFriendRequsts",
-            payload: { friendRequest },
-          });
-        });
-
-        const freezerObj = {};
-        socket.current.on("newTypingEvent", (convId) => {
-          console.log(freezerObj);
-          if (freezerObj[convId]) return;
-          freezerObj[convId] = true;
-          dispatch({
-            type: "friendTyping",
-            payload: { convId },
-          });
-
-          setTimeout(() => {
-            delete freezerObj[convId];
-            dispatch({
-              type: "friendStoppedTyping",
-              payload: { convId },
-            });
-          }, 2000);
-        });
-
-        socket.current.on("newMessage", (newMessage) => {
-          let conversationIndex = store.myConversations.findIndex(
-            (el) => el._id === newMessage.conversationId
-          );
-
-          if (conversationIndex === -1) {
-            // it  means we need to get the new conversation from the server
-            // remember, the store might already have this converstation, but the useEffect
-            // might not be aware of it
-
-            /// better to move everything to useReducer, because this information isn't reliable.
-            // it's better to build a paralle conversation with the real id, and not fetch
-            // "the real one" from database --> move all logic to reducer,
-            // only there we can figure out if we shall build a "copy" of the new conversation
-            // that was created in the database
-            const asyncOperations = async () => {
-              const response = await axios.get(
-                `${process.env.REACT_APP_SERVER_URL}messages/get-single-conversation/${newMessage.conversationId}/${store.userDetails._id}`
-              );
-
-              dispatch({
-                type: "addNewConversationToThread",
-                payload: {
-                  foundConversation: response.data.foundConversation,
-                },
-              });
-            };
-            asyncOperations();
-          } else {
-            //// check if user is clicking on the conv where message was sent ///
-            const urlArray = window.location.href.split("/");
-            if (
-              urlArray[urlArray.length - 1] === newMessage.conversationId &&
-              urlArray[urlArray.length - 2] === "messages"
-            ) {
-              ///user is on the current conversation
-
-              // update should see in the server ///
-              axios
-                .get(
-                  `${process.env.REACT_APP_SERVER_URL}messages/update-should-see/${newMessage.conversationId}`
-                )
-                .then((res) => console.log("message is seen"));
-
-              /// add message to current thread, without incrementing anything
-              dispatch({
-                type: "addMessage",
-                payload: {
-                  newMessage,
-                  chosenConversationId: newMessage.conversationId,
-                },
-              });
-            } else {
-              if (
-                store.myConversations[conversationIndex].shouldSee.personId !==
-                store.userDetails._id
-              ) {
-                // it means we got a new conversation going on, needs to increment top bar with 1,
-                // and also increment specific conversation count to 1
-                // and put our id in the "shall see"
-                dispatch({
-                  type: "addMessage",
-                  payload: {
-                    newMessage,
-                    chosenConversationId: newMessage.conversationId,
-                    instuctions: "increment both",
-                  },
-                });
-              } else {
-                // it means we already have unseen messages from that user,
-                // so we only need to increment the internal count by 1
-                dispatch({
-                  type: "addMessage",
-                  payload: {
-                    newMessage,
-                    chosenConversationId: newMessage.conversationId,
-                    instuctions: "increment internal",
-                  },
-                });
-              }
-            }
-          }
-        });
+      // mandatory, because in case it's only a guest, we don't need socket!
+      if (store.userDetails) {
+        window.location.reload();
       }
     }, 2000);
+  }, [store.userDetails]);
+
+  useEffect(() => {
+    if (!store.userDetails._id) return;
+
+    console.log("here at socket");
+    socket.current = io(process.env.REACT_APP_SERVER_URL);
+    socket.current.emit("addUser", store.userDetails._id);
+
+    socket.current.on("userDisconnected", (onlineUsersId) => {
+      dispatch({ type: "onlineUsers", payload: { onlineUsersId } });
+    });
+
+    socket.current.on("onlineArray", (onlineUsersId) => {
+      dispatch({ type: "onlineUsers", payload: { onlineUsersId } });
+    });
+
+    socket.current.on("newFriendRequest", (friendRequest) => {
+      dispatch({
+        type: "addToPendingFriendRequsts",
+        payload: { friendRequest },
+      });
+    });
+
+    const freezerObj = {};
+    socket.current.on("newTypingEvent", (convId) => {
+      console.log(freezerObj);
+      if (freezerObj[convId]) return;
+      freezerObj[convId] = true;
+      dispatch({
+        type: "friendTyping",
+        payload: { convId },
+      });
+
+      setTimeout(() => {
+        delete freezerObj[convId];
+        dispatch({
+          type: "friendStoppedTyping",
+          payload: { convId },
+        });
+      }, 2000);
+    });
+
+    socket.current.on("newMessage", (newMessage) => {
+      let conversationIndex = store.myConversations.findIndex(
+        (el) => el._id === newMessage.conversationId
+      );
+
+      if (conversationIndex === -1) {
+        // it  means we need to get the new conversation from the server
+        // remember, the store might already have this converstation, but the useEffect
+        // might not be aware of it
+
+        /// better to move everything to useReducer, because this information isn't reliable.
+        // it's better to build a paralle conversation with the real id, and not fetch
+        // "the real one" from database --> move all logic to reducer,
+        // only there we can figure out if we shall build a "copy" of the new conversation
+        // that was created in the database
+
+        const asyncOperations = async () => {
+          const response = await axios.get(
+            `${process.env.REACT_APP_SERVER_URL}messages/get-single-conversation/${newMessage.conversationId}/${store.userDetails._id}`
+          );
+
+          dispatch({
+            type: "addNewConversationToThread",
+            payload: {
+              foundConversation: response.data.foundConversation,
+            },
+          });
+        };
+        asyncOperations();
+      } else {
+        //// check if user is clicking on the conv where message was sent ///
+        const urlArray = window.location.href.split("/");
+        if (
+          urlArray[urlArray.length - 1] === newMessage.conversationId &&
+          urlArray[urlArray.length - 2] === "messages"
+        ) {
+          ///user is on the current conversation
+
+          // update should see in the server ///
+          axios
+            .get(
+              `${process.env.REACT_APP_SERVER_URL}messages/update-should-see/${newMessage.conversationId}`
+            )
+            .then((res) => console.log("message is seen"));
+
+          /// add message to current thread, without incrementing anything
+          dispatch({
+            type: "addMessage",
+            payload: {
+              newMessage,
+              chosenConversationId: newMessage.conversationId,
+            },
+          });
+        } else {
+          if (
+            store.myConversations[conversationIndex].shouldSee.personId !==
+            store.userDetails._id
+          ) {
+            // it means we got a new conversation going on, needs to increment top bar with 1,
+            // and also increment specific conversation count to 1
+            // and put our id in the "shall see"
+            dispatch({
+              type: "addMessage",
+              payload: {
+                newMessage,
+                chosenConversationId: newMessage.conversationId,
+                instuctions: "increment both",
+              },
+            });
+          } else {
+            // it means we already have unseen messages from that user,
+            // so we only need to increment the internal count by 1
+            dispatch({
+              type: "addMessage",
+              payload: {
+                newMessage,
+                chosenConversationId: newMessage.conversationId,
+                instuctions: "increment internal",
+              },
+            });
+          }
+        }
+      }
+    });
 
     return () => {
       socket.current.emit("userLogout", store.userDetails._id);
