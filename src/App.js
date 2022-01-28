@@ -24,12 +24,17 @@ function App() {
 
   useEffect(() => {
     setInterval(() => {
-      if (!socket.current || !socket.current.connected) {
+      if (
+        (!socket.current || !socket.current.connected) &&
+        store.userDetails._id
+      ) {
+        socket.current = io(process.env.REACT_APP_SERVER_URL);
+        socket.current.emit("addUser", store.userDetails._id);
         // making the main useEffect run again
         setConnectAgain((prev) => !prev);
       }
     }, 2000);
-  }, []);
+  }, [store.userDetails._id]);
 
   useEffect(() => {
     if (!store.userDetails._id) return;
