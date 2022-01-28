@@ -21,30 +21,39 @@ function App() {
   const { store, dispatch } = useContext(storeContext);
   let socket = useRef("");
 
-  useEffect(() => {
-    var lastTime = new Date().getTime();
+  // useEffect(() => {
+  //   var lastTime = new Date().getTime();
 
-    setInterval(function () {
-      var currentTime = new Date().getTime();
-      if (currentTime > lastTime + 2000 * 2) {
-        // ignore small delays
-        window.location.reload();
-      }
-      lastTime = currentTime;
-    }, 2000);
-  }, []);
+  //   setInterval(function () {
+  //     var currentTime = new Date().getTime();
+  //     if (currentTime > lastTime + 2000 * 2) {
+  //       // ignore small delays
+  //       window.location.reload();
+  //     }
+  //     lastTime = currentTime;
+  //   }, 2000);
+  // }, []);
 
   useEffect(() => {
     if (!store.userDetails._id) return;
 
     console.log("here at socket");
-    socket.current = io(process.env.REACT_APP_SERVER_URL, {
-      reconnection: true,
-      reconnectionDelayMax: 3000,
-      reconnectionDelay: 2500,
-      reconnectionAttempts: 1000,
+
+    document.addEventListener("scroll", function () {
+      if (!socket.current || !socket.current.connected) {
+        socket.current = io(process.env.REACT_APP_SERVER_URL);
+        socket.current.on("connect", () => {
+          socket.current.emit("addUser", store.userDetails._id);
+        });
+      }
     });
-    socket.current.emit("addUser", store.userDetails._id);
+
+    if (!socket.current) {
+      socket.current = io(process.env.REACT_APP_SERVER_URL);
+      socket.current.on("connect", () => {
+        socket.current.emit("addUser", store.userDetails._id);
+      });
+    }
 
     socket.current.on("userDisconnected", (onlineUsersId) => {
       dispatch({ type: "onlineUsers", payload: { onlineUsersId } });
