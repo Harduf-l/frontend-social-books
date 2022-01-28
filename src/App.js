@@ -38,7 +38,12 @@ function App() {
     if (!store.userDetails._id) return;
 
     console.log("here at socket");
-    socket.current = io(process.env.REACT_APP_SERVER_URL);
+    socket.current = io(process.env.REACT_APP_SERVER_URL, {
+      reconnection: true,
+      reconnectionDelayMax: 3000,
+      reconnectionDelay: 2500,
+      reconnectionAttempts: 1000,
+    });
     socket.current.emit("addUser", store.userDetails._id);
 
     socket.current.on("userDisconnected", (onlineUsersId) => {
