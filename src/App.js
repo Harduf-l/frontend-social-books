@@ -25,10 +25,8 @@ function App() {
     // var lastTime = new Date().getTime();
 
     setInterval(function () {
-      if (store.userDetails._id) {
-        socket.current = io(process.env.REACT_APP_SERVER_URL);
-        socket.current.emit("addUser", store.userDetails._id);
-      }
+      socket.current = io(process.env.REACT_APP_SERVER_URL);
+      socket.current.emit("addUser", store.userDetails._id);
     }, 2000);
   }, [store.userDetails._id]);
 
