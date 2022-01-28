@@ -10,44 +10,51 @@ function FriendsList({ userFriends, userId }) {
       {userFriends &&
         userFriends.map((el, index) => {
           return (
-            <div key={index}>
-              <div
-                style={{
-                  textAlign: "center",
-                  color: "#251703",
-                  backgroundColor: "#f3f3f3",
-                  margin: 5,
-                  borderRadius: 10,
-                  border: "1px dotted #d3c6b4",
-                }}
-              >
-                <img
-                  onClick={() =>
-                    navigate(el._id === userId ? "/profile" : `/user/${el._id}`)
-                  }
-                  role={"button"}
-                  style={{
-                    borderRadius: "20px",
-                    height: "80px",
-                    width: "80px",
-                    objectFit: "cover",
-                    padding: 5,
-                  }}
-                  src={el.picture ? el.picture : defaultPicture}
-                  alt=""
-                />
-
-                <p
+            // need to check the connection has the friend data on it.
+            // because if the friend deletes his account, we no longer have
+            // his data attached to the connection object
+            el.username && (
+              <div key={index}>
+                <div
                   style={{
                     textAlign: "center",
-                    fontSize: "12px",
-                    marginTop: "6px",
+                    color: "#251703",
+                    backgroundColor: "#f3f3f3",
+                    margin: 5,
+                    borderRadius: 10,
+                    border: "1px dotted #d3c6b4",
                   }}
                 >
-                  {el.username}
-                </p>
+                  <img
+                    onClick={() =>
+                      navigate(
+                        el._id === userId ? "/profile" : `/user/${el._id}`
+                      )
+                    }
+                    role={"button"}
+                    style={{
+                      borderRadius: "20px",
+                      height: "80px",
+                      width: "80px",
+                      objectFit: "cover",
+                      padding: 5,
+                    }}
+                    src={el.picture ? el.picture : defaultPicture}
+                    alt=""
+                  />
+
+                  <p
+                    style={{
+                      textAlign: "center",
+                      fontSize: "12px",
+                      marginTop: "6px",
+                    }}
+                  >
+                    {el.username}
+                  </p>
+                </div>
               </div>
-            </div>
+            )
           );
         })}
     </div>

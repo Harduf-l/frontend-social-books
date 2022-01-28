@@ -45,6 +45,7 @@ function App() {
 
     const freezerObj = {};
     socket.current.on("newTypingEvent", (convId) => {
+      console.log(freezerObj);
       if (freezerObj[convId]) return;
       freezerObj[convId] = true;
       dispatch({
@@ -68,16 +69,17 @@ function App() {
 
       if (conversationIndex === -1) {
         // it  means we need to get the new conversation from the server
+        // remember, the store might already have this converstation, but the useEffect
+        // might not be aware of it
         const asyncOperations = async () => {
           const response = await axios.get(
-            `${process.env.REACT_APP_SERVER_URL}messages/get-all-conversations/${store.userDetails._id}`
+            `${process.env.REACT_APP_SERVER_URL}messages/get-single-conversation/${newMessage.conversationId}/${store.userDetails._id}`
           );
 
           dispatch({
-            type: "updatedMessages",
+            type: "addNewConversationToThread",
             payload: {
-              myConversations: response.data.conversationsWithFriendData,
-              numberOfUnSeenMessages: response.data.numberOfUnseenMessages,
+              foundConversation: response.data.foundConversation,
             },
           });
         };
@@ -142,7 +144,7 @@ function App() {
       socket.current.emit("userLogout", store.userDetails._id);
       socket.current = null;
     };
-  }, [store.userDetails._id]);
+  }, [store.userDetails._id, dispatch]);
 
   const sendMessageToSocket = (message) => {
     socket.current.emit("messageSend", message);
@@ -153,6 +155,7 @@ function App() {
   };
 
   const sendTypingToSocket = (receiverId, convId) => {
+    // if it's demo conversation. the friend doesn't have it
     if (convId < 1.1) return;
     socket.current.emit("userIsTyping", { receiverId, convId });
   };

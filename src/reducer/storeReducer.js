@@ -113,12 +113,42 @@ export const storeReducer = (state, action) => {
         ...state,
         myConversations: newUpdatedConversationsArray,
       };
-    case "updatedMessages":
-      return {
-        ...state,
-        myConversations: action.payload.myConversations,
-        numberOfUnSeenMessages: action.payload.numberOfUnSeenMessages,
-      };
+    case "addNewConversationToThread":
+      // needs to check if new conversation is already exist. the useEffect doesn't
+      // have information about things happening in the conversation store.
+
+      // if conversation already exist, we need to swap it with the new fetched one,
+      // and put it in the top of the list.
+
+      let conversationIndex = -1;
+
+      if (state.myConversations && state.myConversations.length > 0) {
+        conversationIndex = state.myConversations.findIndex(
+          (el) => el._id === action.payload.foundConversation._id
+        );
+      }
+      if (conversationIndex >= 0) {
+        let newConversationsArray = [...state.myConversations];
+        newConversationsArray.splice(conversationIndex, 1);
+        newConversationsArray.push(action.payload.foundConversation);
+        return {
+          ...state,
+          myConversations: newConversationsArray,
+        };
+      }
+      // in case the conversation is completely new and the store haven't heard of it
+      else {
+        let newUpdatedConversationsArray2 = [
+          ...state.myConversations,
+          action.payload.foundConversation,
+        ];
+        let unSeenMessages = state.numberOfUnSeenMessages + 1;
+        return {
+          ...state,
+          myConversations: newUpdatedConversationsArray2,
+          numberOfUnSeenMessages: unSeenMessages,
+        };
+      }
     case "addToPendingFriendRequsts":
       let newPendingArray = [];
       if (state.myPendingConnections && state.myPendingConnections.length > 0) {

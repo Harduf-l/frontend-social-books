@@ -34,12 +34,12 @@ function Chat({ sendMessageToSocket, sendTypingToSocket }) {
     setShowEmoji(false);
     inputText.current.value = "";
 
-    console.log(chosenConversation.members[0]._id);
     const newMessage = {
       conversationId: chosenConversation._id,
       senderId: store.userDetails._id,
       receiverId: chosenConversation.members[0]._id,
       text: textToSend,
+      createdAt: Date.now(),
     };
     dispatch({
       type: "addMessage",
@@ -64,7 +64,10 @@ function Chat({ sendMessageToSocket, sendTypingToSocket }) {
           },
         });
         navigate(`/messages/${newConversationAfterCreation._id}`);
-        sendMessageToSocket(newMessage);
+        sendMessageToSocket({
+          ...newMessage,
+          conversationId: newConversationAfterCreation._id,
+        });
       } catch (err) {
         console.log(err);
       }
@@ -265,7 +268,7 @@ function Chat({ sendMessageToSocket, sendTypingToSocket }) {
                                 store.userDetails._id
                               )}
                             >
-                              {el.createdAt ? format(el.createdAt) : "just now"}
+                              {el.createdAt && format(el.createdAt)}
                             </div>
                           </div>
 

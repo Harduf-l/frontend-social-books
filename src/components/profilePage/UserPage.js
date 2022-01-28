@@ -7,6 +7,11 @@ import ContentProfilePage from "./ContentProfilePage";
 function UserPage() {
   const { store } = useContext(storeContext);
   const [approvedFriends, setApprovedFriends] = useState([]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  });
+
   useEffect(() => {
     axios
       .get(

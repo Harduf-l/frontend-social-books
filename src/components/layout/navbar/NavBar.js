@@ -62,6 +62,12 @@ function NavBar() {
     navigate(`/bookSearch?search=${searchForWord}`);
   };
 
+  const changeLangCloseManu = (lng) => {
+    i18n.changeLanguage(lng);
+    setShowMobileLinks(false);
+    window.scrollTo(0, 0);
+  };
+
   return (
     <div
       className={!showMobileLink ? styles.NavTotalBar : styles.NavTotalBarPhone}
@@ -190,7 +196,7 @@ function NavBar() {
                 fontWeight: i18n.resolvedLanguage === lng ? "bold" : "normal",
               }}
               type="submit"
-              onClick={() => i18n.changeLanguage(lng)}
+              onClick={() => changeLangCloseManu(lng)}
             >
               {t(lngs[lng].nativeName)}
             </span>
