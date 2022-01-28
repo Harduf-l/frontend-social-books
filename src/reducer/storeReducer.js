@@ -126,6 +126,15 @@ export const storeReducer = (state, action) => {
           (el) => el._id === action.payload.foundConversation._id
         );
       }
+
+      // another check maybe we already have a conversation open with this user
+      if (conversationIndex === -1) {
+        conversationIndex = state.myConversations.findIndex(
+          (el) =>
+            el.members[0]._id ===
+            action.payload.foundConversation.members[0]._id
+        );
+      }
       if (conversationIndex >= 0) {
         let newConversationsArray = [...state.myConversations];
         newConversationsArray.splice(conversationIndex, 1);
@@ -162,12 +171,6 @@ export const storeReducer = (state, action) => {
           numberOfUnSeenMessages: unSeenMessages,
         };
       }
-    case "renewConversation":
-      return {
-        ...state,
-        myConversations: action.payload.myConversations,
-        numberOfUnSeenMessages: action.payload.numberOfUnSeenMessages,
-      };
     case "addToPendingFriendRequsts":
       let newPendingArray = [];
       if (state.myPendingConnections && state.myPendingConnections.length > 0) {
