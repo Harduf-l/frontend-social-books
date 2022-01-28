@@ -18,26 +18,23 @@ import axios from "axios";
 function App() {
   const { i18n } = useTranslation();
   document.body.dir = i18n.dir();
-  const socket = useRef();
   const { store, dispatch } = useContext(storeContext);
+  let socket = useRef("");
 
   useEffect(() => {
-    var lastTime = new Date().getTime();
-
-    setInterval(function () {
-      var currentTime = new Date().getTime();
-      if (currentTime > lastTime + 2000 * 2) {
-        // ignore small delays
-        window.location.reload();
+    setInterval(() => {
+      if (
+        (!socket.current || !socket.current.connected) &&
+        store.userDetails._id
+      ) {
+        socket.current = io(process.env.REACT_APP_SERVER_URL);
+        socket.current.emit("addUser", store.userDetails._id);
       }
-      lastTime = currentTime;
     }, 2000);
-  }, []);
+  }, [store.userDetails._id]);
 
   useEffect(() => {
     if (!store.userDetails._id) return;
-
-    console.log("here at socket");
     socket.current = io(process.env.REACT_APP_SERVER_URL);
     socket.current.emit("addUser", store.userDetails._id);
 
