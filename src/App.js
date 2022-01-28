@@ -22,13 +22,11 @@ function App() {
   const { store, dispatch } = useContext(storeContext);
 
   useEffect(() => {
-    // var lastTime = new Date().getTime();
-
     setInterval(function () {
       socket.current = io(process.env.REACT_APP_SERVER_URL);
-      socket.current.emit("addUser", store.userDetails._id);
-    }, 2000);
-  }, [store.userDetails._id]);
+      socket.current.emit("onlineArrayPlease");
+    }, 3000);
+  }, []);
 
   useEffect(() => {
     if (!store.userDetails._id) return;
@@ -42,7 +40,11 @@ function App() {
     });
 
     socket.current.on("onlineArray", (onlineUsersId) => {
-      dispatch({ type: "onlineUsers", payload: { onlineUsersId } });
+      if (!onlineUsersId[store.userDetails._id]) {
+        socket.current.emit("addUser", store.userDetails._id);
+      } else {
+        dispatch({ type: "onlineUsers", payload: { onlineUsersId } });
+      }
     });
 
     socket.current.on("newFriendRequest", (friendRequest) => {
