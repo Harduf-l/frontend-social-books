@@ -27,7 +27,7 @@ function App() {
       if (!store.userDetails || socket.current) return;
 
       // mandatory, because in case it's only a guest, we don't need socket!
-      if (store.userDetails) {
+      if (store.userDetails || !socket.current.connected) {
         window.location.reload();
       }
     }, 2000);
