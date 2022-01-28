@@ -1,5 +1,3 @@
-import { store } from "emoji-mart";
-
 export const storeReducer = (state, action) => {
   switch (action.type) {
     case "login":
