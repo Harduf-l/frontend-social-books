@@ -20,10 +20,6 @@ function UserPage({ sendConnectionToSocket }) {
   const [approvedFriends, setApprovedFriends] = useState([]);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  });
-
-  useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_SERVER_URL}users/get-by-id/${params.id}`)
       .then((res) => {

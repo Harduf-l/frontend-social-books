@@ -71,7 +71,7 @@ function Chat({ sendMessageToSocket, sendTypingToSocket }) {
           conversationId: newConversationAfterCreation._id,
         });
       } catch (err) {
-        console.log(err);
+        console.log(err.response);
       }
     } else {
       try {
@@ -81,7 +81,7 @@ function Chat({ sendMessageToSocket, sendTypingToSocket }) {
         );
         sendMessageToSocket(newMessage);
       } catch (err) {
-        console.log(err);
+        console.log(err.response);
       }
     }
   };

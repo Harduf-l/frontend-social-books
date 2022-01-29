@@ -9,10 +9,6 @@ function UserPage() {
   const [approvedFriends, setApprovedFriends] = useState([]);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  });
-
-  useEffect(() => {
     axios
       .get(
         `${process.env.REACT_APP_SERVER_URL}connections/all-approved-connections/${store.userDetails._id}`

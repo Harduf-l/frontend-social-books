@@ -122,9 +122,12 @@ export const storeReducer = (state, action) => {
       let conversationIndex = -1;
 
       if (state.myConversations && state.myConversations.length > 0) {
-        conversationIndex = state.myConversations.findIndex(
-          (el) => el._id === action.payload.foundConversation._id
-        );
+        conversationIndex = state.myConversations.findIndex((el) => {
+          return (
+            el.members[0]._id ===
+            action.payload.foundConversation.members[0]._id
+          );
+        });
       }
       if (conversationIndex >= 0) {
         let newConversationsArray = [...state.myConversations];
