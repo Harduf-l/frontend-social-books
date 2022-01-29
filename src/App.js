@@ -8,6 +8,9 @@ import FriendUserPage from "../src/components/profilePage/FriendUserPage";
 import UserProfilePage from "../src/components/profilePage/UserPage";
 import NavBar from "../src/components/layout/navbar/NavBar";
 import Chat from "../src/components/chat/Chat";
+import Groups from "../src/components/groups/Groups";
+import Events from "../src/components/events/Events";
+
 import BookSearch from "../src/components/BookSearch/BookSearch";
 import "./i18n/i18n";
 import { storeContext } from "./context/store";
@@ -201,6 +204,8 @@ function App() {
             path="/profile"
             element={<RouteWrapper component={UserProfilePage} />}
           />
+          <Route path="/groups" element={<RouteWrapper component={Groups} />} />
+          <Route path="/events" element={<RouteWrapper component={Events} />} />
 
           <Route
             path="/user/:id"

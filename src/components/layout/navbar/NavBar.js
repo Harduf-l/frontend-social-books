@@ -18,6 +18,7 @@ const lngs = {
 function NavBar() {
   const { store, dispatch } = useContext(storeContext);
   const { username, picture } = store.userDetails;
+  const [inHomePage, setInHomePage] = useState(true);
   const [openFriendsRequestsModal, setOpenFriendsRequestsModal] =
     useState(false);
 
@@ -95,9 +96,17 @@ function NavBar() {
             openFriendsRequestsModal={openFriendsRequestsModal}
           />
           <div style={{ marginInlineStart: 20 }}>
-            <NavLink to="/" className={styles.marginInlineStart}>
+            <NavLink
+              to="/"
+              style={({ isActive }) => setInHomePage(isActive)}
+              className={styles.marginInlineStart}
+            >
               <div className={styles.notificationSymbolPhone}>
-                <i style={{ fontSize: 28 }} className="far fa-home"></i>
+                {inHomePage ? (
+                  <i style={{ fontSize: 28 }} className="far fa-home-lg"></i>
+                ) : (
+                  <i style={{ fontSize: 28 }} className="fal fa-home-lg"></i>
+                )}
               </div>
             </NavLink>
           </div>
@@ -127,6 +136,7 @@ function NavBar() {
             }}
             className={styles.navlink}
             to="/profile"
+            style={({ isActive }) => ({ fontWeight: isActive ? 600 : 400 })}
           >
             <div className={styles.divProfileNav}>
               <span style={{ marginInlineStart: 5 }}>
@@ -140,6 +150,7 @@ function NavBar() {
             }}
             className={styles.navlink}
             to="/groups"
+            style={({ isActive }) => ({ fontWeight: isActive ? 600 : 400 })}
           >
             <div className={styles.divProfileNav}>
               <span style={{ marginInlineStart: 5 }}>{t("navbar.groups")}</span>
@@ -151,6 +162,7 @@ function NavBar() {
             }}
             className={styles.navlink}
             to="/events"
+            style={({ isActive }) => ({ fontWeight: isActive ? 600 : 400 })}
           >
             <div className={styles.divProfileNav}>
               <span style={{ marginInlineStart: 5 }}>{t("navbar.events")}</span>
@@ -164,6 +176,7 @@ function NavBar() {
           <NotificationsIcon mobileView={false} />
           <FriendIcon
             mobileView={false}
+            openFriendsRequestsModal={openFriendsRequestsModal}
             closeFriendsModal={closeFriendsModal}
             myPendingConnections={store.myPendingConnections}
             styles={styles}

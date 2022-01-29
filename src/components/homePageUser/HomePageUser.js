@@ -97,7 +97,10 @@ function HomePageUser() {
         </button>
       </div>
 
-      <div className="col-12 col-lg-7 mt-4" style={{ paddingInlineStart: 30 }}>
+      <div
+        className={`col-12 col-lg-7 mt-4 ${styles.paddingEndMobile}`}
+        style={{ paddingInlineStart: 20 }}
+      >
         <textarea
           maxLength="5000"
           placeholder={t("profile.share thought")}

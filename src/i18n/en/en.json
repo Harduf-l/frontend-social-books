@@ -94,7 +94,10 @@
     "events": "Events",
     "books": "Books",
     "search": "Search...",
-    "groups": "Groups"
+    "groups": "Groups",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "no requests": "There are no friends requests"
   },
   "chat": {
     "starConversationWith": "Start a conversation with",

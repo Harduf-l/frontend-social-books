@@ -21,6 +21,10 @@
   margin-top: 8px;
 }
 
+.navlink .active {
+  color: red;
+}
+
 .navlinkStatic {
   text-decoration: none;
   color: black;
@@ -119,7 +123,6 @@
 .notificationSymbol {
   font-size: 21px;
 
-  margin-inline-end: 30px;
   display: inline-block;
   color: #313123;
   position: relative;
@@ -127,6 +130,7 @@
 
 .marginInlineStart {
   margin-inline-start: 25px;
+  margin-inline-end: 30px;
   margin-top: 8px;
   display: inline-block;
 }
@@ -225,6 +229,8 @@
   }
   .marginInlineStart {
     margin-top: 0px;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
   }
 
   .notificationSymbolPhone {
@@ -285,10 +291,6 @@
     display: flex;
     flex-direction: column;
     justify-content: start;
-  }
-
-  .marginInlineStart {
-    margin-inline-start: 0px;
   }
 
   .marginEnd {

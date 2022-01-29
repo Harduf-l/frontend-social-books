@@ -75,8 +75,16 @@
   background-color: #c2ccc4;
 }
 
+.paddingEndMobile {
+  padding-inline-end: 0px;
+}
+
 @media (max-width: 991px) {
   .sideBarHeight {
     height: auto;
+  }
+
+  .paddingEndMobile {
+    padding-inline-end: 20px;
   }
 }

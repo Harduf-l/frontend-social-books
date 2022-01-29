@@ -26,9 +26,9 @@ function FeedPosts({ postsToShow }) {
     let dayInMonth = DateCreated.getDate();
 
     return (
-      <p style={{ fontSize: 13 }}>
+      <span style={{ fontSize: 13, marginInlineStart: 20 }}>
         {dayInMonth} {t(`months.month${monthOfPost}`)}, {fullYear}
-      </p>
+      </span>
     );
   };
   return (
@@ -45,7 +45,7 @@ function FeedPosts({ postsToShow }) {
             >
               {console.log(post)}
               <div className="d-flex justify-content-between">
-                <div className="d-flex">
+                <div className="d-flex flex-wrap">
                   <img
                     className={styles.postPic}
                     src={
@@ -57,16 +57,16 @@ function FeedPosts({ postsToShow }) {
                     {post.writer.username}
                   </div>
                 </div>
-                <div className="d-flex">
-                  <p
+                <div className="d-flex flex-wrap justify-content-end">
+                  <span
                     style={{
-                      marginInlineEnd: 20,
                       fontSize: 13,
                       fontStyle: "italic",
+                      marginInlineStart: 105,
                     }}
                   >
                     {t(`profile.${post.tag}`)}
-                  </p>
+                  </span>
                   {getOrganizedDate(post.createdAt)}
                 </div>
               </div>

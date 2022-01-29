@@ -7,7 +7,7 @@ function FriendIcon({
   openFriendsRequestsModal,
 }) {
   return (
-    <div className={styles.marginTopDesktop}>
+    <div className={styles.marginInlineStart}>
       <div
         role={"button"}
         onClick={() => closeFriendsModal("opposite")}
@@ -17,7 +17,11 @@ function FriendIcon({
             : styles.notificationSymbolPhone
         }
       >
-        <i className="far fa-user-friends"></i>
+        {openFriendsRequestsModal ? (
+          <i className="fas fa-user-friends"></i>
+        ) : (
+          <i className="far fa-user-friends"></i>
+        )}
 
         {myPendingConnections && myPendingConnections.length > 0 && (
           <div className={styles.notificationNumberContainer}>

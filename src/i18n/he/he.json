@@ -94,7 +94,10 @@
     "events": "אירועים",
     "books": "ספרים",
     "search": "חפש...",
-    "groups": "קבוצות דיון"
+    "groups": "קבוצות דיון",
+    "confirm": "אשר",
+    "cancel": "בטל",
+    "no requests": "אין הצעות חברות חדשות"
   },
   "chat": {
     "starConversationWith": "התחל שיחה עם",

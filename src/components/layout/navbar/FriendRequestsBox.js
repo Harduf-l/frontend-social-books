@@ -4,6 +4,7 @@ import defaultPicture from "../../../images/plain.jpg";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { t } from "i18next";
 
 function FriendRequestsBox({
   myPendingConnections,
@@ -23,7 +24,7 @@ function FriendRequestsBox({
       if (
         wrapperRef.current &&
         !wrapperRef.current.contains(event.target) &&
-        event.target.className !== "far fa-user-friends"
+        event.target.className !== "fas fa-user-friends"
       ) {
         closeFriendsModal();
       }
@@ -99,13 +100,13 @@ function FriendRequestsBox({
                     onClick={() => confirmFriendRequest(el, index)}
                     className="btn btn-sm btn-light m-2"
                   >
-                    אשר
+                    {t("navbar.confirm")}
                   </button>
                   <button
                     onClick={() => deleteFriendRequest(el, index)}
                     className="btn btn-sm btn-light"
                   >
-                    בטל
+                    {t("navbar.cancel")}
                   </button>
                 </div>
               </div>
@@ -114,7 +115,7 @@ function FriendRequestsBox({
         {(myPendingConnections.length === 0 || !myPendingConnections) && (
           <div>
             <p style={{ textAlign: "center", fontSize: 12, paddingTop: 13 }}>
-              אין הצעות חברות חדשות
+              {t("navbar.no requests")}
             </p>
           </div>
         )}
