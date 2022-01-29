@@ -1,3 +1,5 @@
+import { store } from "emoji-mart";
+
 export const storeReducer = (state, action) => {
   switch (action.type) {
     case "login":
@@ -176,6 +178,13 @@ export const storeReducer = (state, action) => {
       return {
         ...state,
         myPendingConnections: newPendingArray,
+      };
+    case "addPostToFeed":
+      let newPostsArray = [...state.feedPosts];
+      newPostsArray.push(action.payload.newPost);
+      return {
+        ...state,
+        feedPosts: newPostsArray,
       };
     case "onlineUsers":
       return {

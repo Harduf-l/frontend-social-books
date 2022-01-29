@@ -5,7 +5,7 @@ function Footer() {
   const { t } = useTranslation();
 
   return (
-    <div className="d-flex justify-content-center mt-2">
+    <div className="d-flex justify-content-center ">
       <span className={styles.logoSign}>©BookMe</span>
     </div>
   );

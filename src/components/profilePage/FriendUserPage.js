@@ -18,6 +18,7 @@ function UserPage({ sendConnectionToSocket }) {
   const [currentUserPage, setCurrentUser] = useState("");
   const [friendshipStatus, setFriendshipStatus] = useState("");
   const [approvedFriends, setApprovedFriends] = useState([]);
+  const [loadingFriends, setLoadingFriends] = useState(true);
 
   useEffect(() => {
     axios
@@ -40,8 +41,10 @@ function UserPage({ sendConnectionToSocket }) {
       )
       .then((res) => {
         setApprovedFriends(res.data.approvedConnections);
+        setLoadingFriends(false);
       })
       .catch((err) => {
+        setLoadingFriends(false);
         console.log(err.response);
       });
 
@@ -158,6 +161,7 @@ function UserPage({ sendConnectionToSocket }) {
               currentUserPage={currentUserPage}
               approvedFriends={approvedFriends}
               userId={store.userDetails._id}
+              loadingFriends={loadingFriends}
             />
           </div>
         </div>

@@ -7,6 +7,8 @@
   "no": "לא",
   "rights": "כל הזכויות שמורות",
   "search results": "תוצאות חיפוש עבור ",
+  "like": "אהוב",
+  "comment": "הגב",
   "form": {
     "email": "אימייל",
     "password": "סיסמא",
@@ -63,24 +65,28 @@
   },
   "profile": {
     "book lovers": "חובבי קריאה בעלי טעם דומה לשלך",
-    "share thought": "שתף במחשבה ספרותית שעלתה בך...",
+    "share thought": "שתפ/י במחשבה ספרותית שעלתה בך...",
     "search": "חפש",
     "welcome": "שלום, ",
     "chooseTag": "בחר תגית",
     "thought after reading": "מחשבה בעקבות קריאה",
     "general thought": "הרהור",
     "recommendation": "המלצה",
-    "looking for a book": "מחפש ספר",
-    "selling a book": "מוכר ספר",
+    "looking for a book": "מחפש/ת ספר",
+    "selling a book": "מוכר/ת ספר",
     "other": "אחר",
-    "books you may like": "ספרים שאולי תאהב",
-    "add as friend": "הוסף כחבר",
+    "books you may like": "ספרים שאולי תאהב/י",
+    "add as friend": "הוספ/י כחבר/ה",
     "send a message": "שלח הודעה",
     "didnt add books to list": "עדיין לא הוסיפ/ה ספרים לרשימת הקריאה",
+    "didnt add friends to list": "עדיין לא הוסיפ/ה חברים",
     "didnt write comments": "לא נמצאו תגובות אחרונות",
     "in your friend list": "ברשימת החברים שלך",
     "friend request was sent": "הצעת חברות נשלחה",
-    "respond to friend request": "אשר הצעת חברות"
+    "respond to friend request": "אשר/י הצעת חברות",
+    "my friends": "החברים שלי:",
+    "in my book list": "ברשימת הקריאה שלי",
+    "last comments": "תגובות אחרונות שלי בקבוצות דיון"
   },
   "navbar": {
     "profile": "פרופיל",
@@ -104,5 +110,9 @@
     "published": "הוצאה לאור",
     "year": "שנת הוצאה",
     "pages": "עמודים"
+  },
+  "months": {
+    "month1": "בינואר",
+    "month2": "בפברואר"
   }
 }

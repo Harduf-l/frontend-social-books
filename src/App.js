@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
+import "react-loading-skeleton/dist/skeleton.css";
 import { useTranslation } from "react-i18next";
 import RegisterProcess from "./components/register/RegisterProcess";
 import { Routes, Route } from "react-router-dom";
@@ -12,15 +13,14 @@ import "./i18n/i18n";
 import { storeContext } from "./context/store";
 import RouteWrapper from "./components/utlis/RouteWrapper";
 import Footer from "./components/layout/footer/Footer";
-import { io } from "socket.io-client";
 import axios from "axios";
+import { io } from "socket.io-client";
 
 function App() {
   const { i18n } = useTranslation();
   document.body.dir = i18n.dir();
   const { store, dispatch } = useContext(storeContext);
   let socket = useRef("");
-
   // useEffect(() => {
   //   var lastTime = new Date().getTime();
 

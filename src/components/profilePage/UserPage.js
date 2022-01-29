@@ -7,6 +7,7 @@ import ContentProfilePage from "./ContentProfilePage";
 function UserPage() {
   const { store } = useContext(storeContext);
   const [approvedFriends, setApprovedFriends] = useState([]);
+  const [loadingFriends, setLoadingFriends] = useState(true);
 
   useEffect(() => {
     axios
@@ -15,9 +16,11 @@ function UserPage() {
       )
       .then((res) => {
         setApprovedFriends(res.data.approvedConnections);
+        setLoadingFriends(false);
       })
       .catch((err) => {
         console.log(err.response);
+        setLoadingFriends(false);
       });
   }, [store.userDetails._id]);
 
@@ -33,6 +36,7 @@ function UserPage() {
             currentUserPage={store.userDetails}
             approvedFriends={approvedFriends}
             userId={store.userDetails._id}
+            loadingFriends={loadingFriends}
           />
         </div>
       </div>

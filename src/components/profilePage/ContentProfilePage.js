@@ -2,8 +2,13 @@ import React from "react";
 import FriendList from "../homePageUser/FriendsList";
 import styles from "./profilePage.module.css";
 import { useTranslation } from "react-i18next";
-
-function ContentProfilePage({ currentUserPage, approvedFriends, userId }) {
+import LoadingFriendSkeleton from "./LoadingFriendSkeleton";
+function ContentProfilePage({
+  currentUserPage,
+  approvedFriends,
+  userId,
+  loadingFriends,
+}) {
   const { t } = useTranslation();
 
   return (
@@ -34,7 +39,9 @@ function ContentProfilePage({ currentUserPage, approvedFriends, userId }) {
       </div>
       <div className="row pt-3" style={{ height: 180 }}>
         <div className="col-12 col-md-6">
-          <h5 className={styles.mainMiddleHeader}>ברשימת הקריאה שלי</h5>
+          <h5 className={styles.mainMiddleHeader}>
+            {t("profile.in my book list")}
+          </h5>
           {true &&
             currentUserPage.username +
               " " +
@@ -42,16 +49,26 @@ function ContentProfilePage({ currentUserPage, approvedFriends, userId }) {
         </div>
         <div className="col-12 col-md-6">
           <h5 className={styles.mainMiddleHeader}>
-            תגובות אחרונות שלי בקבוצות דיון
+            {t("profile.last comments")}
           </h5>
           {true && t("profile.didnt write comments")}
         </div>
       </div>
       <div>
-        {approvedFriends && approvedFriends.length > 0 && (
-          <h6 className={styles.mainMiddleHeader}>החברים שלי:</h6>
+        <h6 className={styles.mainMiddleHeader}>{t("profile.my friends")}</h6>
+        {loadingFriends && <LoadingFriendSkeleton />}
+        {!loadingFriends && approvedFriends.length > 0 && (
+          <div>
+            <FriendList userFriends={approvedFriends} userId={userId} />
+          </div>
         )}
-        <FriendList userFriends={approvedFriends} userId={userId} />
+        {!loadingFriends && approvedFriends.length === 0 && (
+          <div>
+            {currentUserPage.username +
+              " " +
+              t("profile.didnt add friends to list")}
+          </div>
+        )}
       </div>
     </div>
   );

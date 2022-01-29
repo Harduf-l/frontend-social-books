@@ -7,6 +7,8 @@
   "no": "No",
   "rights": "All rights reserved",
   "search results": "Search results for ",
+  "like": "Love",
+  "comment": "Comment",
   "form": {
     "email": "Email",
     "password": "Password",
@@ -78,9 +80,13 @@
     "send a message": "Send a message",
     "didnt add books to list": "didn't add any books to her book list.",
     "didnt write comments": "No comments found",
+    "didnt add friends to list": "didn't add any friends yet.",
     "in your friend list": "In your friends list",
     "friend request was sent": "Friend request was sent",
-    "respond to friend request": "Confirm friend request"
+    "respond to friend request": "Confirm friend request",
+    "my friends": "My friends:",
+    "in my book list": "In my book list",
+    "last comments": "My last comments in discussion groups"
   },
   "navbar": {
     "profile": "Profile",
@@ -104,5 +110,9 @@
     "published": "Published by",
     "year": "Year release",
     "pages": "pages"
+  },
+  "months": {
+    "month1": "January",
+    "month2": "February"
   }
 }

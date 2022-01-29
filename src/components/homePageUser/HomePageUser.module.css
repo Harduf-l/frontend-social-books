@@ -5,10 +5,9 @@
 
 .textAreaStyle {
   border: 1px #474747 solid;
-
   border-radius: 5px;
   resize: none;
-  width: 95%;
+  width: 100%;
 }
 
 .textAreaStyle:focus,
@@ -17,12 +16,31 @@
   border-radius: 5px;
   resize: none;
   height: 150px;
-  width: 95%;
+  width: 100%;
+}
+
+.textAreaStyle2 {
+  border: 1px #474747 solid;
+  border-radius: 5px;
+  resize: none;
+  width: 100%;
+}
+.textAreaStyle2:focus {
+  border: 1px #474747 solid;
+  border-radius: 5px;
+  resize: none;
+  height: 100px;
+  width: 100%;
+}
+
+.postPic {
+  width: 60px;
+  height: 60px;
+  border-radius: 20%;
 }
 
 .editDiv {
-  height: 100px;
-  width: 95%;
+  width: 100%;
   display: flex;
   justify-content: space-between;
 }
@@ -55,8 +73,6 @@
 
 .sideBarHeight {
   background-color: #c2ccc4;
-  margin-top: 1px;
-  height: calc(100vh - 97px);
 }
 
 @media (max-width: 991px) {

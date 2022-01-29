@@ -313,7 +313,6 @@ function Chat({ sendMessageToSocket, sendTypingToSocket }) {
                 <div className="d-flex justify-content-between flex-row">
                   <textarea
                     ref={inputText}
-                    id="textAreaZone"
                     type="text"
                     className={`flex-grow-1 ${styles.inputChat}`}
                     onKeyDown={() =>
