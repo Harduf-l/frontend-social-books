@@ -8,6 +8,7 @@
   border-radius: 5px;
   resize: none;
   width: 100%;
+  padding-inline-start: 5px;
 }
 
 .textAreaStyle:focus,
@@ -17,20 +18,32 @@
   resize: none;
   height: 150px;
   width: 100%;
+  padding-inline-start: 5px;
 }
 
 .textAreaStyle2 {
+  padding-inline-start: 5px;
   border: 1px #474747 solid;
   border-radius: 5px;
   resize: none;
   width: 100%;
 }
 .textAreaStyle2:focus {
+  padding-inline-start: 5px;
   border: 1px #474747 solid;
   border-radius: 5px;
   resize: none;
   height: 100px;
   width: 100%;
+}
+
+.tag {
+  background-color: white;
+  font-size: 10px;
+  align-self: baseline;
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid #292929;
 }
 
 .postPic {

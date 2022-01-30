@@ -6,6 +6,19 @@ import { useTranslation } from "react-i18next";
 function FeedPosts({ postsToShow }) {
   const { t } = useTranslation();
   const [editMap, setEditMap] = React.useState({});
+  const [showCommentsMap, setShowCommentsMap] = React.useState({});
+
+  const setShowFullCommentsMap = (postId) => {
+    let newShowCommentsMap = { ...showCommentsMap };
+
+    if (newShowCommentsMap[postId]) {
+      delete newShowCommentsMap[postId];
+    } else {
+      newShowCommentsMap[postId] = true;
+    }
+
+    setShowCommentsMap(newShowCommentsMap);
+  };
 
   const changeEditMap = (postId) => {
     let newEditMap = { ...editMap };
@@ -29,6 +42,40 @@ function FeedPosts({ postsToShow }) {
       <span style={{ fontSize: 13, marginInlineStart: 20 }}>
         {dayInMonth} {t(`months.month${monthOfPost}`)}, {fullYear}
       </span>
+    );
+  };
+
+  const showCommentsPreview = (commentsRaw) => {
+    let commentsArray = [...commentsRaw];
+    commentsArray = commentsArray.splice(0, 2);
+    return (
+      <div>
+        {commentsArray.map((el, index) => {
+          return (
+            <div
+              className="d-flex pt-3 pb-2"
+              style={
+                index !== commentsArray.length - 1
+                  ? { borderBottom: "1px solid #cecece" }
+                  : {}
+              }
+            >
+              <div>
+                <img
+                  className={styles.postPic}
+                  src={el.user.picture ? el.user.picture : defaultPicture}
+                  alt=""
+                />
+              </div>
+
+              <div style={{ paddingInlineStart: 15 }}>
+                <div style={{ fontSize: 14 }}> {el.user.name}</div>
+                <div style={{ fontSize: 13 }}> {el.content}</div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
     );
   };
   return (
@@ -57,47 +104,52 @@ function FeedPosts({ postsToShow }) {
                     {post.writer.username}
                   </div>
                 </div>
-                <div className="d-flex flex-wrap justify-content-end">
-                  <span
-                    style={{
-                      fontSize: 13,
-                      fontStyle: "italic",
-                      marginInlineStart: 105,
-                    }}
-                  >
-                    {t(`profile.${post.tag}`)}
-                  </span>
-                  {getOrganizedDate(post.createdAt)}
-                </div>
+
+                {getOrganizedDate(post.createdAt)}
               </div>
               <div className="pt-3 pb-2">{post.content}</div>
               <div
-                className="d-flex pt-2"
+                className="d-flex justify-content-between pt-2"
                 style={{ borderTop: "1px #c9c9c9 solid" }}
               >
-                <button
-                  className="btn btn-sm btn-light"
-                  style={{ backgroundColor: "#cccccc" }}
-                >
-                  <i
-                    style={{ color: "#c45252", marginInlineEnd: 7 }}
-                    className="fas fa-heart"
-                  ></i>
-                  {t("like")}
-                </button>
+                <div>
+                  <button
+                    className="btn btn-sm btn-light"
+                    style={{ backgroundColor: "#cccccc" }}
+                  >
+                    <i
+                      style={{ color: "#c45252", marginInlineEnd: 7 }}
+                      className="fas fa-heart"
+                    ></i>
+                    {t("like")}
+                  </button>
 
-                <button
-                  className="btn btn-sm btn-light"
-                  onClick={() => changeEditMap(post._id)}
-                  style={{ marginInlineStart: 10, backgroundColor: "#cccccc" }}
-                >
-                  <i
-                    style={{ color: "#6f8ead", marginInlineEnd: 7 }}
-                    className="fas fa-comment"
-                  ></i>
-                  {t("comment")}
-                </button>
+                  <button
+                    className="btn btn-sm btn-light"
+                    onClick={() => changeEditMap(post._id)}
+                    style={{
+                      marginInlineStart: 10,
+                      backgroundColor: "#cccccc",
+                    }}
+                  >
+                    <i
+                      style={{ color: "#6f8ead", marginInlineEnd: 7 }}
+                      className="fas fa-comment"
+                    ></i>
+                    {t("comment")}
+                  </button>
+                </div>
+                <div className={styles.tag}>{t(`profile.${post.tag}`)}</div>
               </div>
+              {post.likes.length > 0 && (
+                <div
+                  role={"button"}
+                  style={{ fontSize: 12, color: "#0d0052", paddingTop: 7 }}
+                >
+                  {post.likes.length}
+                  {t("homepage.people liked this post")}
+                </div>
+              )}
               {editMap[post._id] && (
                 <div className="mt-3">
                   <textarea className={styles.textAreaStyle2}></textarea>
@@ -109,6 +161,54 @@ function FeedPosts({ postsToShow }) {
                       {t("form.send")}
                     </button>
                   </div>
+                </div>
+              )}
+              {!showCommentsMap[post._id] && showCommentsPreview(post.comments)}
+              {!showCommentsMap[post._id] && post.comments.length > 2 && (
+                <div
+                  style={{
+                    paddingTop: 5,
+                    textAlign: "center",
+
+                    fontSize: 14,
+                  }}
+                  role="button"
+                  onClick={() => setShowFullCommentsMap(post._id)}
+                >
+                  {t("homepage.show")}
+                  {post.comments.length - 2}
+                  {t("homepage.more comments")}
+                </div>
+              )}
+              {post.comments.length > 0 && showCommentsMap[post._id] && (
+                <div>
+                  {post.comments.map((el, index) => {
+                    return (
+                      <div
+                        className="d-flex pt-3 pb-2"
+                        style={
+                          index !== post.comments.length - 1
+                            ? { borderBottom: "1px solid #cecece" }
+                            : {}
+                        }
+                      >
+                        <div>
+                          <img
+                            className={styles.postPic}
+                            src={
+                              el.user.picture ? el.user.picture : defaultPicture
+                            }
+                            alt=""
+                          />
+                        </div>
+
+                        <div style={{ paddingInlineStart: 15 }}>
+                          <div style={{ fontSize: 14 }}> {el.user.name}</div>
+                          <div style={{ fontSize: 13 }}> {el.content}</div>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </div>

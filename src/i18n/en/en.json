@@ -1,7 +1,7 @@
 {
   "English": "English",
   "Hebrew": "Hebrew",
-  "welcome": "Register today and start talk to others about the books you love.",
+  "welcome": "Register today to discover new books & other book lovers.",
   "loading": "loading...",
   "yes": "Yes",
   "no": "No",
@@ -98,6 +98,11 @@
     "confirm": "Confirm",
     "cancel": "Cancel",
     "no requests": "There are no friends requests"
+  },
+  "homepage": {
+    "people liked this post": " people liked this post",
+    "show": "show ",
+    "more comments": " more comments"
   },
   "chat": {
     "starConversationWith": "Start a conversation with",

@@ -62,6 +62,29 @@ function HomePageUser() {
           picture: store.userDetails.picture,
           username: store.userDetails.username,
         },
+        likes: [1, 2, 3, 4],
+        comments: [
+          {
+            user: { name: "jed", picture: "", _id: "" },
+            content: "התגובה שלי!",
+          },
+          {
+            user: { name: "fsfsdfd", picture: "", _id: "" },
+            content: "מה המצב שאללכ",
+          },
+          {
+            user: { name: "noa levi", picture: "", _id: "" },
+            content: "הכל בסדר אחי?",
+          },
+          {
+            user: { name: "חמוטל", picture: "", _id: "" },
+            content: "התגובה המגניבה שלי!",
+          },
+          {
+            user: { name: "jed", picture: "", _id: "" },
+            content: "תגובה אחרונה ח!",
+          },
+        ],
         tag: userContentTag,
         content: userContent,
         createdAt: Date.now(),
@@ -72,7 +95,10 @@ function HomePageUser() {
 
       dispatch({ type: "addPostToFeed", payload: { newPost } });
     } else {
-      setPostError(true);
+      // not throwing error for empty input. user should understand that alone.
+      if (!userContentTag) {
+        setPostError(true);
+      }
     }
   };
 

@@ -99,6 +99,11 @@
     "cancel": "בטל",
     "no requests": "אין הצעות חברות חדשות"
   },
+  "homepage": {
+    "people liked this post": " אנשים אהבו את הפוסט הזה",
+    "show": "הראה ",
+    "more comments": " תגובות נוספות"
+  },
   "chat": {
     "starConversationWith": "התחל שיחה עם",
     "chooseConversation": "בחר שיחה...",
