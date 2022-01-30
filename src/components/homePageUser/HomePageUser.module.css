@@ -37,19 +37,40 @@
   width: 100%;
 }
 
+.preLine {
+  white-space: pre-line;
+}
+
+.buttonsPost {
+  border-top: 1px solid rgb(223, 223, 223);
+  padding-top: 15px;
+}
 .tag {
   background-color: white;
   font-size: 10px;
-  align-self: baseline;
-  padding: 5px;
+  height: 20px;
+  margin-top: 5px;
+  padding: 1px 5px 0px 5px;
   border-radius: 10px;
   border: 1px solid #292929;
 }
 
 .postPic {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 20%;
+}
+
+.comments {
+  font-size: 12px;
+  white-space: pre-line;
+}
+
+.miniBtnMiniComment {
+  font-size: 10px;
+  background-color: white;
+  padding: 2px;
+  border: 1px solid #dbdbdb;
 }
 
 .editDiv {

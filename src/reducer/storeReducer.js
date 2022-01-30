@@ -179,6 +179,11 @@ export const storeReducer = (state, action) => {
         ...state,
         myPendingConnections: newPendingArray,
       };
+    case "updateUserFriendList":
+      return {
+        ...state,
+        approvedConnections: action.payload.approvedConnections,
+      };
     case "addPostToFeed":
       let newPostsArray = [...state.feedPosts];
       newPostsArray.push(action.payload.newPost);

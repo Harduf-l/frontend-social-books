@@ -45,6 +45,54 @@ function FeedPosts({ postsToShow }) {
     );
   };
 
+  const SingleComment = ({ el, index, arrayLength }) => {
+    return (
+      <div
+        className={`d-flex pt-3 pb-2 ${styles.comments}`}
+        style={
+          index !== arrayLength.length - 1
+            ? { borderBottom: "1px solid #cecece" }
+            : {}
+        }
+      >
+        <div>
+          <img
+            className={styles.postPic}
+            src={el.user.picture ? el.user.picture : defaultPicture}
+            alt=""
+          />
+        </div>
+
+        <div style={{ paddingInlineStart: 15 }}>
+          <div style={{ fontWeight: 500 }}> {el.user.name}</div>
+          <div> {el.content}</div>
+          <div className="pt-3">
+            <span role="button" className={styles.miniBtnMiniComment}>
+              <i
+                style={{ color: "#c45252", marginInlineEnd: 4 }}
+                className="fas fa-heart"
+              ></i>
+              {t("like")}
+            </span>
+            <span
+              role="button"
+              className={styles.miniBtnMiniComment}
+              style={{
+                marginInlineStart: 7,
+              }}
+            >
+              <i
+                style={{ color: "#6f8ead", marginInlineEnd: 2 }}
+                className="fas fa-comment"
+              ></i>
+              {t("comment")}
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const showCommentsPreview = (commentsRaw) => {
     let commentsArray = [...commentsRaw];
     commentsArray = commentsArray.splice(0, 2);
@@ -52,27 +100,11 @@ function FeedPosts({ postsToShow }) {
       <div>
         {commentsArray.map((el, index) => {
           return (
-            <div
-              className="d-flex pt-3 pb-2"
-              style={
-                index !== commentsArray.length - 1
-                  ? { borderBottom: "1px solid #cecece" }
-                  : {}
-              }
-            >
-              <div>
-                <img
-                  className={styles.postPic}
-                  src={el.user.picture ? el.user.picture : defaultPicture}
-                  alt=""
-                />
-              </div>
-
-              <div style={{ paddingInlineStart: 15 }}>
-                <div style={{ fontSize: 14 }}> {el.user.name}</div>
-                <div style={{ fontSize: 13 }}> {el.content}</div>
-              </div>
-            </div>
+            <SingleComment
+              el={el}
+              index={index}
+              arrayLength={commentsArray.length}
+            />
           );
         })}
       </div>
@@ -90,9 +122,8 @@ function FeedPosts({ postsToShow }) {
               className="mt-4 p-2"
               style={{ backgroundColor: "#f8f8f8", borderRadius: 10 }}
             >
-              {console.log(post)}
               <div className="d-flex justify-content-between">
-                <div className="d-flex flex-wrap">
+                <div>
                   <img
                     className={styles.postPic}
                     src={
@@ -100,46 +131,56 @@ function FeedPosts({ postsToShow }) {
                     }
                     alt=""
                   />
-                  <div style={{ marginInlineStart: 10 }}>
+                  <div
+                    style={{
+                      marginInlineStart: 10,
+                      fontSize: 13,
+                      fontStyle: "italic",
+                      fontWeight: 500,
+                    }}
+                  >
                     {post.writer.username}
                   </div>
                 </div>
-
-                {getOrganizedDate(post.createdAt)}
-              </div>
-              <div className="pt-3 pb-2">{post.content}</div>
-              <div
-                className="d-flex justify-content-between pt-2"
-                style={{ borderTop: "1px #c9c9c9 solid" }}
-              >
-                <div>
-                  <button
-                    className="btn btn-sm btn-light"
-                    style={{ backgroundColor: "#cccccc" }}
-                  >
-                    <i
-                      style={{ color: "#c45252", marginInlineEnd: 7 }}
-                      className="fas fa-heart"
-                    ></i>
-                    {t("like")}
-                  </button>
-
-                  <button
-                    className="btn btn-sm btn-light"
-                    onClick={() => changeEditMap(post._id)}
-                    style={{
-                      marginInlineStart: 10,
-                      backgroundColor: "#cccccc",
-                    }}
-                  >
-                    <i
-                      style={{ color: "#6f8ead", marginInlineEnd: 7 }}
-                      className="fas fa-comment"
-                    ></i>
-                    {t("comment")}
-                  </button>
+                <div className="d-flex flex-wrap justify-content-end">
+                  <div className={styles.tag}>{t(`profile.${post.tag}`)}</div>
+                  <div> {getOrganizedDate(post.createdAt)}</div>
                 </div>
-                <div className={styles.tag}>{t(`profile.${post.tag}`)}</div>
+              </div>
+
+              <div
+                style={{ fontSize: 13 }}
+                className={`pt-3 pb-4 ${styles.preLine}`}
+              >
+                {post.content}
+              </div>
+
+              <div className={styles.buttonsPost}>
+                <button
+                  className="btn btn-sm btn-light"
+                  style={{ backgroundColor: "#cccccc" }}
+                >
+                  <i
+                    style={{ color: "#c45252", marginInlineEnd: 7 }}
+                    className="fas fa-heart"
+                  ></i>
+                  <span style={{ fontSize: 12 }}>{t("like")}</span>
+                </button>
+
+                <button
+                  className="btn btn-sm btn-light"
+                  onClick={() => changeEditMap(post._id)}
+                  style={{
+                    marginInlineStart: 10,
+                    backgroundColor: "#cccccc",
+                  }}
+                >
+                  <i
+                    style={{ color: "#6f8ead", marginInlineEnd: 7 }}
+                    className="fas fa-comment"
+                  ></i>
+                  <span style={{ fontSize: 12 }}>{t("comment")}</span>
+                </button>
               </div>
               {post.likes.length > 0 && (
                 <div
@@ -169,8 +210,7 @@ function FeedPosts({ postsToShow }) {
                   style={{
                     paddingTop: 5,
                     textAlign: "center",
-
-                    fontSize: 14,
+                    fontSize: 12,
                   }}
                   role="button"
                   onClick={() => setShowFullCommentsMap(post._id)}
@@ -184,29 +224,11 @@ function FeedPosts({ postsToShow }) {
                 <div>
                   {post.comments.map((el, index) => {
                     return (
-                      <div
-                        className="d-flex pt-3 pb-2"
-                        style={
-                          index !== post.comments.length - 1
-                            ? { borderBottom: "1px solid #cecece" }
-                            : {}
-                        }
-                      >
-                        <div>
-                          <img
-                            className={styles.postPic}
-                            src={
-                              el.user.picture ? el.user.picture : defaultPicture
-                            }
-                            alt=""
-                          />
-                        </div>
-
-                        <div style={{ paddingInlineStart: 15 }}>
-                          <div style={{ fontSize: 14 }}> {el.user.name}</div>
-                          <div style={{ fontSize: 13 }}> {el.content}</div>
-                        </div>
-                      </div>
+                      <SingleComment
+                        el={el}
+                        index={index}
+                        arrayLength={post.comments.length}
+                      />
                     );
                   })}
                 </div>

@@ -15,6 +15,7 @@ const StoreContextProvider = ({ children }) => {
     booksRecommendation: [],
     userSuggestedFriends: [],
     feedPosts: [],
+    approvedConnections: [],
   };
 
   const [store, dispatch] = useReducer(storeReducer, initalState);

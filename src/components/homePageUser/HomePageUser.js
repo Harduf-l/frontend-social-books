@@ -69,8 +69,8 @@ function HomePageUser() {
             content: "התגובה שלי!",
           },
           {
-            user: { name: "fsfsdfd", picture: "", _id: "" },
-            content: "מה המצב שאללכ",
+            user: { name: "beni", picture: "", _id: "" },
+            content: "תגובה שניה",
           },
           {
             user: { name: "noa levi", picture: "", _id: "" },
@@ -103,7 +103,7 @@ function HomePageUser() {
   };
 
   return (
-    <div className="d-flex flex-wrap ">
+    <div className="d-flex flex-wrap  ">
       <BookModal
         open={open}
         handleClose={handleClose}
@@ -124,64 +124,68 @@ function HomePageUser() {
       </div>
 
       <div
-        className={`col-12 col-lg-7 mt-4 ${styles.paddingEndMobile}`}
+        className={`col-12 col-lg-7 mt-4 mb-4 ${styles.paddingEndMobile}`}
         style={{ paddingInlineStart: 20 }}
       >
-        <textarea
-          maxLength="5000"
-          placeholder={t("profile.share thought")}
-          className={
-            userContent ? styles.textAreaWithContent : styles.textAreaStyle
-          }
-          value={userContent}
-          onChange={(e) => setUserContent(e.target.value)}
-        ></textarea>
-        <div
-          className={userContent ? styles.editDiv : `${styles.editDiv} d-none`}
-        >
-          <div className="d-flex">
-            <div>
-              <select
-                className="form-select"
-                onChange={chooseTextTag}
-                value={userContentTag}
-                aria-label="Choose post category"
-              >
-                <option value="">{t("profile.chooseTag")}</option>
-                <option value="thought after reading">
-                  {t("profile.thought after reading")}
-                </option>
-                <option value="general thought">
-                  {t("profile.general thought")}
-                </option>
-                <option value="recommendation">
-                  {t("profile.recommendation")}
-                </option>
-                <option value="looking for a book">
-                  {t("profile.looking for a book")}
-                </option>
-                <option value="selling a book">
-                  {t("profile.selling a book")}
-                </option>
-                <option value="other">{t("profile.other")}</option>
-              </select>
-            </div>
-            {postError && (
-              <div className="m-2" style={{ fontSize: 12, color: "brown" }}>
-                יש לבחור תגית
+        <div className="col-lg-11 col-12" style={{ margin: "0 auto" }}>
+          <textarea
+            maxLength="5000"
+            placeholder={t("profile.share thought")}
+            className={
+              userContent ? styles.textAreaWithContent : styles.textAreaStyle
+            }
+            value={userContent}
+            onChange={(e) => setUserContent(e.target.value)}
+          ></textarea>
+          <div
+            className={
+              userContent ? styles.editDiv : `${styles.editDiv} d-none`
+            }
+          >
+            <div className="d-flex">
+              <div>
+                <select
+                  className="form-select"
+                  onChange={chooseTextTag}
+                  value={userContentTag}
+                  aria-label="Choose post category"
+                >
+                  <option value="">{t("profile.chooseTag")}</option>
+                  <option value="thought after reading">
+                    {t("profile.thought after reading")}
+                  </option>
+                  <option value="general thought">
+                    {t("profile.general thought")}
+                  </option>
+                  <option value="recommendation">
+                    {t("profile.recommendation")}
+                  </option>
+                  <option value="looking for a book">
+                    {t("profile.looking for a book")}
+                  </option>
+                  <option value="selling a book">
+                    {t("profile.selling a book")}
+                  </option>
+                  <option value="other">{t("profile.other")}</option>
+                </select>
               </div>
-            )}
-          </div>
+              {postError && (
+                <div className="m-2" style={{ fontSize: 12, color: "brown" }}>
+                  יש לבחור תגית
+                </div>
+              )}
+            </div>
 
-          <div>
-            <button onClick={addPersonalPost} className="btn btn-light">
-              {t("form.send")}
-            </button>
+            <div>
+              <button onClick={addPersonalPost} className="btn btn-light">
+                {t("form.send")}
+              </button>
+            </div>
           </div>
+          {store.feedPosts.length > 0 && (
+            <FeedPosts postsToShow={store.feedPosts} />
+          )}
         </div>
-        {store.feedPosts.length > 0 && (
-          <FeedPosts postsToShow={store.feedPosts} />
-        )}
       </div>
       <div
         className="col-12 col-lg-3 pt-3 pb-3"
