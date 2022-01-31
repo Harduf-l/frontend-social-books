@@ -181,7 +181,7 @@ function App() {
   return (
     <div id="page-container">
       {store.isAuth && <NavBar />}
-      <div id="content-wrap">
+      <div id="content-wrap" className="borderTopAllContent">
         <Routes>
           <Route
             path="/"

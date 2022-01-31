@@ -17,7 +17,7 @@ const lngs = {
 
 function NavBar() {
   const { store, dispatch } = useContext(storeContext);
-  const { username, picture } = store.userDetails;
+
   const [inHomePage, setInHomePage] = useState(true);
   const [openFriendsRequestsModal, setOpenFriendsRequestsModal] =
     useState(false);

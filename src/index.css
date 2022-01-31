@@ -17,6 +17,16 @@ body {
   height: 100%;
 }
 
+.borderTopAllContent {
+  border-top: 2px #dadada solid;
+}
+
+@media screen and (max-width: 650px) {
+  .borderTopAllContent {
+    border-top: 2px #474747 solid;
+  }
+}
+
 #footer {
   background-color: #e6e6e6;
 }

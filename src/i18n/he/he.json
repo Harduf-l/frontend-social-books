@@ -103,7 +103,9 @@
     "people liked this post": " אנשים אהבו את הפוסט הזה",
     "show": "הראה ",
     "more comments": " תגובות נוספות",
-    "quote of day": "הציטוט היומי"
+    "quote of day": "הציטוט היומי",
+    "edit": "ערוך",
+    "delete": "מחק"
   },
   "chat": {
     "starConversationWith": "התחל שיחה עם",

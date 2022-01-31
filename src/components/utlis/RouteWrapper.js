@@ -8,7 +8,7 @@ const Blank = ({ type }) => {
     return (
       <div
         className="d-flex justify-content-center align-items-center"
-        style={{ height: "100vh", marginInlineEnd: 30 }}
+        style={{ height: "100vh" }}
       >
         <div className="lds-ellipsis">
           <div></div>
@@ -16,9 +16,6 @@ const Blank = ({ type }) => {
           <div></div>
           <div></div>
         </div>
-        <h3 className="mb-3 loadingHome" style={{ marginInlineStart: 10 }}>
-          Loading
-        </h3>
       </div>
     );
   }

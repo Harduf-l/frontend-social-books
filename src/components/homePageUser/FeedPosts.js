@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import defaultPicture from "../../images/plain.jpg";
 import styles from "./HomePageUser.module.css";
 import { useTranslation } from "react-i18next";
+import SingleComment from "./homePageUtils/SingleComment";
 
-function FeedPosts({ postsToShow }) {
-  const { t } = useTranslation();
+function FeedPosts({ postsToShow, userId }) {
+  const { t, i18n } = useTranslation();
+  const currentDir = i18n.dir();
   const [editMap, setEditMap] = React.useState({});
   const [showCommentsMap, setShowCommentsMap] = React.useState({});
   const [textAreaRows, setTextAreaRows] = useState({});
@@ -73,52 +75,6 @@ function FeedPosts({ postsToShow }) {
     );
   };
 
-  const SingleComment = ({ el, index, arrayLength }) => {
-    return (
-      <div
-        className={`d-flex pt-3 pb-2 ${styles.comments}`}
-        style={
-          index !== arrayLength - 1 ? { borderBottom: "1px solid #cecece" } : {}
-        }
-      >
-        <div>
-          <img
-            className={styles.postPic}
-            src={el.user.picture ? el.user.picture : defaultPicture}
-            alt=""
-          />
-        </div>
-
-        <div style={{ paddingInlineStart: 15 }}>
-          <div style={{ fontWeight: 500 }}> {el.user.name}</div>
-          <div> {el.content}</div>
-          <div className="pt-3">
-            <span role="button" className={styles.miniBtnMiniComment}>
-              <i
-                style={{ color: "#c45252", marginInlineEnd: 4 }}
-                className="fas fa-heart"
-              ></i>
-              {t("like")}
-            </span>
-            <span
-              role="button"
-              className={styles.miniBtnMiniComment}
-              style={{
-                marginInlineStart: 7,
-              }}
-            >
-              <i
-                style={{ color: "#6f8ead", marginInlineEnd: 2 }}
-                className="fas fa-comment"
-              ></i>
-              {t("comment")}
-            </span>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   const showCommentsPreview = (commentsRaw) => {
     let commentsArray = [...commentsRaw];
     commentsArray = commentsArray.splice(0, 2);
@@ -127,6 +83,7 @@ function FeedPosts({ postsToShow }) {
         {commentsArray.map((el, index) => {
           return (
             <SingleComment
+              key={index}
               el={el}
               index={index}
               arrayLength={commentsArray.length}
@@ -172,37 +129,73 @@ function FeedPosts({ postsToShow }) {
 
               <div
                 style={{ fontSize: 13 }}
-                className={`pt-3 pb-4 ${styles.preLine}`}
+                className={`pt-3 pb-4 ${styles.bottomSeperator}`}
               >
                 {post.content}
               </div>
 
-              <div className={styles.buttonsPost}>
-                <button
-                  className="btn btn-sm btn-light"
-                  style={{ backgroundColor: "#cccccc" }}
-                >
-                  <i
-                    style={{ color: "#c45252", marginInlineEnd: 7 }}
-                    className="fas fa-heart"
-                  ></i>
-                  <span style={{ fontSize: 12 }}>{t("like")}</span>
-                </button>
+              <div className="d-flex justify-content-between mt-3">
+                <div>
+                  <button
+                    className="btn btn-sm btn-light"
+                    style={{ backgroundColor: "#cccccc" }}
+                  >
+                    <i
+                      style={{ color: "#c45252", marginInlineEnd: 7 }}
+                      className="fas fa-heart"
+                    ></i>
+                    <span style={{ fontSize: 12 }}>{t("like")}</span>
+                  </button>
 
-                <button
-                  className="btn btn-sm btn-light"
-                  onClick={() => changeEditMap(post._id)}
-                  style={{
-                    marginInlineStart: 10,
-                    backgroundColor: "#cccccc",
-                  }}
-                >
-                  <i
-                    style={{ color: "#6f8ead", marginInlineEnd: 7 }}
-                    className="fas fa-comment"
-                  ></i>
-                  <span style={{ fontSize: 12 }}>{t("comment")}</span>
-                </button>
+                  <button
+                    className="btn btn-sm btn-light"
+                    onClick={() => changeEditMap(post._id)}
+                    style={{
+                      marginInlineStart: 10,
+                      backgroundColor: "#cccccc",
+                    }}
+                  >
+                    <i
+                      style={{ color: "#6f8ead", marginInlineEnd: 7 }}
+                      className="fas fa-comment"
+                    ></i>
+                    <span style={{ fontSize: 12 }}>{t("comment")}</span>
+                  </button>
+                </div>
+
+                {post.writer._id === userId && (
+                  <div
+                    className={
+                      currentDir === "rtl"
+                        ? " btn-sm dropend"
+                        : " btn-sm dropstart"
+                    }
+                    style={{ padding: 0 }}
+                  >
+                    <button
+                      type="button"
+                      className="btn btn-light btn-sm dropdown-toggle"
+                      style={{ backgroundColor: "#c4c4c4", color: "#636363" }}
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    ></button>
+                    <ul
+                      className="dropdown-menu"
+                      style={{ minWidth: "auto", fontSize: 13 }}
+                    >
+                      <li>
+                        <div className="dropdown-item" href="#">
+                          {t("homepage.edit")}
+                        </div>
+                      </li>
+                      <li>
+                        <div className="dropdown-item" href="#">
+                          {t("homepage.delete")}
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                )}
               </div>
               {post.likes.length > 0 && (
                 <div
@@ -253,6 +246,7 @@ function FeedPosts({ postsToShow }) {
                   {post.comments.map((el, index) => {
                     return (
                       <SingleComment
+                        key={index}
                         el={el}
                         index={index}
                         arrayLength={post.comments.length}

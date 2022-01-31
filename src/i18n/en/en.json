@@ -103,7 +103,9 @@
     "people liked this post": " people liked this post",
     "show": "show ",
     "more comments": " more comments",
-    "quote of day": "Quote of the day"
+    "quote of day": "Quote of the day",
+    "edit": "Edit",
+    "delete": "Delete"
   },
   "chat": {
     "starConversationWith": "Start a conversation with",

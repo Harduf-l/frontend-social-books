@@ -81,12 +81,24 @@ function HomePageUser() {
       const newPost = {
         _id: Math.random(),
         writer: {
-          id: store.userDetails._id,
+          _id: store.userDetails._id,
           picture: store.userDetails.picture,
           username: store.userDetails.username,
         },
         likes: [1, 2, 3, 4],
         comments: [
+          {
+            user: { name: "jed", picture: "", _id: "" },
+            content: "התגובה שלי!",
+          },
+          {
+            user: { name: "jed", picture: "", _id: "" },
+            content: "התגובה שלי!",
+          },
+          {
+            user: { name: "jed", picture: "", _id: "" },
+            content: "התגובה שלי!",
+          },
           {
             user: { name: "jed", picture: "", _id: "" },
             content: "התגובה שלי!",
@@ -111,7 +123,7 @@ function HomePageUser() {
   };
 
   return (
-    <div className="d-flex flex-wrap  ">
+    <div className="d-flex flex-wrap ">
       <BookModal
         open={open}
         handleClose={handleClose}
@@ -121,7 +133,7 @@ function HomePageUser() {
       <div
         className={`col-12 col-lg-2 align-self-stretch ${styles.sideBarHeight}`}
       >
-        <div className="pt-3 pb-3">
+        <div className="pt-3 pb-3 mt-3">
           <img
             src={
               store.userDetails.picture
@@ -230,7 +242,10 @@ function HomePageUser() {
             </div>
           </div>
           {store.feedPosts.length > 0 && (
-            <FeedPosts postsToShow={store.feedPosts} />
+            <FeedPosts
+              postsToShow={store.feedPosts}
+              userId={store.userDetails._id}
+            />
           )}
         </div>
       </div>
