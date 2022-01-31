@@ -196,6 +196,11 @@ export const storeReducer = (state, action) => {
         ...state,
         onlineUsers: action.payload.onlineUsersId,
       };
+    case "setDailyQuote":
+      return {
+        ...state,
+        quotes: action.payload,
+      };
     case "logout":
       localStorage.removeItem("token");
       return { ...state, isAuth: false, userDetails: [] };

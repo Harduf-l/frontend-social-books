@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { storeContext } from "../../context/store";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
@@ -10,7 +10,8 @@ import defaultPicture from "../../images/plain.jpg";
 import FriendsList from "./FriendsList";
 
 function HomePageUser() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentDir = i18n.dir();
   const { dispatch, store } = useContext(storeContext);
   const [userContent, setUserContent] = useState("");
   const [userContentTag, setUserContentTag] = useState("");
@@ -24,6 +25,16 @@ function HomePageUser() {
   const { booksRecommendation } = store;
   const minRows = 2;
   const maxRows = 18;
+
+  useEffect(() => {
+    if (!store.quotes) {
+      axios
+        .get(`${process.env.REACT_APP_SERVER_URL}general/daily-quote`)
+        .then((res) => {
+          dispatch({ type: "setDailyQuote", payload: res.data });
+        });
+    }
+  });
 
   const handleClose = () => {
     setOpen(false);
@@ -159,9 +170,10 @@ function HomePageUser() {
               width: "90%",
             }}
           >
-            בצאתי מהבית, אני מייחל תמיד להתרחשות שתהפוך את חיי. אני מחכה לה עד
-            שובי. על שום כך איני נשאר אף פעם בחדרי. לדאבוני, מעולם לא התרחש בחיי
-            דבר.
+            {store.quotes &&
+              (currentDir === "rtl"
+                ? store.quotes.hebrewQuote.line
+                : store.quotes.englishQuote.line)}
           </div>
           <div
             style={{
@@ -173,7 +185,15 @@ function HomePageUser() {
             }}
             className="d-flex justify-content-end pb-3"
           >
-            החברים שלי/עמנואל בוב
+            {store.quotes &&
+              (currentDir === "rtl"
+                ? store.quotes.hebrewQuote.book
+                : store.quotes.englishQuote.book)}
+            /
+            {store.quotes &&
+              (currentDir === "rtl"
+                ? store.quotes.hebrewQuote.author
+                : store.quotes.englishQuote.book)}
           </div>
         </div>
         <div className="d-flex justify-content-end">
