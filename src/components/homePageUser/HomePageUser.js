@@ -5,6 +5,7 @@ import axios from "axios";
 import FeedPosts from "./FeedPosts";
 import styles from "./HomePageUser.module.css";
 import BookModal from "./bookModal";
+import defaultPicture from "../../images/plain.jpg";
 
 import FriendsList from "./FriendsList";
 
@@ -17,11 +18,35 @@ function HomePageUser() {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [postError, setPostError] = useState(false);
+  const [textAreaRows, setTextAreaRows] = useState(2);
+
   const { username } = store.userDetails;
   const { booksRecommendation } = store;
+  const minRows = 2;
+  const maxRows = 18;
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleTextAreaChange = (event) => {
+    const textareaLineHeight = 24;
+
+    const previousRows = event.target.rows;
+    event.target.rows = minRows; // reset number of rows in textarea
+
+    const currentRows = ~~(event.target.scrollHeight / textareaLineHeight);
+
+    if (currentRows === previousRows) {
+      event.target.rows = currentRows;
+    }
+
+    if (currentRows >= maxRows) {
+      event.target.rows = maxRows;
+      event.target.scrollTop = event.target.scrollHeight;
+    }
+    setUserContent(event.target.value);
+    setTextAreaRows(() => (currentRows < maxRows ? currentRows : maxRows));
   };
 
   const chooseTextTag = (e) => {
@@ -46,14 +71,12 @@ function HomePageUser() {
   };
 
   const logOutFunction = () => {
-    console.log("here at logout");
     dispatch({ type: "logout" });
   };
 
   const addPersonalPost = () => {
     if (userContent.trim() && userContentTag) {
       setPostError(false);
-      console.log(userContent);
 
       const newPost = {
         _id: Math.random(),
@@ -68,30 +91,15 @@ function HomePageUser() {
             user: { name: "jed", picture: "", _id: "" },
             content: "התגובה שלי!",
           },
-          {
-            user: { name: "beni", picture: "", _id: "" },
-            content: "תגובה שניה",
-          },
-          {
-            user: { name: "noa levi", picture: "", _id: "" },
-            content: "הכל בסדר אחי?",
-          },
-          {
-            user: { name: "חמוטל", picture: "", _id: "" },
-            content: "התגובה המגניבה שלי!",
-          },
-          {
-            user: { name: "jed", picture: "", _id: "" },
-            content: "תגובה אחרונה ח!",
-          },
         ],
         tag: userContentTag,
-        content: userContent,
+        content: userContent.trim(),
         createdAt: Date.now(),
       };
 
       setUserContent("");
       setUserContentTag("");
+      setTextAreaRows(2);
 
       dispatch({ type: "addPostToFeed", payload: { newPost } });
     } else {
@@ -113,14 +121,54 @@ function HomePageUser() {
       <div
         className={`col-12 col-lg-2 align-self-stretch ${styles.sideBarHeight}`}
       >
-        <p className={styles.welcomeMessage}>
-          {t("profile.welcome")}
-          {username}
-        </p>
+        <div className="pt-3 pb-3">
+          <img
+            src={
+              store.userDetails.picture
+                ? store.userDetails.picture
+                : defaultPicture
+            }
+            alt=""
+            className={styles.pictureHomePage}
+          />
+          <p className={styles.welcomeMessage}>
+            {t("profile.welcome")}
+            {username}
+          </p>
+        </div>
 
-        <button onClick={logOutFunction} className="btn btn-light m-4">
-          {t("form.logout")}
-        </button>
+        <div className="mt-3" style={{ paddingInlineStart: 20 }}>
+          <div style={{ fontWeight: 500 }}>{t("homepage.quote of day")}</div>
+          <div
+            style={{
+              fontSize: 12,
+              fontStyle: "italic",
+              marginTop: 5,
+              width: "90%",
+            }}
+          >
+            בצאתי מהבית, אני מייחל תמיד להתרחשות שתהפוך את חיי. אני מחכה לה עד
+            שובי. על שום כך איני נשאר אף פעם בחדרי. לדאבוני, מעולם לא התרחש בחיי
+            דבר.
+          </div>
+          <div
+            style={{
+              fontSize: 11,
+              fontWeight: 500,
+              fontStyle: "italic",
+              marginTop: 10,
+              paddingInlineEnd: 35,
+            }}
+            className="d-flex justify-content-end pb-3"
+          >
+            החברים שלי/עמנואל בוב
+          </div>
+        </div>
+        <div className="d-flex justify-content-end">
+          <button onClick={logOutFunction} className="btn btn-light btn-sm m-4">
+            {t("form.logout")}
+          </button>
+        </div>
       </div>
 
       <div
@@ -129,14 +177,13 @@ function HomePageUser() {
       >
         <div className="col-lg-11 col-12" style={{ margin: "0 auto" }}>
           <textarea
-            maxLength="5000"
-            placeholder={t("profile.share thought")}
-            className={
-              userContent ? styles.textAreaWithContent : styles.textAreaStyle
-            }
+            rows={textAreaRows}
             value={userContent}
-            onChange={(e) => setUserContent(e.target.value)}
-          ></textarea>
+            placeholder={t("profile.share thought")}
+            className={styles.textareaAutoExpand}
+            onChange={handleTextAreaChange}
+          />
+
           <div
             className={
               userContent ? styles.editDiv : `${styles.editDiv} d-none`

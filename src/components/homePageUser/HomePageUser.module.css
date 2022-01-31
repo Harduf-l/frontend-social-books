@@ -1,44 +1,52 @@
 .welcomeMessage {
-  padding-top: 20px;
-  padding-inline-start: 20px;
-}
-
-.textAreaStyle {
-  border: 1px #474747 solid;
-  border-radius: 5px;
-  resize: none;
-  width: 100%;
-  padding-inline-start: 5px;
-}
-
-.textAreaStyle:focus,
-.textAreaWithContent {
-  border: 1px #474747 solid;
-  border-radius: 5px;
-  resize: none;
-  height: 150px;
-  width: 100%;
-  padding-inline-start: 5px;
-}
-
-.textAreaStyle2 {
-  padding-inline-start: 5px;
-  border: 1px #474747 solid;
-  border-radius: 5px;
-  resize: none;
-  width: 100%;
-}
-.textAreaStyle2:focus {
-  padding-inline-start: 5px;
-  border: 1px #474747 solid;
-  border-radius: 5px;
-  resize: none;
-  height: 100px;
-  width: 100%;
+  text-align: center;
+  padding-top: 15px;
+  font-size: 15px;
 }
 
 .preLine {
   white-space: pre-line;
+}
+
+.post {
+  background-color: #f8f8f8;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px -12px black;
+}
+
+.pictureHomePage {
+  margin-bottom: 15px;
+  border-radius: 6px;
+  width: 150px;
+  padding: 5px;
+  object-fit: cover;
+  border: 2px solid #b6b6b6;
+  display: block;
+  margin: 0 auto;
+}
+.textareaAutoExpand {
+  box-sizing: border-box;
+  border: none;
+  border-radius: 3px;
+  resize: none;
+  font-size: 15px;
+  line-height: 24px;
+  overflow: auto;
+  height: auto;
+  padding: 8px;
+  box-shadow: 0px 4px 10px -16px black;
+  background-color: white;
+  border: 1px solid #d1d1d1;
+  width: 100%;
+}
+
+#commentAreaFixes {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.textareaAutoExpand:focus {
+  outline: none;
 }
 
 .buttonsPost {

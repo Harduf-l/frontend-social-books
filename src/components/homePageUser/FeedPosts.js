@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import defaultPicture from "../../images/plain.jpg";
 import styles from "./HomePageUser.module.css";
 import { useTranslation } from "react-i18next";
@@ -7,6 +7,34 @@ function FeedPosts({ postsToShow }) {
   const { t } = useTranslation();
   const [editMap, setEditMap] = React.useState({});
   const [showCommentsMap, setShowCommentsMap] = React.useState({});
+  const [textAreaRows, setTextAreaRows] = useState({});
+  const [userContent, setUserContent] = useState({});
+  const minRows = 2;
+  const maxRows = 6;
+
+  const handleTextAreaChange = (event, postId) => {
+    const textareaLineHeight = 20;
+
+    const previousRows = event.target.rows;
+    event.target.rows = minRows; // reset number of rows in textarea
+
+    const currentRows = ~~(event.target.scrollHeight / textareaLineHeight);
+
+    if (currentRows === previousRows) {
+      event.target.rows = currentRows;
+    }
+
+    if (currentRows >= maxRows) {
+      event.target.rows = maxRows;
+      event.target.scrollTop = event.target.scrollHeight;
+    }
+    let newUserContent = { ...userContent };
+    newUserContent[postId] = event.target.value;
+    setUserContent(newUserContent);
+    let newTextAreaRows = { ...textAreaRows };
+    newTextAreaRows[postId] = currentRows < maxRows ? currentRows : maxRows;
+    setTextAreaRows(newTextAreaRows);
+  };
 
   const setShowFullCommentsMap = (postId) => {
     let newShowCommentsMap = { ...showCommentsMap };
@@ -50,9 +78,7 @@ function FeedPosts({ postsToShow }) {
       <div
         className={`d-flex pt-3 pb-2 ${styles.comments}`}
         style={
-          index !== arrayLength.length - 1
-            ? { borderBottom: "1px solid #cecece" }
-            : {}
+          index !== arrayLength - 1 ? { borderBottom: "1px solid #cecece" } : {}
         }
       >
         <div>
@@ -117,11 +143,7 @@ function FeedPosts({ postsToShow }) {
         .reverse()
         .map((post, index) => {
           return (
-            <div
-              key={index}
-              className="mt-4 p-2"
-              style={{ backgroundColor: "#f8f8f8", borderRadius: 10 }}
-            >
+            <div key={index} className={`mt-4 p-2 ${styles.post}`}>
               <div className="d-flex justify-content-between">
                 <div>
                   <img
@@ -193,7 +215,13 @@ function FeedPosts({ postsToShow }) {
               )}
               {editMap[post._id] && (
                 <div className="mt-3">
-                  <textarea className={styles.textAreaStyle2}></textarea>
+                  <textarea
+                    rows={textAreaRows[post._id] ? textAreaRows[post._id] : 3}
+                    value={userContent[post._id] ? userContent[post._id] : ""}
+                    onChange={(e) => handleTextAreaChange(e, post._id)}
+                    className={styles.textareaAutoExpand}
+                    id={styles.commentAreaFixes}
+                  ></textarea>
                   <div className="d-flex justify-content-end">
                     <button
                       className="btn btn-sm btn-light"

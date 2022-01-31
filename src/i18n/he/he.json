@@ -28,7 +28,7 @@
     "login error": "אימייל או סיסמא שגויים",
     "duplicate email": "מייל זה בשימוש. האם שכחת סיסמא?",
     "birth date error": "אנא הכנס תאריך לידה תקין",
-    "logout": "התנתק",
+    "logout": "התנתק/י",
     "email error": "יש להקיש כתובת מייל תקינה",
     "choose categories": "בחר ז'אנרים",
     "cancel": "בטל",
@@ -102,7 +102,8 @@
   "homepage": {
     "people liked this post": " אנשים אהבו את הפוסט הזה",
     "show": "הראה ",
-    "more comments": " תגובות נוספות"
+    "more comments": " תגובות נוספות",
+    "quote of day": "הציטוט היומי"
   },
   "chat": {
     "starConversationWith": "התחל שיחה עם",
