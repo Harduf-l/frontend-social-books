@@ -174,11 +174,16 @@ function FeedPosts({ postsToShow, userId }) {
                   >
                     <button
                       type="button"
-                      className="btn btn-light btn-sm dropdown-toggle"
-                      style={{ backgroundColor: "#c4c4c4", color: "#636363" }}
+                      className="btn btn-light btn-sm"
+                      style={{
+                        backgroundColor: "#c4c4c4",
+                        color: "#636363",
+                      }}
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
-                    ></button>
+                    >
+                      ...
+                    </button>
                     <ul
                       className="dropdown-menu"
                       style={{ minWidth: "auto", fontSize: 13 }}

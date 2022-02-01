@@ -32,7 +32,7 @@ function UserPage() {
         console.log(err.response);
         setLoadingFriends(false);
       });
-  }, [store.userDetails._id, dispatch]);
+  }, [store.userDetails._id, store.approvedConnections, dispatch]);
 
   return (
     <div className="container pt-5 mb-5">

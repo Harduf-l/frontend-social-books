@@ -30,7 +30,7 @@ function Chat({ sendMessageToSocket, sendTypingToSocket }) {
 
   const sendMessage = async () => {
     let textToSend = inputText.current.value;
-    if (!textToSend) return;
+    if (!textToSend.trim()) return;
     setShowEmoji(false);
     inputText.current.value = "";
 
@@ -135,6 +135,13 @@ function Chat({ sendMessageToSocket, sendTypingToSocket }) {
         return { textAlign: "start" };
       }
       return { textAlign: "end" };
+    }
+  };
+
+  const checkIfEnter = (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      sendMessage();
     }
   };
 
@@ -321,6 +328,7 @@ function Chat({ sendMessageToSocket, sendTypingToSocket }) {
                         chosenConversation._id
                       )
                     }
+                    onKeyPress={checkIfEnter}
                   />
 
                   <button

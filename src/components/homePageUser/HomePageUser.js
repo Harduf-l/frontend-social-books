@@ -186,14 +186,17 @@ function HomePageUser() {
             className="d-flex justify-content-end pb-3"
           >
             {store.quotes &&
-              (currentDir === "rtl"
-                ? store.quotes.hebrewQuote.book
-                : store.quotes.englishQuote.book)}
-            /
-            {store.quotes &&
-              (currentDir === "rtl"
-                ? store.quotes.hebrewQuote.author
-                : store.quotes.englishQuote.book)}
+              (currentDir === "rtl" ? (
+                <span>
+                  {store.quotes.hebrewQuote.book} /
+                  {store.quotes.hebrewQuote.author}
+                </span>
+              ) : (
+                <span>
+                  {store.quotes.englishQuote.book} /
+                  {store.quotes.englishQuote.author}
+                </span>
+              ))}
           </div>
         </div>
         <div className="d-flex justify-content-end">
