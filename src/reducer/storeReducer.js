@@ -186,10 +186,16 @@ export const storeReducer = (state, action) => {
       };
     case "addPostToFeed":
       let newPostsArray = [...state.feedPosts];
-      newPostsArray.push(action.payload.newPost);
+      newPostsArray.push(action.payload.newPostCreated);
+
       return {
         ...state,
         feedPosts: newPostsArray,
+      };
+    case "setEntryPosts":
+      return {
+        ...state,
+        feedPosts: action.payload,
       };
     case "onlineUsers":
       return {

@@ -34,7 +34,15 @@ function HomePageUser() {
           dispatch({ type: "setDailyQuote", payload: res.data });
         });
     }
-  });
+    if (store.feedPosts.length === 0) {
+      axios
+        .get(`${process.env.REACT_APP_SERVER_URL}posts/get-all-posts`)
+        .then((res) => {
+          console.log(res.data);
+          dispatch({ type: "setEntryPosts", payload: res.data });
+        });
+    }
+  }, [store.quotes, store.feedPosts.length, dispatch]);
 
   const handleClose = () => {
     setOpen(false);
@@ -85,46 +93,32 @@ function HomePageUser() {
     dispatch({ type: "logout" });
   };
 
-  const addPersonalPost = () => {
+  const addPersonalPost = async () => {
     if (userContent.trim() && userContentTag) {
       setPostError(false);
 
       const newPost = {
-        _id: Math.random(),
-        writer: {
-          _id: store.userDetails._id,
-          picture: store.userDetails.picture,
-          username: store.userDetails.username,
-        },
-        likes: [1, 2, 3, 4],
-        comments: [
-          {
-            user: { name: "jed", picture: "", _id: "" },
-            content: "התגובה שלי!",
-          },
-          {
-            user: { name: "jed", picture: "", _id: "" },
-            content: "התגובה שלי!",
-          },
-          {
-            user: { name: "jed", picture: "", _id: "" },
-            content: "התגובה שלי!",
-          },
-          {
-            user: { name: "jed", picture: "", _id: "" },
-            content: "התגובה שלי!",
-          },
-        ],
+        postWriter: store.userDetails._id,
         tag: userContentTag,
-        content: userContent.trim(),
-        createdAt: Date.now(),
+        postContent: userContent.trim(),
       };
 
+      try {
+        const newPostCreated = await axios.post(
+          `${process.env.REACT_APP_SERVER_URL}posts/add-post`,
+          newPost
+        );
+        console.log(newPostCreated.data);
+        dispatch({
+          type: "addPostToFeed",
+          payload: { newPostCreated: newPostCreated.data },
+        });
+      } catch (err) {
+        console.log(err);
+      }
       setUserContent("");
       setUserContentTag("");
       setTextAreaRows(2);
-
-      dispatch({ type: "addPostToFeed", payload: { newPost } });
     } else {
       // not throwing error for empty input. user should understand that alone.
       if (!userContentTag) {
@@ -170,10 +164,12 @@ function HomePageUser() {
               width: "90%",
             }}
           >
+            "
             {store.quotes &&
               (currentDir === "rtl"
                 ? store.quotes.hebrewQuote.line
                 : store.quotes.englishQuote.line)}
+            "
           </div>
           <div
             style={{
