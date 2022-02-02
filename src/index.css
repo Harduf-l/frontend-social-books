@@ -27,6 +27,10 @@ body {
   }
 }
 
+.spaceForSmallScreens {
+  width: 0px;
+}
+
 #footer {
   background-color: #e6e6e6;
 }
@@ -52,10 +56,13 @@ body {
   object-fit: cover;
 }
 
+.form-control {
+  border: 1px solid #d2d7dd !important;
+}
 .form-control:focus {
-  border-color: #e6e6e6 !important;
+  border: 1px solid #d2d7dd !important;
 
-  box-shadow: inset 0 0px 2px rgba(0, 0, 0, 0.075), 0 0 2px #8f8d8a !important;
+  box-shadow: none !important;
 }
 
 .textAreaForm {

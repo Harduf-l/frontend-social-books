@@ -38,7 +38,6 @@ function HomePageUser() {
       axios
         .get(`${process.env.REACT_APP_SERVER_URL}posts/get-all-posts`)
         .then((res) => {
-          console.log(res.data);
           dispatch({ type: "setEntryPosts", payload: res.data });
         });
     }
@@ -108,7 +107,7 @@ function HomePageUser() {
           `${process.env.REACT_APP_SERVER_URL}posts/add-post`,
           newPost
         );
-        console.log(newPostCreated.data);
+
         dispatch({
           type: "addPostToFeed",
           payload: { newPostCreated: newPostCreated.data },

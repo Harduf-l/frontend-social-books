@@ -18,6 +18,7 @@ function ResigterHomePage() {
   const [email, setEmail] = useState("");
   const [loginError, setLoginError] = useState("");
   const { dispatch } = useContext(storeContext);
+  const [loadingLogin, setLoadingLogin] = useState(false);
 
   const passWordSetAndCheck = (event) => {
     setLoginError("");
@@ -39,6 +40,10 @@ function ResigterHomePage() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    if (!password || !email.trim()) {
+      return;
+    }
+    setLoadingLogin(true);
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_SERVER_URL}users/login`,
@@ -49,9 +54,11 @@ function ResigterHomePage() {
           },
         }
       );
+
       if (response.data.status === "error") {
         console.log(response.data.error);
         setLoginError("login error");
+        setLoadingLogin(false);
       } else if (response.data.status === "ok") {
         localStorage.setItem("token", response.data.token);
 
@@ -69,9 +76,11 @@ function ResigterHomePage() {
             numberOfUnSeenMessages: messagesData.data.numberOfUnseenMessages,
           },
         });
+        setLoadingLogin(false);
         navigate(`/`);
       }
     } catch (err) {
+      setLoadingLogin(false);
       console.log(err);
     }
   };
@@ -118,7 +127,7 @@ function ResigterHomePage() {
                     textAlign: currentDir === "rtl" ? "end" : "start",
                     padding: "4px",
                   }}
-                  className="m-1 col-11 form-control"
+                  className="mt-2 m-1 col-11 form-control"
                   type="password"
                   placeholder={t("form.password")}
                   onChange={passWordSetAndCheck}
@@ -133,18 +142,30 @@ function ResigterHomePage() {
                     color: "red",
                     fontSize: "12px",
                     textAlign: "start",
-                    paddingInlineStart: "24px",
+                    paddingInlineStart: "6px",
                   }}
                 >
                   {passwordError && t("form.password hebrew error")}
                   {loginError && t(`form.${loginError}`)}
                 </small>
-                <input
-                  className="btn btn-light btn-sm mt-2 col-12 p-2"
-                  type="submit"
+                <button
+                  className={
+                    loadingLogin
+                      ? "btn btn-light btn-sm mt-2 col-12 p-2 disabled"
+                      : "btn btn-light btn-sm mt-2 col-12 p-2"
+                  }
                   onClick={handleLogin}
-                  value={t("form.login")}
-                />
+                >
+                  {loadingLogin && (
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      role="status"
+                      aria-hidden="true"
+                      style={{ marginInlineEnd: 10 }}
+                    ></span>
+                  )}
+                  {t("form.login")}
+                </button>
               </form>
               <Link to="/register">
                 <input

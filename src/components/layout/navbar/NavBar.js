@@ -180,22 +180,13 @@ function NavBar() {
         </div>
 
         <div className={styles.flexDirectionWithReverse}>
-          <form
-            onSubmit={(e) => moveToSearchPage(e)}
-            className={styles.searchGroup}
-          >
+          <form className="pb-3 pb-md-0" onSubmit={(e) => moveToSearchPage(e)}>
             <input
-              className={styles.searchInput}
+              className={` ${styles.searchInput} form-control`}
               ref={searchWord}
               type="text"
               placeholder={t("navbar.search")}
             />
-            <button
-              type="submit"
-              className={`${styles.searchButton} me-3 ms-3`}
-            >
-              <i className="fas fa-search"></i>
-            </button>
           </form>
           {Object.keys(lngs).map((lng) => (
             <span

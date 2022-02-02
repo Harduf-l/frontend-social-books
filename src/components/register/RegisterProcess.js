@@ -378,10 +378,12 @@ function RegisterProcess() {
                       autoComplete={true}
                     />
                   </div>
-                  <SmallFunction
-                    stateError={passwordError}
-                    translationError={passwordErrorType}
-                  />
+                  <div style={{ marginInlineStart: 10 }}>
+                    <SmallFunction
+                      stateError={passwordError}
+                      translationError={passwordErrorType}
+                    />
+                  </div>
                 </div>
                 <div>
                   <div className="d-flex">
@@ -476,16 +478,19 @@ function RegisterProcess() {
                   />
                 </div>
                 <div>
-                  <textarea
-                    rows="7"
-                    cols="25"
-                    placeholder={t("form.describe yourself")}
-                    className=" form-control textAreaForm"
-                    style={{ fontSize: 14 }}
-                    maxLength={200}
-                    onChange={(e) => setFreeText(e.target.value)}
-                    value={freeText}
-                  ></textarea>
+                  <div className="d-flex">
+                    <div style={{ width: 10 }}></div>
+                    <textarea
+                      rows="10"
+                      cols="25"
+                      placeholder={t("form.describe yourself")}
+                      className=" form-control textAreaForm"
+                      style={{ fontSize: 14 }}
+                      maxLength={200}
+                      onChange={(e) => setFreeText(e.target.value)}
+                      value={freeText}
+                    ></textarea>
+                  </div>
                 </div>
               </div>
             </div>

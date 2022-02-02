@@ -26,7 +26,7 @@
   color: black;
   font-size: 16px;
   padding: 10px;
-  margin-top: 2px;
+  margin-top: 5px;
 }
 
 .navlink:hover {
@@ -236,14 +236,6 @@
     display: inline-block;
     color: #2c2c2c;
     position: relative;
-  }
-
-  .searchGroup {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    padding: 5px;
-    padding-bottom: 30px;
   }
 
   .searchInput {
