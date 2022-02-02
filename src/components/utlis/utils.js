@@ -136,7 +136,7 @@ export const InputFunction = ({
       <input
         maxLength="25"
         dir={dir ? dir : ""}
-        className="form-control "
+        className="form-control"
         type={type}
         value={stateValue}
         onChange={(e) => functionToSetField(e)}

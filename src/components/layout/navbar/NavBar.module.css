@@ -52,14 +52,14 @@
 .friendBoxHeb {
   position: absolute;
   top: 50px;
-  right: 298px;
+  right: 276px;
   z-index: 9999;
 }
 
 .friendBoxEng {
   position: absolute;
   top: 50px;
-  left: 260px;
+  left: 242px;
   z-index: 9999;
 }
 

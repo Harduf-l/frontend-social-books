@@ -27,6 +27,7 @@
     "favorite genre": "Favorite genre",
     "login error": "Password/email not correct",
     "duplicate email": "Email is already in use, did you forgot your password?",
+    "invalid data": "Data provided isn't valid",
     "birth date error": "Date should be valid",
     "logout": "Logout",
     "email error": "Please provide a valid Email address",
@@ -41,7 +42,8 @@
     "describe yourself": "Tell about yourself",
     "age": "Age",
     "writingDescription": "I write...",
-    "freeText": "About me"
+    "freeText": "About me",
+    "categoryInstructions": "*Choose at least one"
   },
   "genres": {
     "favorite": "Favorite genres",

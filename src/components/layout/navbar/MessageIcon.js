@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import styles from "./NavBar.module.css";
 
 function MessageIcon({ mobileView, numberOfUnViewdMessages }) {
   const [inHere, setInHere] = React.useState(false);
+
+  useEffect(() => {
+    if (window.location.pathname.includes("messages")) {
+      setInHere(true);
+    } else {
+      setInHere(false);
+    }
+  }, [window.location.pathname]);
+
   return (
     <div className={styles.marginInlineStart}>
-      <NavLink style={({ isActive }) => setInHere(isActive)} to="/messages">
+      <NavLink to="/messages">
         <div
           className={
             !mobileView

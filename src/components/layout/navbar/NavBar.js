@@ -96,11 +96,7 @@ function NavBar() {
             openFriendsRequestsModal={openFriendsRequestsModal}
           />
           <div style={{ marginInlineStart: 20 }}>
-            <NavLink
-              to="/"
-              style={({ isActive }) => setInHomePage(isActive)}
-              className={styles.marginInlineStart}
-            >
+            <NavLink to="/" className={styles.marginInlineStart}>
               <div className={styles.notificationSymbolPhone}>
                 {inHomePage ? (
                   <i style={{ fontSize: 28 }} className="far fa-home-lg"></i>

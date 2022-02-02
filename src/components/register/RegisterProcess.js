@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import axios from "axios";
@@ -42,11 +42,20 @@ function RegisterProcess() {
   const [writingStatus, setWritingStatus] = useState(false);
   const [freeText, setFreeText] = useState("");
   const [freeWriterText, setFreeWriterText] = useState("");
-
+  const [loadingResitration, setLoadingRegistration] = useState(false);
   let navigate = useNavigate();
   const { dispatch } = useContext(storeContext);
+  const [inComponentLifeCycle, setInComponentLifeCycle] = useState(true);
+
+  useEffect(() => {
+    setInComponentLifeCycle(true);
+    return () => {
+      setInComponentLifeCycle(false);
+    };
+  }, []);
 
   const RegisterNewUser = async (e) => {
+    if (!inComponentLifeCycle) return;
     e.preventDefault();
 
     const userGenresArray = Object.keys(userGenres);
@@ -54,11 +63,14 @@ function RegisterProcess() {
     if (
       nameChosen &&
       passwordChosen &&
-      favoriteWriter &&
       email &&
       birthday &&
+      !passwordError &&
+      !emailError &&
+      !birthDateError &&
       userGenresArray.length > 0
     ) {
+      setLoadingRegistration(true);
       let birthArray = birthday.split("-").map((el) => +el);
       const birthdayObj = {
         year: birthArray[0],
@@ -115,9 +127,13 @@ function RegisterProcess() {
           });
           navigate(`/`);
         }
+        setLoadingRegistration(false);
       } catch (err) {
         console.log(err.message);
+        setLoadingRegistration(false);
       }
+    } else {
+      setRegisterErrorFunction("data not sufficient");
     }
   };
 
@@ -140,8 +156,12 @@ function RegisterProcess() {
     }
   };
 
-  const setRegisterErrorFunction = () => {
-    setRegisterError("duplicate email");
+  const setRegisterErrorFunction = (string) => {
+    if (string === "data not sufficient") {
+      setRegisterError("invalid data");
+    } else {
+      setRegisterError("duplicate email");
+    }
   };
 
   const setImageFileFunction = (imageDataUrl) => {
@@ -292,79 +312,93 @@ function RegisterProcess() {
               }}
             >
               <div className="d-flex flex-wrap justify-content-between">
-                <div>
-                  <InputFunction
-                    fieldName={"name"}
-                    stateValue={nameChosen}
-                    functionToSetField={setNameFunction}
-                    type={"text"}
-                    onFocusFunction={wakeUpServer}
-                  />
-                  <div style={{ height: "20px" }}></div>
+                <div className="d-flex">
+                  <div style={{ width: 10, color: "red" }}>*</div>
+                  <div>
+                    <InputFunction
+                      fieldName={"name"}
+                      stateValue={nameChosen}
+                      functionToSetField={setNameFunction}
+                      type={"text"}
+                      onFocusFunction={wakeUpServer}
+                    />
+
+                    <div style={{ height: "20px" }}></div>
+                  </div>
                 </div>
-                <div>
-                  <InputFunction
-                    dir="ltr"
-                    styleFunction={() => {
-                      let direction;
-                      direction = currentDir === "rtl" ? "end" : "start";
-                      return {
-                        textAlign: direction,
-                        width: "auto",
-                      };
-                    }}
-                    fieldName={"email"}
-                    stateValue={email}
-                    functionToSetField={setEmailFunction}
-                    type={"email"}
-                    autoComplete={true}
-                    onBlurFunction={emailBlurFunction}
-                  />
-                  <SmallFunction
-                    stateError={emailError}
-                    translationError={"form.email error"}
-                  />
+                <div className="d-flex">
+                  <div style={{ width: 10, color: "red" }}>*</div>
+                  <div>
+                    <InputFunction
+                      dir="ltr"
+                      styleFunction={() => {
+                        let direction;
+                        direction = currentDir === "rtl" ? "end" : "start";
+                        return {
+                          textAlign: direction,
+                          width: "auto",
+                        };
+                      }}
+                      fieldName={"email"}
+                      stateValue={email}
+                      functionToSetField={setEmailFunction}
+                      type={"email"}
+                      autoComplete={true}
+                      onBlurFunction={emailBlurFunction}
+                    />
+                    <SmallFunction
+                      stateError={emailError}
+                      translationError={"form.email error"}
+                    />
+                  </div>
                 </div>
               </div>
 
               <div className="d-flex flex-wrap justify-content-between">
                 <div>
-                  <InputFunction
-                    onBlurFunction={passwordOnBlur}
-                    fieldName={"password"}
-                    stateValue={passwordChosen}
-                    functionToSetField={passWordSetAndCheck}
-                    type={"password"}
-                    styleFunction={() => {
-                      let direction;
-                      direction = currentDir === "rtl" ? "end" : "start";
-                      return {
-                        textAlign: direction,
-                        width: "auto",
-                      };
-                    }}
-                    dir={"ltr"}
-                    autoComplete={true}
-                  />
-
+                  <div className="d-flex">
+                    <div>
+                      <div style={{ width: 10, color: "red" }}>*</div>
+                    </div>
+                    <InputFunction
+                      onBlurFunction={passwordOnBlur}
+                      fieldName={"password"}
+                      stateValue={passwordChosen}
+                      functionToSetField={passWordSetAndCheck}
+                      type={"password"}
+                      styleFunction={() => {
+                        let direction;
+                        direction = currentDir === "rtl" ? "end" : "start";
+                        return {
+                          textAlign: direction,
+                          width: "auto",
+                        };
+                      }}
+                      dir={"ltr"}
+                      autoComplete={true}
+                    />
+                  </div>
                   <SmallFunction
                     stateError={passwordError}
                     translationError={passwordErrorType}
                   />
                 </div>
                 <div>
-                  <InputFunction
-                    fieldName={"favorite writer"}
-                    stateValue={favoriteWriter}
-                    functionToSetField={setFavoriteWriterFunction}
-                    type={"text"}
-                  />
+                  <div className="d-flex">
+                    <div style={{ width: 10, color: "red" }}></div>
+                    <InputFunction
+                      fieldName={"favorite writer"}
+                      stateValue={favoriteWriter}
+                      functionToSetField={setFavoriteWriterFunction}
+                      type={"text"}
+                    />
+                  </div>
                   <div style={{ height: "20px" }}></div>
                 </div>
               </div>
 
               <div className="d-flex flex-wrap justify-content-between">
-                <div>
+                <div style={{ marginInlineStart: 10 }}>
                   <InputAutoCompleteCombined
                     dataArray={countriesOptions}
                     setChosenInput={setChosenCountryFunction}
@@ -425,6 +459,7 @@ function RegisterProcess() {
                     style={{ marginInlineEnd: "10px", fontSize: 13 }}
                     htmlFor="birthdate"
                   >
+                    <span style={{ color: "red" }}>*</span>
                     {t("form.birth date")}
                   </label>
                   <input
@@ -457,10 +492,13 @@ function RegisterProcess() {
           </div>
 
           <div
-            className="col-12 col-md-3 p-1 mt-5 mt-md-0"
+            className="col-12 col-md-3 p-1 mt-5 mt-md-0 "
             style={{ backgroundColor: BACKCOLOR, borderRadius: "10px" }}
           >
-            <p style={{ fontWeight: "500" }}>{t(`genres.favorite`)}</p>
+            <p style={{ fontWeight: "500" }}>
+              <span style={{ color: "red" }}>*</span>
+              {t(`genres.favorite`)}
+            </p>
 
             <div className="d-flex flex-wrap">
               <div className="col-12 col-sm-5 col-xl-6">
@@ -485,19 +523,42 @@ function RegisterProcess() {
                 <CheckBok name={"management"} />
               </div>
             </div>
+            <p
+              className="mt-4"
+              style={{
+                fontSize: 12,
+                color: "#727272",
+                fontStyle: "italic",
+                paddingInlineStart: 10,
+              }}
+            >
+              {t("form.categoryInstructions")}
+            </p>
           </div>
 
           <UploadEditPicture setImageFileFunction={setImageFileFunction} />
         </div>
 
-        <div className="d-flex justify-content-center flex-wrap mt-4">
+        <div className="d-flex justify-content-center flex-wrap mt-4 pb-3 ">
           <div>
             <div style={{ textAlign: "center", paddingBottom: 10 }}>
               <button
                 type="submit"
                 onClick={(e) => RegisterNewUser(e)}
-                className="btn btn-mg btn-secondary"
+                className={
+                  loadingResitration
+                    ? "btn btn-mg btn-secondary disabled"
+                    : "btn btn-mg btn-secondary"
+                }
               >
+                {loadingResitration && (
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                    style={{ marginInlineEnd: 10 }}
+                  ></span>
+                )}
                 {t("form.send")}
               </button>
             </div>
@@ -509,13 +570,16 @@ function RegisterProcess() {
         </div>
       </div>
 
-      <div className="col-md-1 d-none d-md-block">
-        <img
-          src={BookShelves}
-          style={{ objectFit: "cover", width: "100%", height: "100vh" }}
-          alt=""
-        />
-      </div>
+      <div
+        className="col-md-1 d-none d-md-block"
+        style={{
+          backgroundColor: "grey",
+          backgroundImage: `url(${BookShelves})`,
+
+          height: "100vh",
+          backgroundSize: "cover",
+        }}
+      ></div>
     </div>
   );
 }

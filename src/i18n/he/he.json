@@ -27,6 +27,7 @@
     "favorite genre": "ז'אנר מועדף",
     "login error": "אימייל או סיסמא שגויים",
     "duplicate email": "מייל זה בשימוש. האם שכחת סיסמא?",
+    "invalid data": "המידע שהוזן אינו תקין",
     "birth date error": "יש להזין תאריך לידה תקין",
     "logout": "התנתק/י",
     "email error": "יש להזין כתובת מייל תקינה",
@@ -41,7 +42,8 @@
     "describe yourself": "ספר/י על עצמך",
     "age": "גיל",
     "writingDescription": "אני כותב/ת...",
-    "freeText": "קצת עליי"
+    "freeText": "קצת עליי",
+    "categoryInstructions": "*יש לבחור לפחות אחד"
   },
   "genres": {
     "favorite": "ז'אנרים מועדפים",

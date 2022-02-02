@@ -8,8 +8,11 @@ function UserPage() {
   const { store, dispatch } = useContext(storeContext);
   const [approvedFriends, setApprovedFriends] = useState([]);
   const [loadingFriends, setLoadingFriends] = useState(true);
+  const [inComponentLifeCycle, setInComponentLifeCycle] = useState(true);
 
   useEffect(() => {
+    if (!inComponentLifeCycle) return;
+
     if (store.approvedConnections.length > 0) {
       setApprovedFriends(store.approvedConnections);
       setLoadingFriends(false);
@@ -32,7 +35,16 @@ function UserPage() {
         console.log(err.response);
         setLoadingFriends(false);
       });
-  }, [store.userDetails._id, store.approvedConnections, dispatch]);
+
+    return () => {
+      setInComponentLifeCycle(false);
+    };
+  }, [
+    store.userDetails._id,
+    store.approvedConnections,
+    dispatch,
+    inComponentLifeCycle,
+  ]);
 
   return (
     <div className="container pt-5 mb-5">

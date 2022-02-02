@@ -102,7 +102,7 @@ function ResigterHomePage() {
                     textAlign: currentDir === "rtl" ? "end" : "start",
                     padding: "4px",
                   }}
-                  className="m-1 col-11"
+                  className="m-1 col-11 form-control"
                   type="email"
                   value={email}
                   onChange={(e) => {
@@ -118,7 +118,7 @@ function ResigterHomePage() {
                     textAlign: currentDir === "rtl" ? "end" : "start",
                     padding: "4px",
                   }}
-                  className="m-1 col-11"
+                  className="m-1 col-11 form-control"
                   type="password"
                   placeholder={t("form.password")}
                   onChange={passWordSetAndCheck}
@@ -140,7 +140,7 @@ function ResigterHomePage() {
                   {loginError && t(`form.${loginError}`)}
                 </small>
                 <input
-                  className="btn btn-light btn-sm mt-2 col-11 p-2"
+                  className="btn btn-light btn-sm mt-2 col-12 p-2"
                   type="submit"
                   onClick={handleLogin}
                   value={t("form.login")}
@@ -148,14 +148,14 @@ function ResigterHomePage() {
               </form>
               <Link to="/register">
                 <input
-                  className="btn btn-dark btn-sm mt-2 col-11 p-2"
+                  className="btn btn-dark btn-sm mt-2 col-12 p-2"
                   type="submit"
                   value={t("form.register")}
                 />
               </Link>
             </div>
           </div>
-          <div className="col-s-12 col-md-6 padding-top-homePage">
+          <div className="col-s-12  pb-3 col-md-6 padding-top-homePage">
             <img className="responsive-image" src={bookImage} alt="" />
           </div>
         </div>
