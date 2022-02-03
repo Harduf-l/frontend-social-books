@@ -16,6 +16,7 @@
     "country": "מדינה",
     "birth date": "תאריך לידה",
     "login": "התחבר/י",
+    "demoLogin": "כניסת דמו",
     "register": "יצירת חשבון חדש",
     "name": "שם",
     "send": "שלח",
@@ -119,7 +120,7 @@
   },
   "bookCard": {
     "add to book list": "הוספ/י לרשימת קריאה",
-    "more details": "פרטים נוספים",
+    "more details": "פרטים...",
     "published": "הוצאה לאור",
     "year": "שנת הוצאה",
     "pages": "עמודים"

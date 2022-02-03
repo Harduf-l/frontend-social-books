@@ -8,7 +8,7 @@ const style = {
   position: "absolute",
   top: "45%",
   left: "50%",
-  maxHeight: 380,
+  maxHeight: 570,
   overflowY: "auto",
   transform: "translate(-50%, -50%)",
   bgcolor: "background.paper",

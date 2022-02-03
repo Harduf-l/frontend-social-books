@@ -19,6 +19,7 @@ function ResigterHomePage() {
   const [loginError, setLoginError] = useState("");
   const { dispatch } = useContext(storeContext);
   const [loadingLogin, setLoadingLogin] = useState(false);
+  const [loadingDemoLogin, setLoadingDemoLogin] = useState(false);
 
   const passWordSetAndCheck = (event) => {
     setLoginError("");
@@ -37,17 +38,26 @@ function ResigterHomePage() {
     await axios.get(`${process.env.REACT_APP_SERVER_URL}users/wake-up`);
   };
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e, type) => {
     e.preventDefault();
 
-    if (!password || !email.trim()) {
+    let loginDetails;
+
+    if ((!password || !email.trim()) && type !== "demo") {
       return;
     }
-    setLoadingLogin(true);
+    if (type === "demo") {
+      setLoadingDemoLogin(true);
+      loginDetails = { password: "123456", email: "guest@gmail.com" };
+    } else {
+      setLoadingLogin(true);
+      loginDetails = { password: password, email: email };
+    }
+
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_SERVER_URL}users/login`,
-        { password, email },
+        loginDetails,
         {
           headers: {
             "Content-Type": "application/json",
@@ -58,7 +68,11 @@ function ResigterHomePage() {
       if (response.data.status === "error") {
         console.log(response.data.error);
         setLoginError("login error");
-        setLoadingLogin(false);
+        if (type === "demo") {
+          setLoadingDemoLogin(false);
+        } else {
+          setLoadingLogin(false);
+        }
       } else if (response.data.status === "ok") {
         localStorage.setItem("token", response.data.token);
 
@@ -76,11 +90,19 @@ function ResigterHomePage() {
             numberOfUnSeenMessages: messagesData.data.numberOfUnseenMessages,
           },
         });
-        setLoadingLogin(false);
+        if (type === "demo") {
+          setLoadingDemoLogin(false);
+        } else {
+          setLoadingLogin(false);
+        }
         navigate(`/`);
       }
     } catch (err) {
-      setLoadingLogin(false);
+      if (type === "demo") {
+        setLoadingDemoLogin(false);
+      } else {
+        setLoadingLogin(false);
+      }
       console.log(err);
     }
   };
@@ -95,9 +117,8 @@ function ResigterHomePage() {
           <div className=" col-s-12 col-md-6 pb-3 align-self-center ">
             <p
               style={{
-                fontSize: "50px",
+                fontSize: "48px",
                 fontWeight: "lighter",
-                paddingInlineStart: "20px",
               }}
             >
               {t("welcome")}
@@ -148,6 +169,7 @@ function ResigterHomePage() {
                   {passwordError && t("form.password hebrew error")}
                   {loginError && t(`form.${loginError}`)}
                 </small>
+
                 <button
                   className={
                     loadingLogin
@@ -167,6 +189,7 @@ function ResigterHomePage() {
                   {t("form.login")}
                 </button>
               </form>
+
               <Link to="/register">
                 <input
                   className="btn btn-dark btn-sm mt-2 col-12 p-2"
@@ -174,6 +197,24 @@ function ResigterHomePage() {
                   value={t("form.register")}
                 />
               </Link>
+              <button
+                className={
+                  loadingDemoLogin
+                    ? "btn btn-secondary btn-sm mt-2 col-12 p-2 disabled"
+                    : "btn btn-secondary btn-sm mt-2 col-12 p-2"
+                }
+                onClick={(e) => handleLogin(e, "demo")}
+              >
+                {loadingDemoLogin && (
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                    style={{ marginInlineEnd: 10 }}
+                  ></span>
+                )}
+                {t("form.demoLogin")}
+              </button>
             </div>
           </div>
           <div className="col-s-12  pb-3 col-md-6 padding-top-homePage">

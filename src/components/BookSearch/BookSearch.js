@@ -4,8 +4,6 @@ import axios from "axios";
 import bookDefault from "../../images/book-default.jpg";
 import { useTranslation } from "react-i18next";
 import BookModal from "../homePageUser/bookModal";
-import { blueGrey, grey } from "@mui/material/colors";
-import { auto } from "@popperjs/core";
 
 function BookSearch() {
   const [searchParams] = useSearchParams();
@@ -17,6 +15,9 @@ function BookSearch() {
   const [open, setOpen] = useState(false);
   const { t } = useTranslation();
 
+  useEffect(() => {
+    setBooksData([]);
+  }, [searchParams]);
   const handleClose = () => {
     setOpen(false);
   };
@@ -61,7 +62,7 @@ function BookSearch() {
   if (loading) return <div>{t("loading")}</div>;
 
   return (
-    <div className="d-flex flex-wrap mt-4">
+    <div className="d-flex flex-wrap mt-4 mb-4">
       <BookModal
         open={open}
         handleClose={handleClose}
