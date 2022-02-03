@@ -1,5 +1,3 @@
-import { store } from "emoji-mart";
-
 export const storeReducer = (state, action) => {
   switch (action.type) {
     case "login":
@@ -197,11 +195,57 @@ export const storeReducer = (state, action) => {
         ...state,
         feedPosts: action.payload,
       };
+    case "replacePost":
+      let newArrayOfPosts = [...state.feedPosts];
+
+      let indexToPush = newArrayOfPosts.findIndex((el) => {
+        return el._id === action.payload.postId;
+      });
+      newArrayOfPosts[indexToPush] = action.payload.refreshedPost;
+
+      return {
+        ...state,
+        feedPosts: newArrayOfPosts,
+      };
+    case "addLikeToPost":
+      let newArrayOfPosts2 = JSON.parse(JSON.stringify(state.feedPosts));
+
+      let indexToPushLikes = newArrayOfPosts2.findIndex((el) => {
+        return el._id === action.payload.postId;
+      });
+
+      newArrayOfPosts2[indexToPushLikes].likes.push(action.payload.likeObject);
+
+      return {
+        ...state,
+        feedPosts: newArrayOfPosts2,
+      };
+    case "removeLikeFromPost":
+      let newArrayOfPosts3 = [...state.feedPosts];
+
+      let indexToReplaceLikes = newArrayOfPosts3.findIndex((el) => {
+        return el._id === action.payload.postId;
+      });
+
+      let arrayOfLikes = newArrayOfPosts3[indexToReplaceLikes].likes;
+      let indexToDelete = arrayOfLikes.findIndex((el) => {
+        return el._id === action.payload.userId;
+      });
+
+      if (indexToDelete !== -1) {
+        arrayOfLikes.splice(indexToDelete, 1);
+      }
+
+      return {
+        ...state,
+        feedPosts: newArrayOfPosts3,
+      };
     case "onlineUsers":
       return {
         ...state,
         onlineUsers: action.payload.onlineUsersId,
       };
+
     case "setDailyQuote":
       return {
         ...state,

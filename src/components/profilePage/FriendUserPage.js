@@ -31,7 +31,7 @@ function UserPage({ sendConnectionToSocket }) {
           err.response.data.message &&
           err.response.data.message === "user not found"
         ) {
-          navigate(`/`);
+          navigate(`/`, { replace: true });
         }
       });
 
@@ -60,6 +60,12 @@ function UserPage({ sendConnectionToSocket }) {
         console.log(err);
       });
   }, [store, params.id, navigate]);
+
+  useEffect(() => {
+    if (params.id === store.userDetails._id) {
+      navigate("/profile");
+    }
+  }, [params.id, store.userDetails._id, navigate]);
 
   const sendFriendRequest = async () => {
     setFriendshipStatus("friend request was sent");

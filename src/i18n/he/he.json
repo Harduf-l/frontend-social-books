@@ -7,7 +7,8 @@
   "no": "לא",
   "rights": "כל הזכויות שמורות",
   "search results": "תוצאות חיפוש עבור ",
-  "like": "אהבתי",
+  "like": "לאהוב",
+  "alreadeLiked": "אהבתי",
   "comment": "תגובה",
   "form": {
     "email": "אימייל",
@@ -104,7 +105,7 @@
   },
   "homepage": {
     "people liked this post": " אנשים אהבו את הפוסט הזה",
-    "show": "הראה ",
+    "show": "הצג ",
     "more comments": " תגובות נוספות",
     "quote of day": "הציטוט היומי",
     "edit": "עריכה",

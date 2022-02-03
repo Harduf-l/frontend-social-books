@@ -6,7 +6,7 @@ import FeedPosts from "./FeedPosts";
 import styles from "./HomePageUser.module.css";
 import BookModal from "./bookModal";
 import defaultPicture from "../../images/plain.jpg";
-
+import FeedPostsSkeleton from "./FeedPostsSkeleton";
 import FriendsList from "./FriendsList";
 
 function HomePageUser() {
@@ -20,6 +20,7 @@ function HomePageUser() {
   const [loading, setLoading] = useState(false);
   const [postError, setPostError] = useState(false);
   const [textAreaRows, setTextAreaRows] = useState(2);
+  const [loadingFeedPost, setLoadingFeedPost] = useState(true);
 
   const { username } = store.userDetails;
   const { booksRecommendation } = store;
@@ -39,7 +40,13 @@ function HomePageUser() {
         .get(`${process.env.REACT_APP_SERVER_URL}posts/get-all-posts`)
         .then((res) => {
           dispatch({ type: "setEntryPosts", payload: res.data });
+          setLoadingFeedPost(false);
+        })
+        .catch((err) => {
+          setLoadingFeedPost(false);
         });
+    } else {
+      setLoadingFeedPost(false);
     }
   }, [store.quotes, store.feedPosts.length, dispatch]);
 
@@ -183,12 +190,12 @@ function HomePageUser() {
             {store.quotes &&
               (currentDir === "rtl" ? (
                 <span>
-                  {store.quotes.hebrewQuote.book} /
+                  {store.quotes.hebrewQuote.book}/
                   {store.quotes.hebrewQuote.author}
                 </span>
               ) : (
                 <span>
-                  {store.quotes.englishQuote.book} /
+                  {store.quotes.englishQuote.book}/
                   {store.quotes.englishQuote.author}
                 </span>
               ))}
@@ -259,7 +266,8 @@ function HomePageUser() {
               </button>
             </div>
           </div>
-          {store.feedPosts.length > 0 && (
+          {loadingFeedPost && <FeedPostsSkeleton />}
+          {!loadingFeedPost && store.feedPosts.length > 0 && (
             <FeedPosts
               postsToShow={store.feedPosts}
               userId={store.userDetails._id}

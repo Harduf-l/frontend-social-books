@@ -74,6 +74,16 @@
   white-space: pre-line;
 }
 
+.likePicModal {
+  width: 65px;
+  border-radius: 50%;
+}
+
+.commentText {
+  background-color: white;
+  padding: 5px 5px 10px 10px;
+  border-radius: 10px;
+}
 .miniBtnMiniComment {
   font-size: 10px;
   background-color: white;

@@ -2,28 +2,32 @@ import React from "react";
 import defaultPicture from "../../../images/plain.jpg";
 import styles from "../HomePageUser.module.css";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 const SingleComment = ({ el, index, arrayLength }) => {
   const { t } = useTranslation();
   return (
-    <div
-      className={`d-flex pt-3 pb-2 ${styles.comments}`}
-      style={
-        index !== arrayLength - 1 ? { borderBottom: "1px solid #cecece" } : {}
-      }
-    >
+    <div className={`d-flex pt-3 pb-2 ${styles.comments}`}>
       <div>
-        <img
-          className={styles.postPic}
-          src={el.user.picture ? el.user.picture : defaultPicture}
-          alt=""
-        />
+        <Link to={`user/${el.commentResponder._id}`}>
+          <img
+            className={styles.postPic}
+            src={
+              el.commentResponder.picture
+                ? el.commentResponder.picture
+                : defaultPicture
+            }
+            alt=""
+          />
+        </Link>
       </div>
 
-      <div style={{ paddingInlineStart: 15 }}>
-        <div style={{ fontWeight: 500 }}> {el.user.name}</div>
-        <div> {el.content}</div>
-        <div className="pt-3">
+      <div style={{ marginInlineStart: 15 }}>
+        <div className={styles.commentText}>
+          <div style={{ fontWeight: 500 }}> {el.commentResponder.username}</div>
+          <div> {el.commentContent}</div>
+        </div>
+        <div className="pt-2">
           <span role="button" className={styles.miniBtnMiniComment}>
             <i
               style={{ color: "#c45252", marginInlineEnd: 4 }}
