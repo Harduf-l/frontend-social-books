@@ -36,7 +36,24 @@ function LikesModal({ open, handleClose, likesArray }) {
         <div>
           {likesArray.map((el, index) => {
             return (
-              <div key={index} className="d-flex align-items-center mt-2 mb-2">
+              <div
+                key={index}
+                className="d-flex align-items-center"
+                style={
+                  index === likesArray.length - 1
+                    ? {
+                        paddingBottom: 15,
+                        paddingTop: 15,
+                        color: "#333333",
+                      }
+                    : {
+                        borderBottom: "1px solid #dfdfdf",
+                        paddingBottom: 15,
+                        paddingTop: 15,
+                        color: "#333333",
+                      }
+                }
+              >
                 <Link to={`user/${el._id}`}>
                   <img
                     className={styles.likePicModal}

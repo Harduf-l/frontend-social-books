@@ -21,6 +21,10 @@ function SinglePost({ post, index, userId }) {
   const minRows = 2;
   const maxRows = 6;
 
+  const setShowComments = () => {
+    setShowCommentsMode(true);
+  };
+
   const hideLikesModal = () => {
     setShowLikesModal(false);
   };
@@ -48,6 +52,9 @@ function SinglePost({ post, index, userId }) {
   };
 
   const sendPostComment = async () => {
+    if (!userContent.trim()) {
+      return;
+    }
     setLoadingAddComment(true);
 
     let newComment = {
@@ -116,28 +123,6 @@ function SinglePost({ post, index, userId }) {
       <span style={{ fontSize: 13, marginInlineStart: 20 }}>
         {dayInMonth} {t(`months.month${monthOfPost}`)}, {fullYear}
       </span>
-    );
-  };
-
-  const showCommentsPreview = (commentsRaw) => {
-    let commentsArray = [...commentsRaw];
-    commentsArray = commentsArray.splice(-2);
-    return (
-      <div>
-        {commentsArray
-          .slice(0)
-          .reverse()
-          .map((el, index) => {
-            return (
-              <SingleComment
-                key={index}
-                el={el}
-                index={index}
-                arrayLength={commentsArray.length}
-              />
-            );
-          })}
-      </div>
     );
   };
 
@@ -346,7 +331,37 @@ function SinglePost({ post, index, userId }) {
           </div>
         </div>
       )}
-      {!showCommentsMode && showCommentsPreview(post.comments)}
+      {/* {!showCommentsMode && showCommentsPreview(post.comments)} */}
+
+      {post.comments.length > 0 && (
+        <div>
+          {post.comments
+            .slice(0)
+            .reverse()
+            .map((el, index) => {
+              if (index <= 1 && !showCommentsMode) {
+                return (
+                  <SingleComment
+                    key={index}
+                    el={el}
+                    index={index}
+                    arrayLength={post.comments.length}
+                  />
+                );
+              }
+              if (showCommentsMode) {
+                return (
+                  <SingleComment
+                    key={index}
+                    el={el}
+                    index={index}
+                    arrayLength={post.comments.length}
+                  />
+                );
+              }
+            })}
+        </div>
+      )}
       {!showCommentsMode && post.comments.length > 2 && (
         <div
           style={{
@@ -355,28 +370,11 @@ function SinglePost({ post, index, userId }) {
             fontSize: 12,
           }}
           role="button"
-          onClick={() => setShowCommentsMode(post._id)}
+          onClick={setShowComments}
         >
           {t("homepage.show")}
           {post.comments.length - 2}
           {t("homepage.more comments")}
-        </div>
-      )}
-      {post.comments.length > 0 && showCommentsMode && (
-        <div>
-          {post.comments
-            .slice(0)
-            .reverse()
-            .map((el, index) => {
-              return (
-                <SingleComment
-                  key={index}
-                  el={el}
-                  index={index}
-                  arrayLength={post.comments.length}
-                />
-              );
-            })}
         </div>
       )}
     </div>
