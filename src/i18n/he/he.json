@@ -105,11 +105,13 @@
   },
   "homepage": {
     "people liked this post": " אנשים אהבו את הפוסט הזה",
-    "show": "הצג ",
+    "show": "הראה ",
+    "hide": "הסתר ",
     "more comments": " תגובות נוספות",
     "quote of day": "הציטוט היומי",
     "edit": "עריכה",
-    "delete": "מחיקה"
+    "delete": "מחיקה",
+    "comments": " תגובות"
   },
   "chat": {
     "starConversationWith": "התחל/י שיחה עם",

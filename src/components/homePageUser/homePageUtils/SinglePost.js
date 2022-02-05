@@ -286,12 +286,21 @@ function SinglePost({ post, index, userId }) {
       </div>
       {post.likes.length > 0 && (
         <div
-          style={{
-            fontSize: 12,
-            color: "#0d0052",
-            paddingTop: 12,
-            paddingBottom: 10,
-          }}
+          style={
+            editMode
+              ? {
+                  fontSize: 12,
+                  color: "#0d0052",
+                  paddingTop: 12,
+                  paddingBottom: 5,
+                }
+              : {
+                  fontSize: 12,
+                  color: "#0d0052",
+                  paddingTop: 12,
+                  paddingBottom: 10,
+                }
+          }
         >
           <span role={"button"} onClick={() => setShowLikesModal(true)}>
             {post.likes.length}
@@ -300,7 +309,7 @@ function SinglePost({ post, index, userId }) {
         </div>
       )}
       {editMode && (
-        <div className="mt-3">
+        <div className="mt-2">
           <textarea
             rows={textAreaRows ? textAreaRows : 2}
             value={userContent ? userContent : ""}

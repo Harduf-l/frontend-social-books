@@ -73,6 +73,14 @@
   font-size: 12px;
   white-space: pre-line;
 }
+.marginStart {
+  margin-inline-start: 65px;
+}
+.showMiniComments {
+  font-size: 10px;
+  color: #505050;
+  margin-inline-start: 10px;
+}
 
 .likePicModal {
   width: 65px;
@@ -81,7 +89,6 @@
 
 .timeAgoComment {
   direction: ltr;
-  margin-inline-end: 12px;
   color: #929292;
   font-size: 10px;
 }

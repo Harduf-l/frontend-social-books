@@ -106,10 +106,12 @@
   "homepage": {
     "people liked this post": " people liked this post",
     "show": "show ",
+    "hide": "hide ",
     "more comments": " more comments",
     "quote of day": "Quote of the day",
     "edit": "Edit",
-    "delete": "Delete"
+    "delete": "Delete",
+    "comments": " comments"
   },
   "chat": {
     "starConversationWith": "Start a conversation with",
