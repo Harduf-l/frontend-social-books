@@ -374,9 +374,13 @@ function SinglePost({ post, index, userId }) {
       {!showCommentsMode && post.comments.length > 2 && (
         <div
           style={{
+            marginTop: 20,
+
             paddingTop: 5,
             textAlign: "center",
+            color: "#888888",
             fontSize: 12,
+            borderTop: "1px #d8d8d8 solid",
           }}
           role="button"
           onClick={setShowComments}
