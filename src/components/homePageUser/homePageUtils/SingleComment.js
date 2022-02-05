@@ -7,14 +7,7 @@ import axios from "axios";
 import { format } from "timeago.js";
 import { storeContext } from "../../../context/store";
 
-const SingleComment = ({
-  el,
-  index,
-  arrayLength,
-  post,
-  userId,
-  stopReucurstion,
-}) => {
+const SingleComment = ({ el, index, arrayLength, post, stopReucurstion }) => {
   const [loadingAddComment, setLoadingAddComment] = useState(false);
   const [textAreaRows, setTextAreaRows] = useState(2);
   const [userContent, setUserContent] = useState("");
@@ -56,29 +49,32 @@ const SingleComment = ({
     }
     setLoadingAddComment(true);
 
+    console.log("post is", post);
     let newMiniComment = {
       content: userContent,
-      responderId: userId,
+      responderId: store.userDetails._id,
       postId: post._id,
       commentId: el._id,
     };
     try {
       const refreshedPostWithMiniComment = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}posts/add-mini-post-comment`,
+        `${process.env.REACT_APP_SERVER_URL}posts/add-post-comment`,
         newMiniComment
       );
       setLoadingAddComment(false);
       setEditMode(false);
       setUserContent("");
       setTextAreaRows(2);
+      console.log(refreshedPostWithMiniComment);
 
       dispatch({
-        type: "replacePostWithNewMiniComment",
+        type: "replacePost",
         payload: {
-          refreshedPostWithMiniComment: refreshedPostWithMiniComment.data,
           postId: post._id,
+          refreshedPost: refreshedPostWithMiniComment.data,
         },
       });
+      setShowMiniComments(true);
     } catch (err) {
       setLoadingAddComment(false);
       setEditMode(false);
@@ -231,6 +227,7 @@ const SingleComment = ({
             return (
               <SingleComment
                 key={index}
+                post={post}
                 el={el}
                 arrayLength={el.miniComments ? el.miniComments.length : 0}
                 index={index}

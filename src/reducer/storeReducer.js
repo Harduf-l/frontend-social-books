@@ -196,7 +196,7 @@ export const storeReducer = (state, action) => {
         feedPosts: action.payload,
       };
     case "replacePost":
-      let newArrayOfPosts = [...state.feedPosts];
+      let newArrayOfPosts = JSON.parse(JSON.stringify(state.feedPosts));
 
       let indexToPush = newArrayOfPosts.findIndex((el) => {
         return el._id === action.payload.postId;

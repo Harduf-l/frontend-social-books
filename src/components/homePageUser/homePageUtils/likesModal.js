@@ -42,14 +42,14 @@ function LikesModal({ open, handleClose, likesArray }) {
                 style={
                   index === likesArray.length - 1
                     ? {
-                        paddingBottom: 15,
-                        paddingTop: 15,
+                        paddingBottom: 10,
+                        paddingTop: 10,
                         color: "#333333",
                       }
                     : {
                         borderBottom: "1px solid #dfdfdf",
-                        paddingBottom: 15,
-                        paddingTop: 15,
+                        paddingBottom: 10,
+                        paddingTop: 10,
                         color: "#333333",
                       }
                 }

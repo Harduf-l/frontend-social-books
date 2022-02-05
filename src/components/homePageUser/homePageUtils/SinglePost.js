@@ -188,7 +188,7 @@ function SinglePost({ post, index, userId }) {
       <LikesModal
         open={showLikesModal}
         handleClose={hideLikesModal}
-        likesArray={post.likes}
+        likesArray={post ? post.likes : []}
       />
       <div className="d-flex justify-content-between">
         <div>
@@ -284,6 +284,7 @@ function SinglePost({ post, index, userId }) {
           </div>
         )}
       </div>
+      {post.likes.length === 0 && <div className="pt-1 pb-1"></div>}
       {post.likes.length > 0 && (
         <div
           style={
@@ -353,6 +354,7 @@ function SinglePost({ post, index, userId }) {
                   <SingleComment
                     key={index}
                     el={el}
+                    post={post}
                     index={index}
                     arrayLength={post.comments.length}
                   />
@@ -363,6 +365,7 @@ function SinglePost({ post, index, userId }) {
                   <SingleComment
                     key={index}
                     el={el}
+                    post={post}
                     index={index}
                     arrayLength={post.comments.length}
                   />
