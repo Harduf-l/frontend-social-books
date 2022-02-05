@@ -45,7 +45,8 @@
     "age": "Age",
     "writingDescription": "I write...",
     "freeText": "About me",
-    "categoryInstructions": "*Choose at least one"
+    "categoryInstructions": "*Choose at least one",
+    "choose a tag": "Choose a tag"
   },
   "genres": {
     "favorite": "Favorite genres",
@@ -141,5 +142,8 @@
     "month10": "October",
     "month11": "November",
     "month12": "December"
+  },
+  "admin": {
+    "adming area": "Admin portal"
   }
 }

@@ -51,7 +51,7 @@ function BookModal({ open, handleClose, chosenBookData, loading }) {
                 style={{
                   width: 250,
                   maxHeight: 200,
-                  overflowY: "scroll",
+                  overflowY: "auto",
                 }}
               >
                 {!loading && (

@@ -381,7 +381,7 @@ function SinglePost({ post, index, userId }) {
 
             paddingTop: 5,
             textAlign: "center",
-            color: "#888888",
+            color: "#555555",
             fontSize: 12,
             borderTop: "1px #d8d8d8 solid",
           }}

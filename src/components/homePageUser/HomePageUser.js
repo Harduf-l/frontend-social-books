@@ -55,6 +55,11 @@ function HomePageUser() {
   };
 
   const handleTextAreaChange = (event) => {
+    if (!event.target.value) {
+      setPostError(false);
+      setUserContentTag("");
+    }
+
     const textareaLineHeight = 24;
 
     const previousRows = event.target.rows;
@@ -93,6 +98,19 @@ function HomePageUser() {
     );
     setSingleBookData({ ...book, ...bookData.data });
     setLoading(false);
+  };
+
+  const getAdminData = () => {
+    axios
+      .post(`${process.env.REACT_APP_SERVER_URL}admin/get-data`, {
+        token: localStorage.getItem("token"),
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
   };
 
   const logOutFunction = () => {
@@ -254,8 +272,8 @@ function HomePageUser() {
                 </select>
               </div>
               {postError && (
-                <div className="m-2" style={{ fontSize: 12, color: "brown" }}>
-                  יש לבחור תגית
+                <div className="m-2" style={{ fontSize: 12, color: "red" }}>
+                  {t("form.choose a tag")}
                 </div>
               )}
             </div>
@@ -279,6 +297,20 @@ function HomePageUser() {
         className="col-12 col-lg-3 pt-3 pb-3"
         style={{ paddingInlineStart: 30, paddingInlineEnd: 30 }}
       >
+        {store.userDetails.email === process.env.REACT_APP_MANAGER_EMAIL && (
+          <div
+            style={{
+              marginInlineStart: 10,
+              fontSize: 12,
+              paddingTop: 7,
+              textDecoration: "underline",
+            }}
+            role={"button"}
+            onClick={getAdminData}
+          >
+            {t("admin.adming area")}
+          </div>
+        )}
         <div className={styles.miniHeadingItalic}>
           {t("profile.books you may like")}...
           <div style={{ height: 10 }}></div>

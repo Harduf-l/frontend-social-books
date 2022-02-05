@@ -45,7 +45,8 @@
     "age": "גיל",
     "writingDescription": "אני כותב/ת...",
     "freeText": "קצת עליי",
-    "categoryInstructions": "*יש לבחור לפחות אחד"
+    "categoryInstructions": "*יש לבחור לפחות אחד",
+    "choose a tag": "יש לבחור תגית"
   },
   "genres": {
     "favorite": "ז'אנרים מועדפים",
@@ -141,5 +142,8 @@
     "month10": "באוקטובר",
     "month11": "בנובמבר",
     "month12": "בדצמבר"
+  },
+  "admin": {
+    "adming area": "כניסת מנהל"
   }
 }

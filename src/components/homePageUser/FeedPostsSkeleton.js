@@ -10,7 +10,7 @@ function FeedPostsSkeleton() {
           <Skeleton
             key={el}
             className={`mt-4 p-2`}
-            style={{ height: 200 }}
+            style={{ height: 300 }}
           ></Skeleton>
         );
       })}
