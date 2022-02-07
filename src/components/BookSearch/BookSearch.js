@@ -15,60 +15,60 @@ function BookSearch() {
   const [open, setOpen] = useState(false);
   const { t } = useTranslation();
 
-  useEffect(() => {
-    setBooksData([]);
-  }, [searchParams]);
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // useEffect(() => {
+  //   setBooksData([]);
+  // }, [searchParams]);
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
 
   const openModalWithDetails = (book) => {
-    const { bookId } = book;
-    setChosenBookData({});
-    setSingleBookLoading(true);
-    setOpen(true);
-    axios
-      .get(
-        `${process.env.REACT_APP_SERVER_URL}books/get-single-book-data?bookId=${bookId}`
-      )
-      .then((res) => {
-        setChosenBookData({ ...book, ...res.data });
-
-        setSingleBookLoading(false);
-      })
-      .catch((err) => {
-        setSingleBookLoading(false);
-        console.log(err.response);
-      });
+    // const { bookId } = book;
+    // setChosenBookData({});
+    // setSingleBookLoading(true);
+    // setOpen(true);
+    // axios
+    //   .get(
+    //     `${process.env.REACT_APP_SERVER_URL}books/get-single-book-data?bookId=${bookId}`
+    //   )
+    //   .then((res) => {
+    //     setChosenBookData({ ...book, ...res.data });
+    //     setSingleBookLoading(false);
+    //   })
+    //   .catch((err) => {
+    //     setSingleBookLoading(false);
+    //     console.log(err.response);
+    //   });
   };
 
   useEffect(() => {
-    setLoading(true);
-    const wordSearched = searchParams.get("search");
-    axios
-      .get(
-        `${process.env.REACT_APP_SERVER_URL}books/get-book-list-data?search=${wordSearched}`
-      )
-      .then((res) => {
-        setLoading(false);
-        setBooksData(res.data);
-      })
-      .catch((err) => {
-        setLoading(false);
-        console.log(err.response);
-      });
+    // setLoading(true);
+    // const wordSearched = searchParams.get("search");
+    // axios
+    //   .get(
+    //     `${process.env.REACT_APP_SERVER_URL}books/get-book-list-data?search=${wordSearched}`
+    //   )
+    //   .then((res) => {
+    //     setLoading(false);
+    //     setBooksData(res.data);
+    //   })
+    //   .catch((err) => {
+    //     setLoading(false);
+    //     console.log(err.response);
+    //   });
   }, [searchParams]);
 
   if (loading) return <div>{t("loading")}</div>;
 
   return (
     <div className="d-flex flex-wrap mt-4 mb-4">
-      <BookModal
+      {/* commenting out scraping part //////////////////////////////////}
+      {/* <BookModal
         open={open}
         handleClose={handleClose}
         chosenBookData={chosenBookData}
         loading={singleBookLoading}
-      />
+      /> */}
       <div
         className="col-12 col-md-9 mt-3"
         style={{ paddingInlineStart: 20, paddingInlineEnd: 20 }}
@@ -93,7 +93,8 @@ function BookSearch() {
         className="col-12 col-md-3"
         style={{ maxHeight: 500, overflowY: "auto" }}
       >
-        {booksData.map((book) => {
+        {/* commeting out scraping part................/////////////////...}
+        {/* {booksData.map((book) => {
           return (
             <div
               key={book.bookId}
@@ -164,7 +165,7 @@ function BookSearch() {
               </div>
             </div>
           );
-        })}
+        })} */}
       </div>
     </div>
   );

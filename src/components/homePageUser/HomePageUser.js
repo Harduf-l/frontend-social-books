@@ -311,7 +311,9 @@ function HomePageUser() {
             {t("admin.adming area")}
           </div>
         )}
-        <div className={styles.miniHeadingItalic}>
+
+        {/*commenting out scraping part ///////////////////////////////}
+        {/* <div className={styles.miniHeadingItalic}>
           {t("profile.books you may like")}...
           <div style={{ height: 10 }}></div>
           {booksRecommendation &&
@@ -327,8 +329,8 @@ function HomePageUser() {
                 </div>
               );
             })}
-        </div>
-        <div className="pt-3">
+        </div> */}
+        <div className="">
           <p className={styles.miniHeadingItalic}>
             {t("profile.book lovers")}...
           </p>
