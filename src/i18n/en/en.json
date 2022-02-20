@@ -120,7 +120,8 @@
     "messages not read": "Messages were not read",
     "online": "online",
     "offline": "offline",
-    "typing": " is typing..."
+    "typing": " is typing...",
+    "empty chat box": "Your chat box is empty. Start interacting with other members."
   },
   "bookCard": {
     "add to book list": "Add to reading list",
@@ -145,5 +146,8 @@
   },
   "admin": {
     "adming area": "Admin portal"
+  },
+  "groups": {
+    "back to group page": "Back to groups page"
   }
 }

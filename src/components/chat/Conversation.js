@@ -67,6 +67,18 @@ function Conversation({
       </div>
 
       <div className="d-flex flex-column-reverse">
+        {filteredSearch.length === 0 && (
+          <p
+            style={{
+              marginInlineStart: 10,
+              paddingTop: 10,
+              width: "80%",
+              margin: "0 auto",
+            }}
+          >
+            {t("chat.empty chat box")}
+          </p>
+        )}
         {filteredSearch &&
           filteredSearch.length > 0 &&
           filteredSearch.map((c, index) => {

@@ -9,6 +9,7 @@ import UserProfilePage from "../src/components/profilePage/UserPage";
 import NavBar from "../src/components/layout/navbar/NavBar";
 import Chat from "../src/components/chat/Chat";
 import Groups from "../src/components/groups/Groups";
+import SingleGroup from "../src/components/groups/SingleGroup";
 import Events from "../src/components/events/Events";
 
 import BookSearch from "../src/components/BookSearch/BookSearch";
@@ -205,6 +206,10 @@ function App() {
             element={<RouteWrapper component={UserProfilePage} />}
           />
           <Route path="/groups" element={<RouteWrapper component={Groups} />} />
+          <Route
+            path="/groups/:id"
+            element={<RouteWrapper component={SingleGroup} />}
+          />
           <Route path="/events" element={<RouteWrapper component={Events} />} />
 
           <Route

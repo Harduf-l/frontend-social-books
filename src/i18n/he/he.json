@@ -120,7 +120,8 @@
     "messages not read": "הודעות שלא נקראו",
     "online": "מחובר/ת",
     "offline": "לא מחובר/ת",
-    "typing": " מקליד/ה..."
+    "typing": " מקליד/ה...",
+    "empty chat box": "נראה שעמוד הצ'אט שלך ריק. התחל לשלוח הודעות לחברים אחרים באתר."
   },
   "bookCard": {
     "add to book list": "הוספ/י לרשימת קריאה",
@@ -145,5 +146,8 @@
   },
   "admin": {
     "adming area": "כניסת מנהל"
+  },
+  "groups": {
+    "back to group page": "חזור לדף הקבוצות"
   }
 }
