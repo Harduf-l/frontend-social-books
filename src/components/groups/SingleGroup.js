@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import bookDefaultPic from "../../images/book-default.jpg";
+import Skeleton from "react-loading-skeleton";
 
 function SingleGroup() {
   let params = useParams();
@@ -71,19 +72,26 @@ function SingleGroup() {
         style={{ position: "relative", bottom: windowWidth > 470 ? 65 : 40 }}
       >
         <div>
-          <img
-            style={{
-              height: 140,
-              width: 140,
-              borderRadius: "50%",
+          {chosenGroupData.name ? (
+            <img
+              style={{
+                height: 140,
+                width: 140,
+                borderRadius: "50%",
 
-              objectFit: "cover",
-            }}
-            src={
-              chosenGroupData.picture ? chosenGroupData.picture : bookDefaultPic
-            }
-            alt=""
-          />
+                objectFit: "cover",
+              }}
+              src={
+                chosenGroupData.picture
+                  ? chosenGroupData.picture
+                  : bookDefaultPic
+              }
+              alt=""
+            />
+          ) : (
+            <Skeleton height={140} width={140} borderRadius={70} />
+          )}
+
           <div
             style={{
               textAlign: "center",

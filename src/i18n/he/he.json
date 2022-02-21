@@ -148,6 +148,8 @@
     "adming area": "כניסת מנהל"
   },
   "groups": {
-    "back to group page": "חזור לדף הקבוצות"
+    "back to group page": "חזור לדף הקבוצות",
+    "members in this group": "חברים בקבוצה",
+    "posts in this group": "פוסטים נכתבו"
   }
 }

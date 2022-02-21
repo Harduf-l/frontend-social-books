@@ -148,6 +148,8 @@
     "adming area": "Admin portal"
   },
   "groups": {
-    "back to group page": "Back to groups page"
+    "back to group page": "Back to groups page",
+    "members in this group": "members in this group",
+    "posts in this group": "posts were written"
   }
 }

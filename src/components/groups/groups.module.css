@@ -1,1 +1,14 @@
+.groupCardPicture {
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
+}
 
+.miniCardText {
+  font-size: 12px;
+}
+
+.cardGroupName {
+  font-size: 14px;
+  font-weight: 400;
+}
