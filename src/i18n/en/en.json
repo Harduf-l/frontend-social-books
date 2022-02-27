@@ -150,6 +150,9 @@
   "groups": {
     "back to group page": "Back to groups page",
     "members in this group": "members in this group",
-    "posts in this group": "posts were written"
+    "posts in this group": "posts were written",
+    "follow": "Follow",
+    "no posts yet": "There are no posts yet.",
+    "add a post": "Add a post"
   }
 }

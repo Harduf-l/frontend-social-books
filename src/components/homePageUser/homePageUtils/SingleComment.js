@@ -200,7 +200,7 @@ const SingleComment = ({ el, index, arrayLength, post, stopReucurstion }) => {
                     ? "btn btn-sm btn-light disabled"
                     : "btn btn-sm btn-light "
                 }
-                style={{ backgroundColor: "#cccccc" }}
+                style={{ backgroundColor: "#cccccc", fontSize: 12 }}
                 onClick={sendMiniPostComment}
               >
                 {loadingAddComment && (

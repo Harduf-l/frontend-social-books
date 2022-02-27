@@ -4,6 +4,7 @@ import styles from "./groups.module.css";
 function GroupsSkeleton() {
   return (
     <div>
+      <Skeleton height={40} width={250} className="mb-3"></Skeleton>
       {[1, 2, 3, 4, 5, 6].map((el) => {
         return (
           <div key={el} className="d-flex flex-wrap m-1">

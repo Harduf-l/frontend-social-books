@@ -150,6 +150,9 @@
   "groups": {
     "back to group page": "חזור לדף הקבוצות",
     "members in this group": "חברים בקבוצה",
-    "posts in this group": "פוסטים נכתבו"
+    "posts in this group": "פוסטים נכתבו",
+    "follow": "עקוב",
+    "no posts yet": "נראה שעוד לא נכתבו פוסטים בקבוצה זו.",
+    "add a post": "הוסף פוסט"
   }
 }

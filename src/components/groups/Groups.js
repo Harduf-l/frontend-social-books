@@ -73,7 +73,11 @@ function Groups() {
           !loading &&
           groupsList.map((el) => {
             return (
-              <div key={el._id} className="d-flex flex-wrap m-1">
+              <div
+                key={el._id}
+                className="d-flex flex-wrap m-1 p-2"
+                style={{ backgroundColor: "#fafafa", borderRadius: 10 }}
+              >
                 <div>
                   <img
                     onClick={() => navigate(`/groups/${el._id}`)}
