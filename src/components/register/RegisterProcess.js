@@ -121,11 +121,11 @@ function RegisterProcess() {
               friends: response.data.suggestedUsers,
               booksRecommendations: response.data.recommendationBookArray,
               myPendingConnections: [],
-              myConversations: [],
+              myConversations: response.data.welcomeMessage,
               numberOfUnSeenMessages: 0,
             },
           });
-          navigate(`/`);
+          window.location.href = "/";
         }
         setLoadingRegistration(false);
       } catch (err) {
