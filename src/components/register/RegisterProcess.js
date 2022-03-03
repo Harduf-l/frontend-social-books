@@ -114,17 +114,20 @@ function RegisterProcess() {
           }
         } else {
           localStorage.setItem("token", response.data.token);
-          dispatch({
-            type: "login",
-            payload: {
-              userDeatils: response.data.userDetails,
-              friends: response.data.suggestedUsers,
-              booksRecommendations: response.data.recommendationBookArray,
-              myPendingConnections: [],
-              myConversations: response.data.welcomeMessage,
-              numberOfUnSeenMessages: 0,
-            },
-          });
+
+          // suppouse to work without login dispatch, because we refresh the page
+
+          // dispatch({
+          //   type: "login",
+          //   payload: {
+          //     userDeatils: response.data.userDetails,
+          //     friends: response.data.suggestedUsers,
+          //     booksRecommendations: response.data.recommendationBookArray,
+          //     myPendingConnections: [],
+          //     myConversations: response.data.welcomeMessage,
+          //     numberOfUnSeenMessages: 0,
+          //   },
+          // });
           window.location.href = "/";
         }
         setLoadingRegistration(false);

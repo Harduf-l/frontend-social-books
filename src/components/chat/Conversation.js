@@ -81,66 +81,73 @@ function Conversation({
         )}
         {filteredSearch &&
           filteredSearch.length > 0 &&
-          filteredSearch.map((c, index) => {
-            return (
-              <div
-                role="button"
-                key={c._id}
-                onClick={() => removeCurrentAndNavigate(c)}
-                className={`d-flex justify-content-around pt-2 pb-2 ${styles.borderBottomProfile}`}
-                style={chosen === c._id ? { backgroundColor: "#e6e6e6" } : {}}
-              >
-                <div style={{ width: 133 }}>
-                  <div style={{ height: 50 }}>
-                    <div style={{ fontSize: 14, fontWeight: 500 }}>
-                      {c.members[0].username}
+          filteredSearch
+            .filter((c) => {
+              if (!c.members[0]) {
+                return false;
+              }
+              return true;
+            })
+            .map((c, index) => {
+              return (
+                <div
+                  role="button"
+                  key={c._id}
+                  onClick={() => removeCurrentAndNavigate(c)}
+                  className={`d-flex justify-content-around pt-2 pb-2 ${styles.borderBottomProfile}`}
+                  style={chosen === c._id ? { backgroundColor: "#e6e6e6" } : {}}
+                >
+                  <div style={{ width: 133 }}>
+                    <div style={{ height: 50 }}>
+                      <div style={{ fontSize: 14, fontWeight: 500 }}>
+                        {c.members[0].username}
+                      </div>
+                      <div className="mt-1 d-flex align-items-center">
+                        <div
+                          className={
+                            onlineUsersMap[c.members[0]._id]
+                              ? `${styles.onlineSignOn} ${styles.onlineSign}`
+                              : `${styles.onlineSignOff} ${styles.onlineSign}`
+                          }
+                        ></div>
+                        {onlineUsersMap[c.members[0]._id] ? (
+                          <div style={{ fontSize: 12, marginInlineStart: 5 }}>
+                            {t("chat.online")}
+                          </div>
+                        ) : (
+                          <div style={{ fontSize: 12, marginInlineStart: 5 }}>
+                            {t("chat.offline")}
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <div className="mt-1 d-flex align-items-center">
-                      <div
-                        className={
-                          onlineUsersMap[c.members[0]._id]
-                            ? `${styles.onlineSignOn} ${styles.onlineSign}`
-                            : `${styles.onlineSignOff} ${styles.onlineSign}`
-                        }
-                      ></div>
-                      {onlineUsersMap[c.members[0]._id] ? (
-                        <div style={{ fontSize: 12, marginInlineStart: 5 }}>
-                          {t("chat.online")}
-                        </div>
-                      ) : (
-                        <div style={{ fontSize: 12, marginInlineStart: 5 }}>
-                          {t("chat.offline")}
-                        </div>
-                      )}
-                    </div>
+                    {c.shouldSee.personId === userId && (
+                      <p
+                        style={{
+                          fontSize: 11,
+                          color: "#6d6d6d",
+                          fontStyle: "italic",
+                        }}
+                      >
+                        {c.shouldSee.count} {t("chat.messages not read")}
+                      </p>
+                    )}
                   </div>
-                  {c.shouldSee.personId === userId && (
-                    <p
-                      style={{
-                        fontSize: 11,
-                        color: "#6d6d6d",
-                        fontStyle: "italic",
-                      }}
-                    >
-                      {c.shouldSee.count} {t("chat.messages not read")}
-                    </p>
-                  )}
-                </div>
 
-                <div style={{ position: "relative" }}>
-                  <img
-                    className={styles.profilePicInChat}
-                    src={
-                      c.members[0].picture
-                        ? c.members[0].picture
-                        : defaultPicture
-                    }
-                    alt=""
-                  />
+                  <div style={{ position: "relative" }}>
+                    <img
+                      className={styles.profilePicInChat}
+                      src={
+                        c.members[0].picture
+                          ? c.members[0].picture
+                          : defaultPicture
+                      }
+                      alt=""
+                    />
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
       </div>
     </div>
   );

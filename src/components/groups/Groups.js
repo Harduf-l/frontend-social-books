@@ -40,7 +40,6 @@ function Groups() {
   }, []);
 
   useEffect(() => {
-    console.log("here");
     if (!searchWord) {
       setGroupsList(originialGroupList);
       return;
