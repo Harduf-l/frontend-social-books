@@ -7,8 +7,9 @@ import axios from "axios";
 import { storeContext } from "../../../context/store";
 import { Link } from "react-router-dom";
 import LikesModal from "./likesModal";
+import reactStringReplace from "react-string-replace";
 
-function SinglePost({ post, index, userId }) {
+function SinglePost({ post, index, userId, searchedWord }) {
   const { dispatch, store } = useContext(storeContext);
   const { t, i18n } = useTranslation();
   const currentDir = i18n.dir();
@@ -27,6 +28,20 @@ function SinglePost({ post, index, userId }) {
 
   const hideLikesModal = () => {
     setShowLikesModal(false);
+  };
+
+  const GetMarkeredContent = ({ postContent }) => {
+    let newString = reactStringReplace(
+      postContent,
+      searchedWord,
+      (match, i) => (
+        <span key={i} style={{ backgroundColor: "yellow" }}>
+          {match}
+        </span>
+      )
+    );
+
+    return newString;
   };
 
   const likePost = async () => {
@@ -223,8 +238,15 @@ function SinglePost({ post, index, userId }) {
       <div
         style={{ fontSize: 13 }}
         className={`pt-3 pb-4 ${styles.bottomSeperator}`}
+        dir="auto"
       >
-        {post.postContent}
+        {searchedWord ? (
+          <span>
+            <GetMarkeredContent postContent={post.postContent} />
+          </span>
+        ) : (
+          post.postContent
+        )}
       </div>
 
       <div className="d-flex justify-content-between mt-3">
@@ -312,6 +334,7 @@ function SinglePost({ post, index, userId }) {
       {editMode && (
         <div className="mt-2">
           <textarea
+            dir="auto"
             rows={textAreaRows ? textAreaRows : 2}
             value={userContent ? userContent : ""}
             onChange={(e) => handleTextAreaChange(e, post._id)}
@@ -352,7 +375,7 @@ function SinglePost({ post, index, userId }) {
               if (index <= 1 && !showCommentsMode) {
                 return (
                   <SingleComment
-                    key={index}
+                    key={el.createdAt}
                     el={el}
                     post={post}
                     index={index}

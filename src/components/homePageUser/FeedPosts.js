@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import SingleComment from "./homePageUtils/SingleComment";
 import SinglePost from "./homePageUtils/SinglePost";
 
-function FeedPosts({ postsToShow, userId }) {
+function FeedPosts({ postsToShow, userId, searchedWord }) {
   return (
     <div className="mt-3">
       {postsToShow &&
@@ -15,6 +15,7 @@ function FeedPosts({ postsToShow, userId }) {
           .map((post, index) => {
             return (
               <SinglePost
+                searchedWord={searchedWord}
                 key={index}
                 post={post}
                 index={index}

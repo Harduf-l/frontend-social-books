@@ -142,7 +142,7 @@ const SingleComment = ({ el, index, arrayLength, post, stopReucurstion }) => {
               </div>
             </div>
 
-            <div> {el.commentContent}</div>
+            <div dir="auto"> {el.commentContent}</div>
           </div>
           {!stopReucurstion && (
             <div
@@ -187,6 +187,7 @@ const SingleComment = ({ el, index, arrayLength, post, stopReucurstion }) => {
             style={{ width: "90%", marginInlineStart: 5 }}
           >
             <textarea
+              dir="auto"
               rows={textAreaRows ? textAreaRows : 2}
               value={userContent ? userContent : ""}
               onChange={(e) => handleTextAreaChange(e)}
