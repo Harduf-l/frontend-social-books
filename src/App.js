@@ -25,18 +25,6 @@ function App() {
   document.body.dir = i18n.dir();
   const { store, dispatch } = useContext(storeContext);
   let socket = useRef("");
-  // useEffect(() => {
-  //   var lastTime = new Date().getTime();
-
-  //   setInterval(function () {
-  //     var currentTime = new Date().getTime();
-  //     if (currentTime > lastTime + 2000 * 2) {
-  //       // ignore small delays
-  //       window.location.reload();
-  //     }
-  //     lastTime = currentTime;
-  //   }, 2000);
-  // }, []);
 
   useEffect(() => {
     if (!store.userDetails._id) return;
@@ -207,6 +195,10 @@ function App() {
           />
           <Route path="/groups" element={<RouteWrapper component={Groups} />} />
           <Route
+            path="/bookSearch"
+            element={<RouteWrapper component={BookSearch} />}
+          />
+          <Route
             path="/groups/:id"
             element={<RouteWrapper component={SingleGroup} />}
           />
@@ -221,7 +213,7 @@ function App() {
               />
             }
           />
-          <Route path="/bookSearch" element={<BookSearch />} />
+
           <Route path="/register" element={<RegisterProcess />} />
         </Routes>
       </div>

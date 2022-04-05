@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Box } from "@mui/material";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const style = {
   position: "absolute",
@@ -16,6 +17,7 @@ const style = {
 };
 
 function EditPostModal({ open, handleClose, postData, savePostShowNew }) {
+  const { t } = useTranslation();
   const [currentPostValue, setPostValue] = useState(postData.postContent);
   const [textAreaRows, setTextAreaRows] = useState(2);
   const minRows = 2;
@@ -90,9 +92,13 @@ function EditPostModal({ open, handleClose, postData, savePostShowNew }) {
           className="textareaAutoExpand"
         ></textarea>
 
-        <div className="d-flex justify-content-between">
-          <button onClick={handleClose}>בטל</button>
-          <button onClick={saveNewEditedPost}>שמור</button>
+        <div className="d-flex justify-content-between mt-3">
+          <button className="btn btn-secondary" onClick={handleClose}>
+            {t("form.cancel")}
+          </button>
+          <button className="btn btn-secondary" onClick={saveNewEditedPost}>
+            {t("form.save")}
+          </button>
         </div>
       </Box>
     </Modal>
