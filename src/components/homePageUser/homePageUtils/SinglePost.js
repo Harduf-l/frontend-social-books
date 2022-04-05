@@ -8,17 +8,22 @@ import { storeContext } from "../../../context/store";
 import { Link } from "react-router-dom";
 import LikesModal from "./likesModal";
 import reactStringReplace from "react-string-replace";
+import EditPostModal from "../../modals/EditPostModal";
 
 function SinglePost({ post, index, userId, searchedWord }) {
   const { dispatch, store } = useContext(storeContext);
   const { t, i18n } = useTranslation();
   const currentDir = i18n.dir();
-  const [editMode, setEditMode] = React.useState(false);
+  const [commentMode, setCommentMode] = React.useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [showCommentsMode, setShowCommentsMode] = React.useState(false);
   const [textAreaRows, setTextAreaRows] = useState(2);
   const [userContent, setUserContent] = useState("");
   const [loadingAddComment, setLoadingAddComment] = useState(false);
   const [showLikesModal, setShowLikesModal] = useState(false);
+
+  const [currentPostValue, setPostValue] = useState(post.postContent);
+
   const minRows = 2;
   const maxRows = 6;
 
@@ -28,6 +33,11 @@ function SinglePost({ post, index, userId, searchedWord }) {
 
   const hideLikesModal = () => {
     setShowLikesModal(false);
+  };
+
+  const savePostShowNew = (newEditedPostContent) => {
+    setShowEditModal(false);
+    setPostValue(newEditedPostContent);
   };
 
   const GetMarkeredContent = ({ postContent }) => {
@@ -83,7 +93,7 @@ function SinglePost({ post, index, userId, searchedWord }) {
         newComment
       );
       setLoadingAddComment(false);
-      setEditMode(false);
+      setCommentMode(false);
       setUserContent("");
       setTextAreaRows(2);
 
@@ -93,7 +103,7 @@ function SinglePost({ post, index, userId, searchedWord }) {
       });
     } catch (err) {
       setLoadingAddComment(false);
-      setEditMode(false);
+      setCommentMode(false);
       setUserContent("");
       setTextAreaRows(2);
       console.log(err);
@@ -123,8 +133,8 @@ function SinglePost({ post, index, userId, searchedWord }) {
     setTextAreaRows(newTextAreaRows);
   };
 
-  const oppositeEditMode = () => {
-    setEditMode((prev) => !prev);
+  const oppositeCommentMode = () => {
+    setCommentMode((prev) => !prev);
   };
 
   const getOrganizedDate = (dateString) => {
@@ -205,6 +215,14 @@ function SinglePost({ post, index, userId, searchedWord }) {
         handleClose={hideLikesModal}
         likesArray={post ? post.likes : []}
       />
+      {showEditModal && (
+        <EditPostModal
+          open={showEditModal}
+          handleClose={() => setShowEditModal(false)}
+          postData={{ ...post, postContent: currentPostValue }}
+          savePostShowNew={savePostShowNew}
+        />
+      )}
       <div className="d-flex justify-content-between">
         <div>
           <Link to={`/user/${post.postWriter._id}`}>
@@ -242,10 +260,10 @@ function SinglePost({ post, index, userId, searchedWord }) {
       >
         {searchedWord ? (
           <span>
-            <GetMarkeredContent postContent={post.postContent} />
+            <GetMarkeredContent postContent={currentPostValue} />
           </span>
         ) : (
-          post.postContent
+          currentPostValue
         )}
       </div>
 
@@ -255,7 +273,7 @@ function SinglePost({ post, index, userId, searchedWord }) {
 
           <button
             className="btn btn-sm btn-light"
-            onClick={oppositeEditMode}
+            onClick={oppositeCommentMode}
             style={{
               marginInlineStart: 10,
               backgroundColor: "#cccccc",
@@ -293,7 +311,11 @@ function SinglePost({ post, index, userId, searchedWord }) {
               style={{ minWidth: "auto", fontSize: 13 }}
             >
               <li>
-                <div className="dropdown-item" role={"button"}>
+                <div
+                  onClick={() => setShowEditModal(true)}
+                  className="dropdown-item"
+                  role={"button"}
+                >
                   {t("homepage.edit")}
                 </div>
               </li>
@@ -310,7 +332,7 @@ function SinglePost({ post, index, userId, searchedWord }) {
       {post.likes.length > 0 && (
         <div
           style={
-            editMode
+            commentMode
               ? {
                   fontSize: 12,
                   color: "#0d0052",
@@ -331,7 +353,7 @@ function SinglePost({ post, index, userId, searchedWord }) {
           </span>
         </div>
       )}
-      {editMode && (
+      {commentMode && (
         <div className="mt-2">
           <textarea
             dir="auto"

@@ -35,10 +35,15 @@ function BookSearch() {
       });
   }, [searchParams]);
 
-  if (loading) return <div>{t("loading")}</div>;
+  if (loading)
+    return (
+      <div style={{ minHeight: "87vh" }} className="p-3">
+        {t("loading")}
+      </div>
+    );
 
   return (
-    <div className="d-flex flex-wrap mt-4 mb-4">
+    <div className="d-flex flex-wrap mt-4 mb-4" style={{ minHeight: "80vh" }}>
       <div
         className="col-12 col-md-9 mt-3"
         style={{ paddingInlineStart: 20, paddingInlineEnd: 20 }}
