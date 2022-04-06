@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useContext } from "react";
 import { Modal, Box } from "@mui/material";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import { textAreaChange } from "../utlis/utils";
+import { storeContext } from "../../context/store";
 
 const style = {
   position: "absolute",
@@ -17,34 +19,29 @@ const style = {
 };
 
 function EditPostModal({ open, handleClose, postData, savePostShowNew }) {
+  const { dispatch } = useContext(storeContext);
+
   const { t } = useTranslation();
   const [currentPostValue, setPostValue] = useState(postData.postContent);
   const [textAreaRows, setTextAreaRows] = useState(2);
-  const minRows = 2;
-  const maxRows = 16;
 
-  function handleTextAreaChange(eventTarget) {
-    const textareaLineHeight = 20;
-
-    const previousRows = eventTarget.rows;
-    eventTarget.rows = minRows; // reset number of rows in textarea
-
-    const currentRows = ~~(eventTarget.scrollHeight / textareaLineHeight);
-
-    if (currentRows === previousRows) {
-      eventTarget.rows = currentRows;
-    }
-
-    if (currentRows >= maxRows) {
-      eventTarget.rows = maxRows;
-      eventTarget.scrollTop = eventTarget.scrollHeight;
-    }
-
-    setPostValue(eventTarget.value);
-
-    let newTextAreaRows = currentRows < maxRows ? currentRows : maxRows;
-    setTextAreaRows(newTextAreaRows);
+  function setUserContentFunction(newContent) {
+    setPostValue(newContent);
   }
+
+  function setTextAreaRowsFunction(newRows) {
+    setTextAreaRows(newRows);
+  }
+
+  const handleTextAreaChange = useCallback((eventTarget) => {
+    textAreaChange(
+      eventTarget,
+      2,
+      12,
+      setUserContentFunction,
+      setTextAreaRowsFunction
+    );
+  }, []);
 
   const saveNewEditedPost = async () => {
     if (postData.postContent === currentPostValue) {
@@ -59,7 +56,11 @@ function EditPostModal({ open, handleClose, postData, savePostShowNew }) {
           token: localStorage.getItem("token"),
         });
 
-        savePostShowNew(currentPostValue);
+        dispatch({
+          type: "editOnePost",
+          payload: { postId: postData._id, newContent: currentPostValue },
+        });
+        handleClose();
       } catch (err) {
         console.log(err.response);
         handleClose();
@@ -73,7 +74,7 @@ function EditPostModal({ open, handleClose, postData, savePostShowNew }) {
       handleTextAreaChange(element);
       element.scrollTop = 0;
     }, 0);
-  }, []);
+  }, [handleTextAreaChange]);
 
   return (
     <Modal
@@ -86,7 +87,7 @@ function EditPostModal({ open, handleClose, postData, savePostShowNew }) {
         <textarea
           id="textAreaElement"
           dir="auto"
-          rows={textAreaRows}
+          rows={textAreaRows ? textAreaRows : 2}
           value={currentPostValue ? currentPostValue : ""}
           onChange={(e) => handleTextAreaChange(e.target)}
           className="textareaAutoExpand"

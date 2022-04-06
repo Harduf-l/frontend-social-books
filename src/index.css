@@ -177,3 +177,9 @@ body {
 .loadingHome {
   font-family: "Nunito", sans-serif;
 }
+
+#textAreaElement{
+
+  font-size: 14px;
+  line-height: 20px;
+}

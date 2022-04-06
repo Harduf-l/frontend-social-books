@@ -207,6 +207,19 @@ export const storeReducer = (state, action) => {
         ...state,
         feedPosts: newArrayOfPosts,
       };
+    case "removeOnePost":
+      let newArrayOfPosts6 = JSON.parse(JSON.stringify(state.feedPosts));
+
+      let indexToDelete4 = newArrayOfPosts6.findIndex((el) => {
+        return el._id === action.payload.postId;
+      });
+
+      newArrayOfPosts6.splice(indexToDelete4, 1);
+
+      return {
+        ...state,
+        feedPosts: newArrayOfPosts6,
+      };
     case "addLikeToPost":
       let newArrayOfPosts2 = JSON.parse(JSON.stringify(state.feedPosts));
 
@@ -220,23 +233,11 @@ export const storeReducer = (state, action) => {
         ...state,
         feedPosts: newArrayOfPosts2,
       };
-    case "removeOnePost":
-      let newArrayOfPosts4 = JSON.parse(JSON.stringify(state.feedPosts));
-
-      let indexToRemovePost = newArrayOfPosts4.findIndex((el) => {
-        return el._id === action.payload.postId;
-      });
-
-      newArrayOfPosts4.splice(indexToRemovePost, 1);
-
-      return {
-        ...state,
-        feedPosts: newArrayOfPosts4,
-      };
     case "editOnePost":
+      console.log("here!");
       let newArrayOfPosts5 = JSON.parse(JSON.stringify(state.feedPosts));
 
-      let indexToChangePost = newArrayOfPosts4.findIndex((el) => {
+      let indexToChangePost = newArrayOfPosts5.findIndex((el) => {
         return el._id === action.payload.postId;
       });
 

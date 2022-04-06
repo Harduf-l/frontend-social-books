@@ -10,6 +10,7 @@ import LikesModal from "./likesModal";
 import reactStringReplace from "react-string-replace";
 import EditPostModal from "../../modals/EditPostModal";
 import RemovePostModal from "../../modals/RemovePostModal";
+import { textAreaChange } from "../../utlis/utils";
 
 function SinglePost({ post, index, userId, searchedWord }) {
   const { dispatch, store } = useContext(storeContext);
@@ -17,14 +18,14 @@ function SinglePost({ post, index, userId, searchedWord }) {
   const currentDir = i18n.dir();
   const [commentMode, setCommentMode] = React.useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showRemoveModal, setShowRemoveModal] = useState(false);
   const [showCommentsMode, setShowCommentsMode] = React.useState(false);
   const [textAreaRows, setTextAreaRows] = useState(2);
   const [userContent, setUserContent] = useState("");
   const [loadingAddComment, setLoadingAddComment] = useState(false);
   const [showLikesModal, setShowLikesModal] = useState(false);
-  const [showRemoveModal, setShowRemoveModal] = useState(false);
-  const minRows = 2;
-  const maxRows = 6;
+
+  const [currentPostValue, setPostValue] = useState(post.postContent);
 
   const setShowComments = () => {
     setShowCommentsMode(true);
@@ -104,27 +105,22 @@ function SinglePost({ post, index, userId, searchedWord }) {
     }
   };
 
+  function setUserContentFunction(newContent) {
+    setUserContent(newContent);
+  }
+
+  function setTextAreaRowsFunction(newRows) {
+    setTextAreaRows(newRows);
+  }
+
   const handleTextAreaChange = (event, postId) => {
-    const textareaLineHeight = 20;
-
-    const previousRows = event.target.rows;
-    event.target.rows = minRows; // reset number of rows in textarea
-
-    const currentRows = ~~(event.target.scrollHeight / textareaLineHeight);
-
-    if (currentRows === previousRows) {
-      event.target.rows = currentRows;
-    }
-
-    if (currentRows >= maxRows) {
-      event.target.rows = maxRows;
-      event.target.scrollTop = event.target.scrollHeight;
-    }
-
-    setUserContent(event.target.value);
-
-    let newTextAreaRows = currentRows < maxRows ? currentRows : maxRows;
-    setTextAreaRows(newTextAreaRows);
+    textAreaChange(
+      event.target,
+      2,
+      6,
+      setUserContentFunction,
+      setTextAreaRowsFunction
+    );
   };
 
   const oppositeCommentMode = () => {
@@ -202,6 +198,7 @@ function SinglePost({ post, index, userId, searchedWord }) {
       return option1;
     }
   };
+
   return (
     <div key={index} className={`mt-4 p-2 ${styles.post}`}>
       <LikesModal
@@ -209,6 +206,7 @@ function SinglePost({ post, index, userId, searchedWord }) {
         handleClose={hideLikesModal}
         likesArray={post ? post.likes : []}
       />
+
       {showEditModal && (
         <EditPostModal
           open={showEditModal}
@@ -216,6 +214,7 @@ function SinglePost({ post, index, userId, searchedWord }) {
           postData={post}
         />
       )}
+
       <RemovePostModal
         open={showRemoveModal}
         handleClose={() => setShowRemoveModal(false)}

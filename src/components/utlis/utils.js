@@ -7,6 +7,35 @@ export const checkIfInputIsHebrew = (e) => {
   return false;
 };
 
+export const textAreaChange = (
+  eventTarget,
+  minRows,
+  maxRows,
+  setUserContent,
+  setTextAreaRows
+) => {
+  const textareaLineHeight = 20;
+
+  const previousRows = eventTarget.rows;
+  eventTarget.rows = minRows; // reset number of rows in textarea
+
+  const currentRows = ~~(eventTarget.scrollHeight / textareaLineHeight);
+
+  if (currentRows === previousRows) {
+    eventTarget.rows = currentRows;
+  }
+
+  if (currentRows >= maxRows) {
+    eventTarget.rows = maxRows;
+    eventTarget.scrollTop = eventTarget.scrollHeight;
+  }
+
+  setUserContent(eventTarget.value);
+
+  let newTextAreaRows = currentRows < maxRows ? currentRows : maxRows;
+  setTextAreaRows(newTextAreaRows);
+};
+
 export const calculateAge = (birthObject) => {
   let currentDate = new Date();
   const currentDateObject = {
