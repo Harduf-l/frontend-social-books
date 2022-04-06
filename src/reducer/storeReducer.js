@@ -220,6 +220,33 @@ export const storeReducer = (state, action) => {
         ...state,
         feedPosts: newArrayOfPosts2,
       };
+    case "removeOnePost":
+      let newArrayOfPosts4 = JSON.parse(JSON.stringify(state.feedPosts));
+
+      let indexToRemovePost = newArrayOfPosts4.findIndex((el) => {
+        return el._id === action.payload.postId;
+      });
+
+      newArrayOfPosts4.splice(indexToRemovePost, 1);
+
+      return {
+        ...state,
+        feedPosts: newArrayOfPosts4,
+      };
+    case "editOnePost":
+      let newArrayOfPosts5 = JSON.parse(JSON.stringify(state.feedPosts));
+
+      let indexToChangePost = newArrayOfPosts4.findIndex((el) => {
+        return el._id === action.payload.postId;
+      });
+
+      newArrayOfPosts5[indexToChangePost].postContent =
+        action.payload.newContent;
+
+      return {
+        ...state,
+        feedPosts: newArrayOfPosts5,
+      };
     case "removeLikeFromPost":
       let newArrayOfPosts3 = [...state.feedPosts];
 

@@ -46,7 +46,8 @@
     "writingDescription": "I write...",
     "freeText": "About me",
     "categoryInstructions": "*Choose at least one",
-    "choose a tag": "Choose a tag"
+    "choose a tag": "Choose a tag",
+    "are you sure?": "Are you sure?"
   },
   "genres": {
     "favorite": "Favorite genres",

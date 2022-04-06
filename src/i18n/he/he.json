@@ -46,7 +46,8 @@
     "writingDescription": "אני כותב/ת...",
     "freeText": "קצת עליי",
     "categoryInstructions": "*יש לבחור לפחות אחד",
-    "choose a tag": "יש לבחור תגית"
+    "choose a tag": "יש לבחור תגית",
+    "are you sure": "האם את/ה בטוח/ה?"
   },
   "genres": {
     "favorite": "ז'אנרים מועדפים",

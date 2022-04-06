@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import LikesModal from "./likesModal";
 import reactStringReplace from "react-string-replace";
 import EditPostModal from "../../modals/EditPostModal";
+import RemovePostModal from "../../modals/RemovePostModal";
 
 function SinglePost({ post, index, userId, searchedWord }) {
   const { dispatch, store } = useContext(storeContext);
@@ -21,9 +22,7 @@ function SinglePost({ post, index, userId, searchedWord }) {
   const [userContent, setUserContent] = useState("");
   const [loadingAddComment, setLoadingAddComment] = useState(false);
   const [showLikesModal, setShowLikesModal] = useState(false);
-
-  const [currentPostValue, setPostValue] = useState(post.postContent);
-
+  const [showRemoveModal, setShowRemoveModal] = useState(false);
   const minRows = 2;
   const maxRows = 6;
 
@@ -33,11 +32,6 @@ function SinglePost({ post, index, userId, searchedWord }) {
 
   const hideLikesModal = () => {
     setShowLikesModal(false);
-  };
-
-  const savePostShowNew = (newEditedPostContent) => {
-    setShowEditModal(false);
-    setPostValue(newEditedPostContent);
   };
 
   const GetMarkeredContent = ({ postContent }) => {
@@ -219,10 +213,14 @@ function SinglePost({ post, index, userId, searchedWord }) {
         <EditPostModal
           open={showEditModal}
           handleClose={() => setShowEditModal(false)}
-          postData={{ ...post, postContent: currentPostValue }}
-          savePostShowNew={savePostShowNew}
+          postData={post}
         />
       )}
+      <RemovePostModal
+        open={showRemoveModal}
+        handleClose={() => setShowRemoveModal(false)}
+        postData={post}
+      />
       <div className="d-flex justify-content-between">
         <div>
           <Link to={`/user/${post.postWriter._id}`}>
@@ -260,10 +258,10 @@ function SinglePost({ post, index, userId, searchedWord }) {
       >
         {searchedWord ? (
           <span>
-            <GetMarkeredContent postContent={currentPostValue} />
+            <GetMarkeredContent postContent={post.postContent} />
           </span>
         ) : (
-          currentPostValue
+          post.postContent
         )}
       </div>
 
@@ -320,7 +318,11 @@ function SinglePost({ post, index, userId, searchedWord }) {
                 </div>
               </li>
               <li>
-                <div className="dropdown-item" role={"button"}>
+                <div
+                  className="dropdown-item"
+                  role={"button"}
+                  onClick={() => setShowRemoveModal(true)}
+                >
                   {t("homepage.delete")}
                 </div>
               </li>
