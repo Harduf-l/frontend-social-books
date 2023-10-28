@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+      "plugins": [{ "name": "typescript-plugin-css-modules" }],
+      "jsx": "react-jsx",
+      "baseUrl": ".",
+      "paths": {
+        "@profilePage": [
+          "components/profilePage*"
+        ]
+    },
+  }
+}

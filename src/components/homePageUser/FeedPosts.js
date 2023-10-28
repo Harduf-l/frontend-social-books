@@ -16,7 +16,7 @@ function FeedPosts({ postsToShow, userId, searchedWord }) {
             return (
               <SinglePost
                 searchedWord={searchedWord}
-                key={index}
+                key={post._id}
                 post={post}
                 index={index}
                 userId={userId}

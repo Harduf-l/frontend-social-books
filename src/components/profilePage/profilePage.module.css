@@ -12,6 +12,25 @@
   padding: 5px;
   object-fit: cover;
   border: 2px solid #ddd;
+
+}
+
+
+.imageWithEdit {
+  text-align: center;
+  position: relative; 
+  width: 150px;
+  height: 200px; 
+}
+
+.userEditImage {
+  position: absolute;
+left: 0;
+bottom: 0 
+}
+
+.userEditImage:hover {
+  cursor: pointer;
 }
 
 .littleHeaderCard {

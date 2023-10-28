@@ -1,8 +1,20 @@
 import { useTranslation } from "react-i18next";
-import react from "react";
-import styles from "./profilePage.module.css";
+import { useState, useEffect } from "react";
 import { calculateAge } from "../utlis/utils";
+import EditUserDetailsModal from "../modals/EditUserDetailsModal";
+
+import styles from "./profilePage.module.css";
 import defaultProfilePicture from "../../images/plain.jpg";
+
+export const InfoBox = ({ translationDate, dataItself }) => {
+  return (
+    <div>
+      <span className={styles.littleHeaderCard}>{translationDate}</span>
+      <br />
+      <span className={styles.dataCard}>{dataItself}</span>
+    </div>
+  );
+};
 
 export const UserCard = ({
   currentUserPage,
@@ -13,23 +25,14 @@ export const UserCard = ({
   confirmFriendRequest,
 }) => {
   const { t } = useTranslation();
-  const [userAge, setuserAge] = react.useState(null);
+  const [userAge, setuserAge] = useState<number>(0);
+  const [showEditUserModal, setShowEditUserModal] = useState<boolean>(false);
 
-  react.useEffect(() => {
+  useEffect(() => {
     if (currentUserPage.birthday) {
       setuserAge(calculateAge(JSON.parse(currentUserPage.birthday)));
     }
   }, [currentUserPage, friendshipStatus]);
-
-  const InfoBox = ({ translationDate, dataItself }) => {
-    return (
-      <div>
-        <span className={styles.littleHeaderCard}>{t(translationDate)}</span>
-        <br />
-        <span className={styles.dataCard}>{dataItself}</span>
-      </div>
-    );
-  };
 
   return (
     <div className={styles.cardItself}>
@@ -43,25 +46,44 @@ export const UserCard = ({
           }
           alt=""
         />
+        {isItMe && (
+          <div
+            style={{ position: "relative" }}
+            onClick={() => setShowEditUserModal(true)}
+          >
+            <div className={styles.userEditImage}>
+              <i className="fa-regular fa-pen-to-square"></i>
+            </div>
+          </div>
+        )}
       </div>
 
+      <EditUserDetailsModal
+        open={showEditUserModal}
+        handleClose={() => setShowEditUserModal(false)}
+        userDetails={currentUserPage}
+      />
+      <div style={{ height: 20 }}></div>
+
       <InfoBox
-        translationDate={"form.name"}
+        translationDate={t("form.name")}
         dataItself={currentUserPage.username}
       />
 
-      {userAge && <InfoBox translationDate={"form.age"} dataItself={userAge} />}
+      {userAge && (
+        <InfoBox translationDate={t("form.age")} dataItself={userAge} />
+      )}
 
       {currentUserPage.city && (
         <InfoBox
-          translationDate={"form.city"}
+          translationDate={t("form.city")}
           dataItself={currentUserPage.city}
         />
       )}
 
       {currentUserPage.favoriteWriter && (
         <InfoBox
-          translationDate={"form.favorite writer"}
+          translationDate={t("form.favorite writer")}
           dataItself={currentUserPage.favoriteWriter}
         />
       )}
