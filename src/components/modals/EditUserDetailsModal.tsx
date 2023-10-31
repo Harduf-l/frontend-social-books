@@ -4,6 +4,8 @@ import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { textAreaChange } from "../utlis/utils";
 import { storeContext } from "../../context/store";
+import { InputFunction } from "../utlis/utils";
+import { UploadEditPicture } from "../register/uploadEditPicture";
 
 const style = {
   position: "absolute",
@@ -25,31 +27,29 @@ const EditUserDetailsModal = ({ userDetails, handleClose, open }) => {
   const [currentUserDetails, setUserDetails] = useState(userDetails);
   const [textAreaRows, setTextAreaRows] = useState(2);
 
-  const saveNewEditedPost = async () => {
+  const saveNewEditedUserDetails = async () => {
     if (userDetails === currentUserDetails) {
       handleClose();
     } else {
       // axios change value
-
-      try {
-        await axios.post(
-          `${process.env.REACT_APP_SERVER_URL}users/edit-user-data`,
-          {
-            name: currentUserDetails.name,
-            /////
-            token: localStorage.getItem("token"),
-          }
-        );
-
-        dispatch({
-          type: "editUserCard",
-          payload: { userId: 123, newContent: currentUserDetails },
-        });
-        handleClose();
-      } catch (err) {
-        console.log(err.response);
-        handleClose();
-      }
+      // try {
+      //   await axios.post(
+      //     `${process.env.REACT_APP_SERVER_URL}users/edit-user-data`,
+      //     {
+      //       name: currentUserDetails.name,
+      //       /////
+      //       token: localStorage.getItem("token"),
+      //     }
+      //   );
+      //   dispatch({
+      //     type: "editUserCard",
+      //     payload: { userId: 123, newContent: currentUserDetails },
+      //   });
+      //   handleClose();
+      // } catch (err) {
+      //   console.log(err.response);
+      //   handleClose();
+      // }
     }
   };
 
@@ -61,7 +61,24 @@ const EditUserDetailsModal = ({ userDetails, handleClose, open }) => {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <div>שינוי פרטים - בטיפול. האופציה תתווסף בקרוב</div>
+        <InputFunction
+          fieldName={"favorite writer"}
+          // stateValue={userDetails.}
+          // functionToSetField={setFavoriteWriterFunction}
+          type={"text"}
+        />
+
+        <div className="d-flex justify-content-between mt-3">
+          <button className="btn btn-secondary" onClick={handleClose}>
+            {t("form.cancel")}
+          </button>
+          <button
+            className="btn btn-secondary"
+            onClick={saveNewEditedUserDetails}
+          >
+            {t("form.save")}
+          </button>
+        </div>
       </Box>
     </Modal>
   );

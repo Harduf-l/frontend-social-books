@@ -1,7 +1,11 @@
+import axios from "axios";
 import { useTranslation } from "react-i18next";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { calculateAge } from "../utlis/utils";
 import EditUserDetailsModal from "../modals/EditUserDetailsModal";
+import { UploadEditPicture } from "../register/uploadEditPicture";
+import { pictureVariationEnum } from "../register/uploadEditPicture";
+import { storeContext, IUserDetails } from "../../context/store";
 
 import styles from "./profilePage.module.css";
 import defaultProfilePicture from "../../images/plain.jpg";
@@ -24,6 +28,8 @@ export const UserCard = ({
   friendshipStatus,
   confirmFriendRequest,
 }) => {
+  const { dispatch } = useContext(storeContext);
+
   const { t } = useTranslation();
   const [userAge, setuserAge] = useState<number>(0);
   const [showEditUserModal, setShowEditUserModal] = useState<boolean>(false);
@@ -34,35 +40,60 @@ export const UserCard = ({
     }
   }, [currentUserPage, friendshipStatus]);
 
+  const updateLocalPictureAndServer = async (imgValue) => {
+    const formerPictureToDelete = currentUserPage.picture;
+    // update locally
+    dispatch({
+      type: "updateProfilePicture",
+      payload: { newImgSrc: imgValue },
+    });
+
+    //update server
+    try {
+      await axios.post(
+        `${process.env.REACT_APP_SERVER_URL}users/update-user-photo`,
+        {
+          imgValue: imgValue,
+          formerPicture: formerPictureToDelete,
+          userEmail: currentUserPage.email,
+        }
+      );
+    } catch (err) {
+      console.log("server failed with error ", err);
+    }
+  };
+
   return (
     <div className={styles.cardItself}>
-      <div className="text-center">
-        <img
-          className={styles.userImage}
-          src={
-            currentUserPage.picture
-              ? currentUserPage.picture
-              : defaultProfilePicture
-          }
-          alt=""
-        />
-        {isItMe && (
-          <div
-            style={{ position: "relative" }}
-            onClick={() => setShowEditUserModal(true)}
-          >
-            <div className={styles.userEditImage}>
-              <i className="fa-regular fa-pen-to-square"></i>
-            </div>
-          </div>
-        )}
-      </div>
+      <div className="text-center"></div>
 
       <EditUserDetailsModal
         open={showEditUserModal}
         handleClose={() => setShowEditUserModal(false)}
         userDetails={currentUserPage}
       />
+
+      {isItMe ? (
+        <UploadEditPicture
+          setImageFileFunction={updateLocalPictureAndServer}
+          pictureVariation={pictureVariationEnum.editing}
+          imgSrc={
+            currentUserPage.picture
+              ? currentUserPage.picture
+              : defaultProfilePicture
+          }
+        />
+      ) : (
+        <UploadEditPicture
+          pictureVariation={pictureVariationEnum.plain}
+          imgSrc={
+            currentUserPage.picture
+              ? currentUserPage.picture
+              : defaultProfilePicture
+          }
+        />
+      )}
+
       <div style={{ height: 20 }}></div>
 
       <InfoBox

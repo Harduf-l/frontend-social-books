@@ -14,7 +14,7 @@ import {
   InputAutoCompleteCombined,
 } from "../../components/utlis/utils";
 import BookShelves from "../../images/bookshelves.jpg";
-import { UploadEditPicture } from "./uploadEditPicture";
+import { UploadEditPicture, pictureVariationEnum } from "./uploadEditPicture";
 
 function RegisterProcess() {
   const BACKCOLOR = "#f3f3f3";
@@ -544,7 +544,10 @@ function RegisterProcess() {
             </p>
           </div>
 
-          <UploadEditPicture setImageFileFunction={setImageFileFunction} />
+          <UploadEditPicture
+            pictureVariation={pictureVariationEnum.registration}
+            setImageFileFunction={setImageFileFunction}
+          />
         </div>
 
         <div className="d-flex justify-content-center flex-wrap mt-4 pb-3 ">

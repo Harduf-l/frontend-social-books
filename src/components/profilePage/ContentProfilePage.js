@@ -24,7 +24,7 @@ function ContentProfilePage({
             <span className={styles.littleHeaderCard}>
               {t("form.freeText")}
             </span>
-            <p>{currentUserPage.freeText}</p>
+            <p style={{ whiteSpace: "pre-line" }}>{currentUserPage.freeText}</p>
           </div>
         )}
 

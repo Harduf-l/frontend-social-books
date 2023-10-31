@@ -1,3 +1,4 @@
+import { initalState } from "../context/store";
 export const storeReducer = (state, action) => {
   switch (action.type) {
     case "login":
@@ -12,6 +13,14 @@ export const storeReducer = (state, action) => {
         numberOfUnSeenMessages: action.payload.numberOfUnSeenMessages,
         initialLogin: true,
       };
+
+    case "updateProfilePicture":
+      const newUserDetails = {
+        ...state.userDetails,
+        picture: action.payload.newImgSrc,
+      };
+      return { ...state, userDetails: newUserDetails };
+
     case "changePendingFriendRequests":
       return {
         ...state,
@@ -281,7 +290,7 @@ export const storeReducer = (state, action) => {
       };
     case "logout":
       localStorage.removeItem("token");
-      return { ...state, isAuth: false, userDetails: [] };
+      return { ...initalState };
     default:
       return state;
   }
