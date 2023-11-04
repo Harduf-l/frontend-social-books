@@ -53,7 +53,7 @@ function UserPage() {
           <UserCard currentUserPage={store.userDetails} isItMe={true} />
         </div>
 
-        <div className="col-lg-9 col-md-6 col-12 pt-4 pt-md-0">
+        <div className="col-lg-9  col-12 pt-4 pt-lg-0">
           <ContentProfilePage
             currentUserPage={store.userDetails}
             approvedFriends={approvedFriends}

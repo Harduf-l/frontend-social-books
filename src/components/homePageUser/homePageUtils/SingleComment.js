@@ -224,18 +224,21 @@ const SingleComment = ({ el, index, arrayLength, post, stopReucurstion }) => {
           !stopReucurstion &&
           showMiniComments &&
           el.miniComments.length > 0 &&
-          el.miniComments.map((el, index) => {
-            return (
-              <SingleComment
-                key={index}
-                post={post}
-                el={el}
-                arrayLength={el.miniComments ? el.miniComments.length : 0}
-                index={index}
-                stopReucurstion={true}
-              />
-            );
-          })}
+          el.miniComments
+            .slice(0)
+            .reverse()
+            .map((el, index) => {
+              return (
+                <SingleComment
+                  key={index}
+                  post={post}
+                  el={el}
+                  arrayLength={el.miniComments ? el.miniComments.length : 0}
+                  index={index}
+                  stopReucurstion={true}
+                />
+              );
+            })}
       </div>
     </div>
   );

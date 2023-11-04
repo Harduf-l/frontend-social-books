@@ -7,6 +7,19 @@ export const checkIfInputIsHebrew = (e) => {
   return false;
 };
 
+export const compareTwoObjectAreEqual = (obj1, obj2) => {
+  if (Object.keys(obj1).length !== Object.keys(obj2).length) {
+    return false;
+    // we need to send new object, for sure they are not equal
+  }
+
+  for (let key of Object.keys(obj1)) {
+    if (!obj2[key]) return false;
+  }
+
+  return true;
+};
+
 export const textAreaChange = (
   eventTarget,
   minRows,

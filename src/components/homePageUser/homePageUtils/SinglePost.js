@@ -393,7 +393,7 @@ function SinglePost({ post, index, userId, searchedWord }) {
         <div>
           {post.comments
             .slice(0)
-            .reverse()
+
             .map((el, index) => {
               if (index <= 1 && !showCommentsMode) {
                 return (

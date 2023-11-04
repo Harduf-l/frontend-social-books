@@ -14,6 +14,7 @@
     "email": "Email",
     "password": "Password",
     "city": "City",
+    "city living": "City",
     "country": "Country",
     "birth date": "Birth of date",
     "login": "Login",
@@ -93,7 +94,8 @@
     "respond to friend request": "Confirm friend request",
     "my friends": "My friends:",
     "in my book list": "In my book list",
-    "last comments": "My last comments in discussion groups"
+    "last comments": "My last comments in discussion groups",
+    "edit details": "Edit details"
   },
   "navbar": {
     "profile": "Profile",

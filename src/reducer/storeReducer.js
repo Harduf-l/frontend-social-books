@@ -15,12 +15,19 @@ export const storeReducer = (state, action) => {
       };
 
     case "updateProfilePicture":
-      const newUserDetails = {
+      const DetailsWithRefreshedPicture = {
         ...state.userDetails,
         picture: action.payload.newImgSrc,
       };
-      return { ...state, userDetails: newUserDetails };
-
+      return { ...state, userDetails: DetailsWithRefreshedPicture };
+    case "updateBasicProfile":
+      const DetailsWithRefreshedData = {
+        ...state.userDetails,
+        favoriteWriter: action.payload.favoriteWriter,
+        genres: action.payload.genres,
+        city: action.payload.city,
+      };
+      return { ...state, userDetails: DetailsWithRefreshedData };
     case "changePendingFriendRequests":
       return {
         ...state,

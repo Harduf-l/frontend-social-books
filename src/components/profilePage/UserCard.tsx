@@ -66,11 +66,31 @@ export const UserCard = ({
   return (
     <div className={styles.cardItself}>
       <div className="text-center"></div>
-
+      {isItMe && (
+        <div
+          style={{
+            fontSize: 10,
+            color: "#f4b556",
+            textDecoration: "underline",
+            paddingBottom: 5,
+            display: "flex",
+            justifyContent: "end",
+            cursor: "pointer",
+          }}
+          onClick={() => setShowEditUserModal(true)}
+        >
+          {t("profile.edit details")}
+        </div>
+      )}
       <EditUserDetailsModal
         open={showEditUserModal}
         handleClose={() => setShowEditUserModal(false)}
-        userDetails={currentUserPage}
+        userDetails={{
+          city: currentUserPage.city,
+          favoriteWriter: currentUserPage.favoriteWriter,
+          genres: currentUserPage.genres,
+          email: currentUserPage.email,
+        }}
       />
 
       {isItMe ? (
