@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useState, useContext } from "react";
+import { useCallback, useEffect, useState, useContext } from "react";
 import { Modal, Box } from "@mui/material";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { textAreaChange } from "../utlis/utils";
 import { storeContext } from "../../context/store";
+import { LoadingSavingBtn } from "../utlis/sharedComponents";
 
 const style = {
   position: "absolute",
@@ -24,6 +25,7 @@ function EditPostModal({ open, handleClose, postData, savePostShowNew }) {
   const { t } = useTranslation();
   const [currentPostValue, setPostValue] = useState(postData.postContent);
   const [textAreaRows, setTextAreaRows] = useState(2);
+  const [isServerProcessing, setIsServerProcessing] = useState<boolean>(false);
 
   function setUserContentFunction(newContent) {
     setPostValue(newContent);
@@ -48,7 +50,7 @@ function EditPostModal({ open, handleClose, postData, savePostShowNew }) {
       handleClose();
     } else {
       // axios change value
-
+      setIsServerProcessing(true);
       try {
         await axios.post(`${process.env.REACT_APP_SERVER_URL}posts/edit-post`, {
           postId: postData._id,
@@ -60,9 +62,11 @@ function EditPostModal({ open, handleClose, postData, savePostShowNew }) {
           type: "editOnePost",
           payload: { postId: postData._id, newContent: currentPostValue },
         });
+        setIsServerProcessing(false);
         handleClose();
       } catch (err) {
         console.log(err.response);
+        setIsServerProcessing(false);
         handleClose();
       }
     }
@@ -97,9 +101,13 @@ function EditPostModal({ open, handleClose, postData, savePostShowNew }) {
           <button className="btn btn-secondary" onClick={handleClose}>
             {t("form.cancel")}
           </button>
-          <button className="btn btn-secondary" onClick={saveNewEditedPost}>
-            {t("form.save")}
-          </button>
+
+          <LoadingSavingBtn
+            isLoading={isServerProcessing}
+            savingFunction={saveNewEditedPost}
+            shallSendEvent={false}
+            textOnBtn={t("form.save")}
+          />
         </div>
       </Box>
     </Modal>

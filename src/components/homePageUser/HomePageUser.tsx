@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import { storeContext } from "../../context/store";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
@@ -8,6 +8,7 @@ import BookModal from "./bookModal";
 import defaultPicture from "../../images/plain.jpg";
 import FeedPostsSkeleton from "./FeedPostsSkeleton";
 import FriendsList from "./FriendsList";
+import { LoadingSavingBtn, btnOptions } from "../utlis/sharedComponents";
 
 function HomePageUser() {
   const { t, i18n } = useTranslation();
@@ -21,6 +22,8 @@ function HomePageUser() {
   const [postError, setPostError] = useState(false);
   const [textAreaRows, setTextAreaRows] = useState(2);
   const [loadingFeedPost, setLoadingFeedPost] = useState(true);
+
+  const [waitingForServer, isWaitingForServer] = useState<boolean>(false);
 
   const { username } = store.userDetails;
   const { booksRecommendation } = store;
@@ -128,6 +131,7 @@ function HomePageUser() {
       };
 
       try {
+        isWaitingForServer(true);
         const newPostCreated = await axios.post(
           `${process.env.REACT_APP_SERVER_URL}posts/add-post`,
           newPost
@@ -137,7 +141,9 @@ function HomePageUser() {
           type: "addPostToFeed",
           payload: { newPostCreated: newPostCreated.data },
         });
+        isWaitingForServer(false);
       } catch (err) {
+        isWaitingForServer(false);
         console.log(err);
       }
       setUserContent("");
@@ -279,9 +285,12 @@ function HomePageUser() {
             </div>
 
             <div>
-              <button onClick={addPersonalPost} className="btn btn-light">
-                {t("form.send")}
-              </button>
+              <LoadingSavingBtn
+                isLoading={waitingForServer}
+                savingFunction={addPersonalPost}
+                textOnBtn={t("form.send")}
+                btnStyle={btnOptions.light}
+              />
             </div>
           </div>
           {loadingFeedPost && <FeedPostsSkeleton />}

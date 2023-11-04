@@ -1,8 +1,14 @@
+export enum btnOptions {
+  "light" = "btn-light",
+  "secondary" = "btn-secondary",
+}
+
 interface IloadingSavingBtn {
   isLoading: boolean;
   savingFunction: (e: any) => void;
-  shallSendEvent: boolean;
+  shallSendEvent?: boolean;
   textOnBtn: any;
+  btnStyle?: btnOptions;
 }
 
 export const LoadingSavingBtn = ({
@@ -10,15 +16,14 @@ export const LoadingSavingBtn = ({
   savingFunction,
   shallSendEvent,
   textOnBtn,
+  btnStyle = btnOptions.secondary,
 }: IloadingSavingBtn) => {
   return (
     <button
       type="submit"
       onClick={shallSendEvent ? (e) => savingFunction(e) : savingFunction}
       className={
-        isLoading
-          ? "btn btn-mg btn-secondary disabled"
-          : "btn btn-mg btn-secondary"
+        isLoading ? `btn btn-mg disabled ${btnStyle}` : `btn btn-mg ${btnStyle}`
       }
     >
       {isLoading && (
