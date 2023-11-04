@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { IBasicDetails, updateUserBasicDetails } from "../utlis/axiosCalls";
 import { storeContext } from "../../context/store";
 import { compareTwoObjectAreEqual } from "../utlis/utils";
+import { LoadingSavingBtn } from "../utlis/sharedComponents";
 
 const style = {
   position: "absolute",
@@ -38,10 +39,12 @@ const EditUserDetailsModal = ({ userDetails, handleClose, open }: Iprops) => {
     makeGenresObject(userDetails.genres)
   );
 
-  const [userCity, setUserCity] = useState(userDetails.city);
+  const [userCity, setUserCity] = useState<string>(userDetails.city);
   const [userFavWriter, setUserFavWriter] = useState(
     userDetails.favoriteWriter
   );
+  const [isSavingProcessHappenning, setIsSavingProcessHappenning] =
+    useState<boolean>(false);
 
   const saveNewEditedUserDetails = async () => {
     if (
@@ -58,6 +61,8 @@ const EditUserDetailsModal = ({ userDetails, handleClose, open }: Iprops) => {
           genres: Object.keys(userGenres),
           email: userDetails.email,
         };
+
+        setIsSavingProcessHappenning(true);
         await updateUserBasicDetails(sendUserDetails);
 
         dispatch({
@@ -68,6 +73,7 @@ const EditUserDetailsModal = ({ userDetails, handleClose, open }: Iprops) => {
             city: userCity,
           },
         });
+        setIsSavingProcessHappenning(false);
         handleClose();
       } catch (err) {}
     }
@@ -173,12 +179,19 @@ const EditUserDetailsModal = ({ userDetails, handleClose, open }: Iprops) => {
           <button className="btn btn-secondary" onClick={removeDataAndClose}>
             {t("form.cancel")}
           </button>
-          <button
+
+          {/* <button
             className="btn btn-secondary"
             onClick={saveNewEditedUserDetails}
           >
             {t("form.save")}
-          </button>
+          </button> */}
+          <LoadingSavingBtn
+            isLoading={isSavingProcessHappenning}
+            savingFunction={saveNewEditedUserDetails}
+            shallSendEvent={false}
+            textOnBtn={t("form.save")}
+          />
         </div>
       </Box>
     </Modal>
