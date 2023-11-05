@@ -1,9 +1,11 @@
-import React from "react";
+import { useState } from "react";
 import FriendList from "../homePageUser/FriendsList";
 import styles from "./profilePage.module.css";
 import { useTranslation } from "react-i18next";
 import LoadingFriendSkeleton from "./LoadingFriendSkeleton";
+
 function ContentProfilePage({
+  isItMe,
   currentUserPage,
   approvedFriends,
   userId,
@@ -11,14 +13,33 @@ function ContentProfilePage({
 }) {
   const { t } = useTranslation();
 
+  const [ShowEditFreeTextUserModal, setShowEditFreeTextUserModal] =
+    useState(false);
+
   return (
     <div>
       <div
         style={{
           backgroundColor: "#eeedec",
-          padding: "5px 10px 10px 10px",
+          padding: "10px",
         }}
       >
+        {isItMe && (
+          <div
+            style={{
+              fontSize: 10,
+              color: "#f4b556",
+              textDecoration: "underline",
+              paddingBottom: 5,
+              display: "flex",
+              justifyContent: "end",
+              cursor: "pointer",
+            }}
+            onClick={() => setShowEditFreeTextUserModal(true)}
+          >
+            {t("profile.edit details")}
+          </div>
+        )}
         {currentUserPage.freeText && (
           <div>
             <span className={styles.littleHeaderCard}>

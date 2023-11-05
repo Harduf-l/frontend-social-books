@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { storeContext } from "../../context/store";
 import { UserCard } from "./UserCard";
 import axios from "axios";
@@ -55,6 +55,7 @@ function UserPage() {
 
         <div className="col-lg-9  col-12 pt-4 pt-lg-0">
           <ContentProfilePage
+            isItMe={true}
             currentUserPage={store.userDetails}
             approvedFriends={approvedFriends}
             userId={store.userDetails._id}

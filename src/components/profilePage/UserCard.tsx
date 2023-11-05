@@ -20,6 +20,15 @@ export const InfoBox = ({ translationDate, dataItself }) => {
   );
 };
 
+interface IUserCard {
+  currentUserPage: IUserDetails;
+  isItMe: boolean;
+  createNewMessageAndNavigate?: () => void;
+  sendFriendRequest?: any;
+  friendshipStatus?: any;
+  confirmFriendRequest?: any;
+}
+
 export const UserCard = ({
   currentUserPage,
   isItMe,
@@ -27,7 +36,7 @@ export const UserCard = ({
   sendFriendRequest,
   friendshipStatus,
   confirmFriendRequest,
-}) => {
+}: IUserCard) => {
   const { dispatch } = useContext(storeContext);
 
   const { t } = useTranslation();

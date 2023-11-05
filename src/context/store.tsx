@@ -9,8 +9,8 @@ export interface IUserDetails {
   email: string;
   favoriteWriter: string;
   picture: string;
-  genres: [];
-  birthday: {};
+  genres: string[];
+  birthday: string;
   country: string;
   city: string;
   freeText: string;
@@ -27,6 +27,7 @@ type storeInterface = {
   myPendingConnections: [];
   booksRecommendation: [];
   userSuggestedFriends: [];
+  lastTenUsersRegistered: [];
   feedPosts: [];
   approvedConnections: [];
   quotes: string;
@@ -54,6 +55,7 @@ export const initalState: storeInterface = {
   myPendingConnections: [],
   booksRecommendation: [],
   userSuggestedFriends: [],
+  lastTenUsersRegistered: [],
   feedPosts: [],
   approvedConnections: [],
   quotes: "",

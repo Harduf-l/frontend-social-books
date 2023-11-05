@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { storeContext } from "../../context/store";
 import { useTranslation } from "react-i18next";
@@ -15,7 +15,7 @@ function UserPage({ sendConnectionToSocket }) {
   const { t } = useTranslation();
   let params = useParams();
   const { store, dispatch } = useContext(storeContext);
-  const [currentUserPage, setCurrentUser] = useState("");
+  const [currentUserPage, setCurrentUser] = useState<any>();
   const [friendshipStatus, setFriendshipStatus] = useState("");
   const [approvedFriends, setApprovedFriends] = useState([]);
   const [loadingFriends, setLoadingFriends] = useState(true);

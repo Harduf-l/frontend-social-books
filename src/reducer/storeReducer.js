@@ -2,6 +2,7 @@ import { initalState } from "../context/store";
 export const storeReducer = (state, action) => {
   switch (action.type) {
     case "login":
+      console.log("aster login i got...", action.payload);
       return {
         ...state,
         isAuth: true,
@@ -11,6 +12,7 @@ export const storeReducer = (state, action) => {
         myPendingConnections: action.payload.myPendingConnections,
         myConversations: action.payload.myConversations,
         numberOfUnSeenMessages: action.payload.numberOfUnSeenMessages,
+        lastTenUsersRegistered: action.payload.lastTenUsersRegistered,
         initialLogin: true,
       };
 
@@ -250,7 +252,6 @@ export const storeReducer = (state, action) => {
         feedPosts: newArrayOfPosts2,
       };
     case "editOnePost":
-      console.log("here!");
       let newArrayOfPosts5 = JSON.parse(JSON.stringify(state.feedPosts));
 
       let indexToChangePost = newArrayOfPosts5.findIndex((el) => {

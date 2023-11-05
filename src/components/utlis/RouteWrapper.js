@@ -80,7 +80,6 @@ function RouteWrapper({
             }
 
             let messagesData = await getFriends();
-
             dispatch({
               type: "login",
               payload: {
@@ -88,6 +87,7 @@ function RouteWrapper({
                 friends: res.data.suggestedUsers,
                 booksRecommendations: res.data.recommendationBookArray,
                 myPendingConnections: res.data.myPendingConnections,
+                lastTenUsersRegistered: res.data.lastTenUsersRegistered,
                 myConversations: messagesData.data.conversationsWithFriendData,
                 numberOfUnSeenMessages:
                   messagesData.data.numberOfUnseenMessages,

@@ -79,6 +79,8 @@ function ResigterHomePage() {
         const messagesData = await axios.get(
           `${process.env.REACT_APP_SERVER_URL}messages/get-all-conversations/${response.data.userDetails._id}`
         );
+
+        console.log("messagesData is... ", messagesData);
         dispatch({
           type: "login",
           payload: {
@@ -86,6 +88,7 @@ function ResigterHomePage() {
             friends: response.data.suggestedUsers,
             booksRecommendations: response.data.recommendationBookArray,
             myPendingConnections: response.data.myPendingConnections,
+            lastTenUsersRegistered: response.data.lastTenUsersRegistered,
             myConversations: messagesData.data.conversationsWithFriendData,
             numberOfUnSeenMessages: messagesData.data.numberOfUnseenMessages,
           },

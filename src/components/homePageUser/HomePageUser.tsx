@@ -91,17 +91,17 @@ function HomePageUser() {
     }
   };
 
-  const getSingleBookData = async (book) => {
-    setSingleBookData([]);
-    setLoading(true);
-    setOpen(true);
+  // const getSingleBookData = async (book) => {
+  //   setSingleBookData([]);
+  //   setLoading(true);
+  //   setOpen(true);
 
-    const bookData = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL}books/get-single-book-data?bookId=${book.bookId}`
-    );
-    setSingleBookData({ ...book, ...bookData.data });
-    setLoading(false);
-  };
+  //   const bookData = await axios.get(
+  //     `${process.env.REACT_APP_SERVER_URL}books/get-single-book-data?bookId=${book.bookId}`
+  //   );
+  //   setSingleBookData({ ...book, ...bookData.data });
+  //   setLoading(false);
+  // };
 
   const getAdminData = () => {
     axios
@@ -159,12 +159,12 @@ function HomePageUser() {
 
   return (
     <div className="d-flex flex-wrap ">
-      <BookModal
+      {/* <BookModal
         open={open}
         handleClose={handleClose}
         chosenBookData={singleBookData}
         loading={loading}
-      />
+      /> */}
       <div
         className={`col-12 col-lg-2 align-self-stretch ${styles.sideBarHeight}`}
       >
@@ -230,6 +230,50 @@ function HomePageUser() {
             {t("form.logout")}
           </button>
         </div>
+
+        {store.booksRecommendation.length > 0 && (
+          <div
+            style={{
+              textAlign: "center",
+              fontSize: 13,
+              color: "#847071",
+              paddingTop: 20,
+            }}
+          >
+            ספרים שאולי תאהב...
+          </div>
+        )}
+
+        {store.booksRecommendation.map((book) => {
+          return (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                backgroundColor: "#cacaca",
+                borderRadius: 6,
+                border: "3px solid #f1ebe0 ",
+                margin: 15,
+                fontSize: 12,
+                padding: 3,
+              }}
+            >
+              <div style={{ alignContent: "center" }}>
+                <img
+                  width={80}
+                  style={{ borderRadius: 8, alignItems: "center" }}
+                  src={book.imgSrc}
+                  alt={book.title}
+                ></img>
+              </div>
+              <div style={{ padding: 10 }}>
+                {" "}
+                {book.title}/ {book.author}{" "}
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       <div
@@ -345,6 +389,14 @@ function HomePageUser() {
           </p>
           <FriendsList
             userFriends={store.userSuggestedFriends}
+            userId={store.userDetails._id}
+          />
+
+          <p className={styles.miniHeadingItalic}>
+            {t("profile.friends last registered")}...
+          </p>
+          <FriendsList
+            userFriends={store.lastTenUsersRegistered}
             userId={store.userDetails._id}
           />
         </div>
