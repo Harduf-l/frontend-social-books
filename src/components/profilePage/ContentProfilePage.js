@@ -3,6 +3,7 @@ import FriendList from "../homePageUser/FriendsList";
 import styles from "./profilePage.module.css";
 import { useTranslation } from "react-i18next";
 import LoadingFriendSkeleton from "./LoadingFriendSkeleton";
+import { EditUserContentModal } from "../modals/EditUserContentModal";
 
 function ContentProfilePage({
   isItMe,
@@ -39,6 +40,15 @@ function ContentProfilePage({
           >
             {t("profile.edit details")}
           </div>
+        )}
+        {ShowEditFreeTextUserModal && (
+          <EditUserContentModal
+            freeText={currentUserPage.freeText}
+            amIwritingText={currentUserPage.writingDescription}
+            email={currentUserPage.email}
+            handleClose={() => setShowEditFreeTextUserModal(false)}
+            open={ShowEditFreeTextUserModal}
+          />
         )}
         {currentUserPage.freeText && (
           <div>

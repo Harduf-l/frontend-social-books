@@ -240,7 +240,7 @@ function HomePageUser() {
               paddingTop: 20,
             }}
           >
-            ספרים שאולי תאהב...
+            {t("profile.books you may like")}...
           </div>
         )}
 

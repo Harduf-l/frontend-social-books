@@ -11,6 +11,27 @@ type innerContent = {
   email: string;
 };
 
+export const updateUserContent = async (
+  freeText: string,
+  writingText: string,
+  email: string
+): Promise<void> => {
+  try {
+    await axios.post(
+      `${process.env.REACT_APP_SERVER_URL}users/update-user-free-content`,
+      {
+        email,
+        freeText,
+        writingText,
+      }
+    );
+    console.log("server updated successfully");
+  } catch (err) {
+    console.log("error in updatind from server ....", err);
+  }
+  return;
+};
+
 export const updateUserBasicDetails = async (
   userDataObject: innerContent
 ): Promise<void> => {

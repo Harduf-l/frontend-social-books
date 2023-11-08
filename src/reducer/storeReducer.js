@@ -30,6 +30,13 @@ export const storeReducer = (state, action) => {
         city: action.payload.city,
       };
       return { ...state, userDetails: DetailsWithRefreshedData };
+    case "updateContentProfile":
+      const DetailsWithRefreshedContent = {
+        ...state.userDetails,
+        freeText: action.payload.userFreeText,
+        writingDescription: action.payload.userAmIwritingText,
+      };
+      return { ...state, userDetails: DetailsWithRefreshedContent };
     case "changePendingFriendRequests":
       return {
         ...state,
