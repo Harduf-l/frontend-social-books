@@ -56,7 +56,11 @@ export const EditUserContentModal = ({
     } else {
       try {
         setIsSavingProcessHappenning(true);
-        await updateUserContent(userFreeText, userAmIwritingText, email);
+        await updateUserContent(
+          userFreeText.trim(),
+          userAmIwritingText.trim(),
+          email
+        );
         dispatch({
           type: "updateContentProfile",
           payload: {
