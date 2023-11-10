@@ -85,7 +85,7 @@ function RouteWrapper({
               payload: {
                 userDeatils: res.data.userDetails,
                 friends: res.data.suggestedUsers,
-                booksRecommendations: res.data.recommendationBookArray,
+                booksRecommendations: res.data.booksRecommendation,
                 myPendingConnections: res.data.myPendingConnections,
                 lastTenUsersRegistered: res.data.lastTenUsersRegistered,
                 myConversations: messagesData.data.conversationsWithFriendData,

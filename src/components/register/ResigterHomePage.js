@@ -86,7 +86,7 @@ function ResigterHomePage() {
           payload: {
             userDeatils: response.data.userDetails,
             friends: response.data.suggestedUsers,
-            booksRecommendations: response.data.recommendationBookArray,
+            booksRecommendations: response.data.booksRecommendation,
             myPendingConnections: response.data.myPendingConnections,
             lastTenUsersRegistered: response.data.lastTenUsersRegistered,
             myConversations: messagesData.data.conversationsWithFriendData,

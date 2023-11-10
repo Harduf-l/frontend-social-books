@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import axios from "axios";
 import FeedPosts from "./FeedPosts";
 import styles from "./HomePageUser.module.css";
-import BookModal from "./bookModal";
 import defaultPicture from "../../images/plain.jpg";
 import FeedPostsSkeleton from "./FeedPostsSkeleton";
 import FriendsList from "./FriendsList";
@@ -16,19 +15,27 @@ function HomePageUser() {
   const { dispatch, store } = useContext(storeContext);
   const [userContent, setUserContent] = useState("");
   const [userContentTag, setUserContentTag] = useState("");
-  const [singleBookData, setSingleBookData] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [postError, setPostError] = useState(false);
   const [textAreaRows, setTextAreaRows] = useState(2);
   const [loadingFeedPost, setLoadingFeedPost] = useState(true);
-
+  const [recommendationArray, setRecommendationArray] = useState(
+    currentDir === "rtl"
+      ? store.booksRecommendation.hebrewRecommendations
+      : store.booksRecommendation.englishRecommendations
+  );
   const [waitingForServer, isWaitingForServer] = useState<boolean>(false);
 
   const { username } = store.userDetails;
-  const { booksRecommendation } = store;
   const minRows = 2;
   const maxRows = 18;
+
+  useEffect(() => {
+    setRecommendationArray(
+      currentDir === "rtl"
+        ? store.booksRecommendation.hebrewRecommendations
+        : store.booksRecommendation.englishRecommendations
+    );
+  }, [currentDir]);
 
   useEffect(() => {
     if (!store.quotes) {
@@ -52,10 +59,6 @@ function HomePageUser() {
       setLoadingFeedPost(false);
     }
   }, [store.quotes, store.feedPosts.length, dispatch]);
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const handleTextAreaChange = (event) => {
     if (!event.target.value) {
@@ -161,7 +164,6 @@ function HomePageUser() {
     <div className="d-flex flex-wrap ">
       {/* <BookModal
         open={open}
-        handleClose={handleClose}
         chosenBookData={singleBookData}
         loading={loading}
       /> */}
@@ -231,7 +233,7 @@ function HomePageUser() {
           </button>
         </div>
 
-        {store.booksRecommendation.length > 0 && (
+        {store.booksRecommendation.hebrewRecommendations.length > 0 && (
           <div
             style={{
               textAlign: "center",
@@ -244,7 +246,7 @@ function HomePageUser() {
           </div>
         )}
 
-        {store.booksRecommendation.map((book) => {
+        {recommendationArray.map((book) => {
           return (
             <div
               style={{
@@ -262,7 +264,12 @@ function HomePageUser() {
               <div style={{ alignContent: "center" }}>
                 <img
                   width={80}
-                  style={{ borderRadius: 8, alignItems: "center" }}
+                  height={107}
+                  style={{
+                    borderRadius: 8,
+                    alignItems: "center",
+                    objectFit: "cover",
+                  }}
                   src={book.imgSrc}
                   alt={book.title}
                 ></img>
